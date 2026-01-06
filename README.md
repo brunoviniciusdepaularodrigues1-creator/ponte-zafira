@@ -5,6 +5,18 @@
 
 ---
 
+## Índice de Navegação
+
+- [📖 Manifesto](manifesto.md)
+- [📑 Resumo Executivo](modelo/01_resumo_executivo.md)
+- [🧠 Fundamento Filosófico](modelo/02_fundamento_filosofico.md)
+- [💧 Meio de Transmissão](modelo/03_meio_de_transmissao.md)
+- [🌐 Infraestrutura de Rede](modelo/04_infraestrutura_de_rede.md)
+- [⚙️ Síntese Operacional](modelo/05_sintese_operacional.md)
+- [⚠️ Fronteiras e Controvérsias](notas/fronteiras_e_controversias.md)
+
+---
+
 ## O que é
 
 A **Ponte Zafira** é um **modelo interpretativo**, não uma teoria científica nem um sistema de crença espiritual. Seu objetivo é integrar **experiência subjetiva**, **ciência estabelecida**, **ciência de fronteira** e **hipóteses metafísicas** em uma estrutura coerente de leitura da realidade.
