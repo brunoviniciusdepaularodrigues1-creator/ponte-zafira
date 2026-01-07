@@ -1,12 +1,7 @@
-Este não é um sistema de crença.  
-Não é uma verdade final.  
-Não é uma promessa.
+# Manifesto da Ponte de Zafira
 
-A Ponte Zafira é um modelo.  
-Serve para quem pensa, não para quem segue.
+A Ponte de Zafira visa criar uma estrutura simbólica e funcional de integração, coerência e reflexão.
 
-Leia criticamente.  
-Use se fizer sentido.  
-Abandone se não fizer.
-
-Coerência precede convicção.
+- Promove integração de fluxos e processos
+- Mantém coerência e integridade simbólica
+- Garante registro e rastreabilidade
