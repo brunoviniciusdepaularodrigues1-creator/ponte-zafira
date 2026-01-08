@@ -4,7 +4,8 @@ A **Ponte de Zafira** é um projeto conceitual e educacional que integra modelag
 Seu objetivo é explorar **como modelos podem ser construídos, analisados e comparados**, mantendo clareza sobre limites e escopo.
 
 > **Status do projeto:** modelo conceitual em desenvolvimento  
-> **Aviso:** este repositório não faz afirmações sobre a realidade física fundamental.
+> **Aviso:** este repositório não faz afirmações sobre a realidade física fundamental.  
+> ⚠️ **Aviso:** Este projeto é exploratório. Não representa resultados físicos finais.
 
 ---
 
@@ -62,7 +63,7 @@ O módulo **UCS-Lagrangiana** apresenta um **modelo cosmológico exploratório**
 
 O modelo é comparado com:
 - ΛCDM (como referência)
-- Dados observacionais (H(z) observado) inspirados em medições do **DESI (DR2)**
+- Dados observacionais H(z) inspirados em medições do **DESI (DR2)**
 
 ---
 
@@ -71,7 +72,7 @@ O modelo é comparado com:
 O repositório inclui uma tabela comparativa contendo:
 
 - Redshift \( z \)
-- H(z) observado (H(z) observado)
+- H(z) observado
 - Incertezas experimentais
 - Predições ΛCDM
 - Predições do modelo UCS
