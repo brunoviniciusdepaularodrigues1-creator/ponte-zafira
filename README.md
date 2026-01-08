@@ -105,8 +105,17 @@ Este projeto serve como:
 
 ## 📎 Navegação Rápida
 
+### 🚀 Comece por aqui
 - [📖 Manifesto](manifesto.md)
+
+### 🧠 Eixo Conceitual
 - [📜 Axiomas](modelo/06_axiomas.md)
+- [🔍 Nota Cética UCS](UCS-LAGRANGIANA/nota-cetica.md)
+
+### ⚙️ Eixo Técnico
 - [📐 Lagrangiana UCS](UCS-LAGRANGIANA/lagrangiana.md)
 - [⚖️ Equações de Campo](UCS-LAGRANGIANA/equacoes.md)
-- [🔍 Nota Cética UCS](UCS-LAGRANGIANA/nota-cetica.md)
+
+### 📊 Dados
+- [📂 Dataset H(z)](data/H_z_data.csv)
+- [📄 Documentação de Dados](data/README.md)
