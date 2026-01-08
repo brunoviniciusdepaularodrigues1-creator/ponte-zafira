@@ -80,6 +80,8 @@ O repositório inclui uma tabela comparativa contendo:
 
 Esses dados são usados **exclusivamente para fins educacionais e exploratórios**.
 
+Os dados utilizados estão disponíveis em `data/H_z_data.csv`.
+
 ---
 
 ## ⚠️ Limitações Declaradas
