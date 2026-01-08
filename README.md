@@ -62,7 +62,7 @@ O módulo **UCS-Lagrangiana** apresenta um **modelo cosmológico exploratório**
 
 O modelo é comparado com:
 - ΛCDM (como referência)
-- Dados observacionais inspirados em medições do **DESI (DR2)**
+- Dados observacionais (H(z) observado) inspirados em medições do **DESI (DR2)**
 
 ---
 
@@ -71,7 +71,7 @@ O modelo é comparado com:
 O repositório inclui uma tabela comparativa contendo:
 
 - Redshift \( z \)
-- H(z) observado
+- H(z) observado (H(z) observado)
 - Incertezas experimentais
 - Predições ΛCDM
 - Predições do modelo UCS
