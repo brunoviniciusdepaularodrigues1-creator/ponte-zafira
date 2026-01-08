@@ -40,7 +40,7 @@ ponte-zafira/
 │   ├── equacoes.md
 │   └── nota-cetica.md
 ├── notas/               # Observações, alertas e comentários
-├── data/                # (em expansão) dados e tabelas cosmológicas
+├── data/                # Dados e tabelas cosmológicas
 └── README.md
 ```
 
@@ -51,7 +51,7 @@ ponte-zafira/
 O módulo **UCS-Lagrangiana** apresenta um **modelo cosmológico exploratório** baseado em:
 
 - Campo escalar dinâmico Φ
-- Potencial quartico:  
+- Potencial quártico:  
   \[
   V(\Phi) = \lambda \Phi^4
   \]
