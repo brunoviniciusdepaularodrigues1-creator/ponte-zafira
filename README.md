@@ -11,7 +11,7 @@ Seu objetivo é explorar **como modelos podem ser construídos, analisados e com
 
 ## 🎯 Escopo do Projeto
 
-O projeto está dividido em dois grandes eixos:
+O projeto está dividido em dois grandes eixos, integrados por uma camada de coerência:
 
 1. **Eixo Conceitual-Simbólico**
    - Axiomas
@@ -26,7 +26,10 @@ O projeto está dividido em dois grandes eixos:
    - Simulações numéricas
    - Comparação com dados cosmológicos H(z)
 
-Os dois eixos coexistem, mas **não se confundem**.
+3. **Camada de Coerência (PCU)**
+   - Plataforma de Coerência Universal: camada conceitual para avaliação estrutural de coerência.
+
+Os eixos coexistem, mas **não se confundem**.
 
 ---
 
@@ -39,6 +42,10 @@ ponte-zafira/
 │   ├── lagrangiana.md
 │   ├── equacoes.md
 │   └── nota-cetica.md
+├── PCU/                 # Camada conceitual de coerência
+│   ├── principios.md
+│   ├── arquitetura.md
+│   └── exemplos/
 ├── notas/               # Observações, alertas e comentários
 ├── data/                # Dados e tabelas cosmológicas
 └── README.md
@@ -108,6 +115,7 @@ Este projeto serve como:
 
 ### 🚀 Comece por aqui
 - [📖 Manifesto](manifesto.md)
+- [🔍 PCU (Camada de Coerência)](PCU/README.md)
 
 ### 🧠 Eixo Conceitual
 - [📜 Axiomas](modelo/06_axiomas.md)
