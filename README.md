@@ -9,41 +9,57 @@ Seu objetivo é explorar **como modelos podem ser construídos, analisados e com
 
 ## 🧱 Organização em Camadas
 
-O projeto Ponte Zafira é estruturado em camadas conceituais independentes, organizadas na seguinte ordem lógica:
+O projeto Ponte Zafira é estruturado em camadas conceituais independentes, organizadas em uma ordem lógica de construção e leitura:
 
-0. Intenção e limites (README, Manifesto)
-1. Axiomas conceituais
-2. Estrutura interpretativa (UCS)
-3. Camada de Coerência (PCU)
-4. Formalização matemática (UCS-Lagrangiana)
-5. Dados e exemplos
-6. Análise crítica e limitações
+1. **Intenção, escopo e limites**  
+   (README, Manifesto)
 
-As camadas coexistem, mas **não se misturam**.
+2. **Princípios de coerência (PCU)**  
+   Camada normativa responsável por definir critérios de consistência, integração e não-contradição entre modelos.
+
+3. **Axiomas conceituais**  
+   Base declarativa mínima a partir da qual interpretações podem ser construídas.
+
+4. **Estrutura interpretativa (UCS)**  
+   Organização simbólica e conceitual derivada dos axiomas, já avaliada sob os critérios da PCU.
+
+5. **Formalização matemática (UCS-Lagrangiana)**  
+   Implementação técnica e exploratória das estruturas interpretativas.
+
+6. **Dados, exemplos e comparações**  
+   Uso de dados observacionais e simulações com finalidade exploratória e educacional.
+
+7. **Análise crítica e limitações**  
+   Discussão explícita de falhas, limites e escopo do modelo.
+
+As camadas coexistem, mas **não se misturam nem se justificam circularmente**.
 
 ---
 
 ## 🎯 Escopo do Projeto
 
-O projeto está dividido em dois grandes eixos, integrados por uma camada de coerência:
+O projeto Ponte Zafira possui três componentes complementares, organizados de forma não hierárquica, porém avaliados por critérios claros:
 
-1. **Eixo Conceitual-Simbólico**
-   - Axiomas
-   - Manifesto
-   - Notas reflexivas e críticas
-   - Estrutura interpretativa (UCS)
+### 1. Eixo Conceitual-Simbólico
+- Axiomas
+- Manifesto
+- Notas reflexivas e críticas
+- Estrutura interpretativa (UCS)
 
-2. **Eixo Técnico-Exploratório**
-   - Modelo cosmológico com campo escalar dinâmico
-   - Formulação lagrangiana (Φ⁴)
-   - Equações de campo
-   - Simulações numéricas
-   - Comparação com dados cosmológicos H(z)
+### 2. Camada de Coerência (PCU)
+- Plataforma de Coerência Universal
+- Critérios normativos de consistência
+- Separação entre símbolo, modelo e formalismo
+- Controle de extrapolações conceituais
 
-3. **Camada de Coerência (PCU)**
-   - Plataforma de Coerência Universal: camada conceitual para avaliação estrutural de coerência.
+### 3. Eixo Técnico-Exploratório
+- Modelo cosmológico com campo escalar dinâmico
+- Formulação lagrangiana (Φ⁴)
+- Equações de campo
+- Simulações numéricas
+- Comparação com dados cosmológicos H(z)
 
-Os eixos coexistem, mas **não se confundem**.
+Os eixos coexistem, mas **não se confundem nem se validam mutuamente**.
 
 ---
 
