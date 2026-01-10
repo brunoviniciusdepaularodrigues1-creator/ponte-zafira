@@ -7,6 +7,20 @@ Seu objetivo é explorar **como modelos podem ser construídos, analisados e com
 > **Aviso:** este repositório não faz afirmações sobre a realidade física fundamental.  
 > ⚠️ **Aviso:** Este projeto é exploratório. Não representa resultados físicos finais.
 
+## 🧱 Organização em Camadas
+
+O projeto Ponte Zafira é estruturado em camadas conceituais independentes, organizadas na seguinte ordem lógica:
+
+0. Intenção e limites (README, Manifesto)
+1. Axiomas conceituais
+2. Estrutura interpretativa (UCS)
+3. Camada de Coerência (PCU)
+4. Formalização matemática (UCS-Lagrangiana)
+5. Dados e exemplos
+6. Análise crítica e limitações
+
+As camadas coexistem, mas **não se misturam**.
+
 ---
 
 ## 🎯 Escopo do Projeto

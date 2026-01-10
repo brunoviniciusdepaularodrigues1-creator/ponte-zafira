@@ -1,26 +1,35 @@
 # Arquitetura Conceitual da PCU
 
-A PCU opera em cinco estágios abstratos:
+A PCU é organizada em três níveis abstratos:
 
-## 1. Entrada
+---
 
-Recebe um sistema, modelo ou narrativa com seus componentes explicitamente definidos.
+## Nível 1 — Entrada Estrutural
 
-## 2. Mapeamento Relacional
+Recebe:
+- axiomas
+- definições
+- manifestos
+- declarações de escopo
 
-Identifica as relações entre os componentes, incluindo dependências, hierarquias e fluxos lógicos.
+---
 
-## 3. Detecção de Tensões
+## Nível 2 — Avaliação de Coerência
 
-Analisa a presença de inconsistências internas, contradições locais ou dependências circulares não justificadas.
+Analisa:
+- contradições internas
+- saltos lógicos não declarados
+- confusão entre camadas
+- uso indevido de linguagem técnica
 
-## 4. Avaliação de Coerência
+---
 
-Avalia a coerência:
+## Nível 3 — Saída Interpretativa
 
-- **Local:** entre componentes próximos
-- **Global:** entre o sistema e sua própria estrutura declarada
+Produz:
+- parecer de coerência estrutural
+- alertas conceituais
+- zonas de instabilidade lógica
 
-## 5. Saída Não-Prescritiva
-
-Produz uma qualificação estrutural (ex.: coerente, parcialmente coerente, tensionado), sem indicar ações corretivas.
+A PCU **não corrige o modelo**.
+Ela apenas expõe onde ele se rompe.

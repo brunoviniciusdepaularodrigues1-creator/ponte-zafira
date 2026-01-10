@@ -1,23 +1,61 @@
-# O que é a PCU
+# PCU — Plataforma de Coerência Universal
 
-A Plataforma de Coerência Universal (PCU) é uma camada conceitual destinada à avaliação estrutural de coerência em sistemas complexos. Seu papel é fornecer uma lente neutra para examinar relações internas, tensões lógicas e consistência global entre componentes de um sistema, modelo ou narrativa.
+A **PCU (Plataforma de Coerência Universal)** é uma camada conceitual destinada à
+avaliação estrutural de coerência entre modelos, hipóteses ou sistemas formais.
 
-A PCU não executa processos, não resolve problemas e não propõe soluções. Ela observa, organiza e qualifica a coerência interna de estruturas já existentes.
+Ela **não produz modelos físicos**, **não gera previsões empíricas** e **não executa simulações**.
 
-## O que a PCU não é
+Sua função é responder a uma única pergunta:
 
-- Não é uma teoria física
-- Não é um software operacional
-- Não é um algoritmo de otimização
-- Não é um sistema decisório
-- Não faz previsões nem afirmações sobre a realidade fundamental
+> O que está sendo proposto é coerente com seus próprios axiomas, limites e declarações?
 
-## Finalidade
+---
 
-A PCU permite:
+## 🎯 Escopo da PCU
 
-- Comparar modelos distintos sob o mesmo critério estrutural
-- Identificar pontos de tensão, ambiguidade ou inconsistência
-- Avaliar se um sistema mantém coerência entre intenção, forma e resultado
+A PCU atua como uma **camada intermediária** entre:
 
-Sua aplicação é reversível e não prescritiva.
+- estruturas conceituais (axiomas, manifestos, interpretações)
+- formalizações técnicas (matemática, simulações, dados)
+
+Ela não valida a realidade física — apenas a **consistência interna**.
+
+---
+
+## ❌ O que a PCU não é
+
+- Não é um motor de IA
+- Não é um software logístico
+- Não é um sistema de otimização
+- Não é um modelo físico fundamental
+- Não é um framework comercial
+
+---
+
+## ✅ O que a PCU é
+
+- Um **instrumento de leitura estrutural**
+- Um **filtro de coerência declarativa**
+- Uma **ponte lógica** entre intenção e formalização
+
+---
+
+## 🧱 Posição na Ponte Zafira
+
+A PCU ocupa a **Camada 3** da Ponte Zafira:
+
+0. Intenção e limites  
+1. Axiomas  
+2. Estrutura conceitual (UCS)  
+3. **Coerência (PCU)**  
+4. Formalização matemática  
+5. Dados e exemplos  
+6. Análise crítica  
+
+---
+
+## 📎 Navegação Interna
+
+- [Princípios da PCU](principios.md)
+- [Arquitetura Conceitual](arquitetura.md)
+- [Exemplos de Uso](exemplos/)
