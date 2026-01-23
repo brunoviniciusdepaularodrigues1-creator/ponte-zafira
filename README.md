@@ -58,9 +58,6 @@ O projeto Ponte Zafira possui três componentes complementares, organizados de f
 - Equações de campo
 - Simulações numéricas
 - Comparação com dados cosmológicos H(z)
-
-Os eixos coexistem, mas **não se confundem nem se validam mutuamente**.
-
 ---
 
 ## 🧩 Estrutura do Repositório
@@ -116,6 +113,9 @@ O repositório inclui uma tabela comparativa contendo:
 - Equações de estado
 - Valores de \( \chi^2 \)
 - Validação observacional exploratória (SN + CC)
+-Validação observacional exploratória (SN + CC)
+(Supernovas Pantheon+ binned + Cronômetros Cósmicos, ver pasta VALIDACAO_OBSERVACIONAL/)
+Os eixos coexistem, mas **não se confundem nem se validam mutuamente**.
 
 Esses dados são usados **exclusivamente para fins educacionais e exploratórios**.
 
