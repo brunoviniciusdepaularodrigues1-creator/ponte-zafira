@@ -115,6 +115,7 @@ O repositório inclui uma tabela comparativa contendo:
 - Predições do modelo UCS
 - Equações de estado
 - Valores de \( \chi^2 \)
+- Validação observacional exploratória (SN + CC)
 
 Esses dados são usados **exclusivamente para fins educacionais e exploratórios**.
 

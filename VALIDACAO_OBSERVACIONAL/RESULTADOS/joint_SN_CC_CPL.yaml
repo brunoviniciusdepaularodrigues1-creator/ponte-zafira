@@ -1,0 +1,26 @@
+dataset:
+  supernovas: Pantheon+ (binned, 40)
+  cronometros_cosmicos: 31
+
+parametros_UCS:
+  Omega_m: 0.30
+  w0: -2.28
+  wa: 0.00
+
+estatisticas:
+  chi2_LCDM: 108.06
+  chi2_UCS: 70.44
+  delta_chi2: -37.62
+
+informacao:
+  AIC_LCDM: 110.06
+  AIC_UCS: 76.44
+  delta_AIC: -33.62
+
+  BIC_LCDM: 112.34
+  BIC_UCS: 83.27
+  delta_BIC: -29.07
+
+status:
+  regime: low-redshift
+  interpretacao: preferencia estatistica condicional
