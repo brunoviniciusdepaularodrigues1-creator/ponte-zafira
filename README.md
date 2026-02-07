@@ -1,44 +1,67 @@
-# Ponte de Zafira
+# Ponte Zafira
 
-A **Ponte de Zafira** é um projeto conceitual e educacional que integra modelagem simbólica, formalização matemática e experimentação computacional.  
-Seu objetivo é explorar **como modelos podem ser construídos, analisados e comparados**, mantendo clareza sobre limites e escopo.
+**Um framework integrado de modelagem, coerência e exploração conceitual.**
 
-> **Status do projeto:** modelo conceitual em desenvolvimento  
-> **Aviso:** este repositório não faz afirmações sobre a realidade física fundamental.  
-> ⚠️ **Aviso:** Este projeto é exploratório. Não representa resultados físicos finais.
+A **Ponte Zafira** é um projeto educacional e conceitual que integra modelagem simbólica, formalização matemática e experimentação computacional. Seu objetivo é explorar **como modelos podem ser construídos, analisados e comparados**, mantendo clareza sobre limites, escopo e a separação entre símbolo, hipótese e dado.
 
-## 🧱 Organização em Camadas
-
-O projeto Ponte Zafira é estruturado em camadas conceituais independentes, organizadas em uma ordem lógica de construção e leitura:
-
-1. **Intenção, escopo e limites**  
-   (README, Manifesto)
-
-2. **Princípios de coerência (PCU)**  
-   Camada normativa responsável por definir critérios de consistência, integração e não-contradição entre modelos.
-
-3. **Axiomas conceituais**  
-   Base declarativa mínima a partir da qual interpretações podem ser construídas.
-
-4. **Estrutura interpretativa (UCS)**  
-   Organização simbólica e conceitual derivada dos axiomas, já avaliada sob os critérios da PCU.
-
-5. **Formalização matemática (UCS-Lagrangiana)**  
-   Implementação técnica e exploratória das estruturas interpretativas.
-
-6. **Dados, exemplos e comparações**  
-   Uso de dados observacionais e simulações com finalidade exploratória e educacional.
-
-7. **Análise crítica e limitações**  
-   Discussão explícita de falhas, limites e escopo do modelo.
-
-As camadas coexistem, mas **não se misturam nem se justificam circularmente**.
+> **Status:** Projeto conceitual em desenvolvimento  
+> **Aviso:** Este repositório **não faz afirmações sobre a realidade física fundamental**.  
+> ⚠️ **Este é um projeto exploratório e educacional.** Não representa resultados físicos finais.
 
 ---
 
-## 🎯 Escopo do Projeto
+## 📍 Navegação por Público
 
-O projeto Ponte Zafira possui três componentes complementares, organizados de forma não hierárquica, porém avaliados por critérios claros:
+**Escolha seu ponto de entrada:**
+
+### 🧠 Se você é filósofo ou pensador
+Você quer entender a base interpretativa, os axiomas e a coerência conceitual.
+- [📜 **Axiomas** - Base declarativa mínima](./modelo/06_axiomas.md)
+- [🔍 **Camada de Coerência (PCU)** - Critérios de consistência](./PCU/)
+- [📖 **Manifesto** - Intenção e visão do projeto](./manifesto.md)
+- [📱 **Fundamentos Filosóficos** - Base interpretativa](./modelo/02_fundamento_filosofico.md)
+
+### 🔬 Se você é físico ou cientista
+Você quer ver a formalização matemática, dados e comparação com observações.
+- [📐 **UCS-Lagrangiana** - Modelo técnico do campo escalar](./UCS-LAGRANGIANA/)
+- [⚖️ **Equações de Campo** - Derivação completa](./UCS-LAGRANGIANA/equacoes.md)
+- [📊 **Dados Cosmológicos H(z)** - Dataset experimental](./data/H_z_data.csv)
+- [📄 **Análise Estatística** - Scripts e validação](./UCS-LAGRANGIANA/analise_estatistica.py)
+- [🔍 **Nota Cética** - Limitações e escopo](./UCS-LAGRANGIANA/nota-cetica.md)
+
+### 💻 Se você é desenvolvedor ou engenheiro
+Você quer entender a arquitetura, executar código e reproduzir resultados.
+- [🚀 **Guia de Reprodutibilidade** - Como rodar o projeto](./REPRODUCIBILIDADE.md) *(em desenvolvimento)*
+- [📦 **Scripts Técnicos** - run_ucs_model.py, análise_estatistica.py](./UCS-LAGRANGIANA/)
+- [📂 **Estrutura do Repositório** - Organização de pastas](./ESTRUTURA.md) *(em desenvolvimento)*
+- [🔗 **API de Funções** - Documentação de código](./UCS-LAGRANGIANA/API.md) *(em desenvolvimento)*
+
+### 🎓 Se você é estudante ou principiante
+Você quer aprender como modelos são construídos, sem entrar em detalhes técnicos profundos.
+- [🎯 **Visão Geral em 5 Minutos**](./VISAO_GERAL.md) *(em desenvolvimento)*
+- [📚 **Glossário de Termos**](./GLOSSARIO.md) *(em desenvolvimento)*
+- [📖 **Introdução Suave ao Modelo**](./modelo/01_resumo_executivo.md)
+- [🔍 **Perguntas Frequentes (FAQ)**](./FAQ.md) *(em desenvolvimento)*
+
+---
+
+## 🧱 Organização em Camadas
+
+O projeto é estruturado em **camadas conceituais independentes**, sem hierarquia, mas com critérios claros:
+
+1. **Intenção, escopo e limites** → README, Manifesto  
+2. **Princípios de coerência (PCU)** → Critérios normativos de consistência  
+3. **Axiomas conceituais** → Base declarativa mínima  
+4. **Estrutura interpretativa (UCS)** → Organização simbólica derivada dos axiomas  
+5. **Formalização matemática** → Implementação técnica e exploratória  
+6. **Dados e comparações** → Simulações e comparação com observações  
+7. **Análise crítica** → Discussão de falhas, limites e escopo  
+
+**Princípio fundamental:** As camadas coexistem, mas **não se misturam nem se validam circularmente**.
+
+---
+
+## 🎯 Os Três Eixos do Projeto
 
 ### 1. Eixo Conceitual-Simbólico
 - Axiomas
@@ -58,68 +81,69 @@ O projeto Ponte Zafira possui três componentes complementares, organizados de f
 - Equações de campo
 - Simulações numéricas
 - Comparação com dados cosmológicos H(z)
----
-
-## 🧩 Estrutura do Repositório
-
-```
-ponte-zafira/
-├── modelo/              # Documentação conceitual e axiomas
-├── UCS-LAGRANGIANA/     # Modelo técnico do campo escalar
-│   ├── lagrangiana.md
-│   ├── equacoes.md
-│   └── nota-cetica.md
-├── PCU/                 # Camada conceitual de coerência
-│   ├── principios.md
-│   ├── arquitetura.md
-│   └── exemplos/
-├── notas/               # Observações, alertas e comentários
-├── data/                # Dados e tabelas cosmológicas
-└── README.md
-```
 
 ---
 
 ## 🌌 UCS-Lagrangiana (Resumo Técnico)
 
-O módulo **UCS-Lagrangiana** apresenta um **modelo cosmológico exploratório** baseado em:
+O módulo **UCS-Lagrangiana** apresenta um modelo cosmológico exploratório baseado em:
 
 - Campo escalar dinâmico Φ
-- Potencial quártico:  
-  \[
-  V(\Phi) = \lambda \Phi^4
-  \]
-- Evolução cosmológica em função do redshift \( z \)
-- Cálculo de:
-  - Parâmetro de Hubble \( H(z) \)
-  - Equação de estado \( w(z) \)
-  - Comparação estatística via \( \chi^2 \)
+- Potencial quártico: $$V(\Phi) = \lambda \Phi^4$$
+- Evolução cosmológica em função do redshift (z)
+- Cálculo de: Parâmetro de Hubble H(z), Equação de estado w(z), Comparação via χ²
 
-O modelo é comparado com:
-- ΛCDM (como referência)
-- Dados observacionais H(z) inspirados em medições do **DESI (DR2)**
+O modelo é comparado com ΛCDM (como referência) e dados observacionais H(z) inspirados em **DESI (DR2)**.
+
+---
+
+## 📂 Estrutura do Repositório
+
+```
+ponte-zafira/
+├── modelo/              # Documentação conceitual e axiomas
+│   ├── 01_resumo_executivo.md
+│   ├── 02_fundamento_filosofico.md
+│   ├── 03_meio_de_transmissao.md
+│   ├── 04_infraestrutura_de_rede.md
+│   ├── 05_sintese_operacional.md
+│   └── 06_axiomas.md
+├── UCS-LAGRANGIANA/     # Modelo técnico do campo escalar
+│   ├── lagrangiana.md
+│   ├── equacoes.md
+│   ├── derivacao_completa.md
+│   ├── nota-cetica.md
+│   ├── hipotese.md
+│   ├── run_ucs_model.py
+│   └── analise_estatistica.py
+├── PCU/                 # Camada de Coerência Universal
+│   ├── README.md
+│   ├── principios.md
+│   └── arquitetura.md
+├── VALIDACAO_OBSERVACIONAL/  # Validação com dados (SN + CC)
+├── data/                # Dados cosmológicos
+│   ├── H_z_data.csv
+│   └── README.md
+├── notas/               # Observações e alertas
+├── manifesto.md         # Intenção e visão
+├── README.md            # Este arquivo
+└── (em desenvolvimento) REPRODUCIBILIDADE.md
+```
 
 ---
 
 ## 📊 Dados Cosmológicos
 
-O repositório inclui uma tabela comparativa contendo:
-
-- Redshift \( z \)
-- H(z) observado
-- Incertezas experimentais
+O repositório inclui tabela comparativa contendo:
+- Redshift (z)
+- H(z) observado com incertezas experimentais
 - Predições ΛCDM
 - Predições do modelo UCS
 - Equações de estado
-- Valores de \( \chi^2 \)
+- Valores de χ²
 - Validação observacional exploratória (SN + CC)
--Validação observacional exploratória (SN + CC)
-(Supernovas Pantheon+ binned + Cronômetros Cósmicos, ver pasta VALIDACAO_OBSERVACIONAL/)
-Os eixos coexistem, mas **não se confundem nem se validam mutuamente**.
 
-Esses dados são usados **exclusivamente para fins educacionais e exploratórios**.
-
-Os dados utilizados estão disponíveis em `data/H_z_data.csv`.
+Dados disponíveis em `data/H_z_data.csv`, usados **exclusivamente para fins educacionais e exploratórios**.
 
 ---
 
@@ -127,35 +151,47 @@ Os dados utilizados estão disponíveis em `data/H_z_data.csv`.
 
 - O modelo é **efetivo**, não fundamental
 - Não há ajuste fino extensivo de parâmetros
-- Não se reivindica superioridade sobre ΛCDM
+- **Não se reivindica superioridade sobre ΛCDM**
 - Instabilidades numéricas são discutidas explicitamente
+- Elementos especulativos (água estruturada, PVS) estão etiquetados como "não consensuais"
 
 ---
 
 ## 📚 Objetivo Educacional
 
 Este projeto serve como:
-- exercício de construção de modelos
-- treino de formalização matemática
-- ponte entre intuição e método científico
-- base para evolução futura mais rigorosa
+- Exercício de construção de modelos
+- Treino de formalização matemática
+- Ponte entre intuição e método científico
+- Base para evolução futura mais rigorosa
+- Manual de boas práticas: separar símbolo, modelo e dado
 
 ---
 
-## 📎 Navegação Rápida
+## 🚀 Comece Aqui (Todos os Públicos)
 
-### 🚀 Comece por aqui
-- [📖 Manifesto](manifesto.md)
-- [🔍 PCU (Camada de Coerência)](PCU/README.md)
+1. **Entenda a intenção:** Leia [Manifesto](./manifesto.md)
+2. **Aprenda os critérios:** Explore [PCU](./PCU/README.md)
+3. **Escolha seu caminho:** Use a seção **Navegação por Público** acima
+4. **Não tenha medo de criticar:** Abertura a feedback é core do projeto
 
-### 🧠 Eixo Conceitual
-- [📜 Axiomas](modelo/06_axiomas.md)
-- [🔍 Nota Cética UCS](UCS-LAGRANGIANA/nota-cetica.md)
+---
 
-### ⚙️ Eixo Técnico
-- [📐 Lagrangiana UCS](UCS-LAGRANGIANA/lagrangiana.md)
-- [⚖️ Equações de Campo](UCS-LAGRANGIANA/equacoes.md)
+## 📝 Aviso de Escopo
 
-### 📊 Dados
-- [📂 Dataset H(z)](data/H_z_data.csv)
-- [📄 Documentação de Dados](data/README.md)
+Este projeto é uma **exploração conceitual e educacional**, não uma afirmação de verdade cosmológica ou física. A Ponte Zafira:
+- Não refuta ΛCDM
+- Não reivindica ser "nova física"
+- Não faz previsões vinculantes
+- Serve como laboratório de aprendizado sobre como modelos são construídos e testados
+
+---
+
+## 🤝 Contribuições e Feedback
+
+Sugestões, críticas e melhorias são bem-vindas. Abra uma issue ou pull request.
+
+---
+
+**Última atualização:** Fevereiro 2026  
+**Mantido por:** brunoviniciusdepaularodrigues1-creator
