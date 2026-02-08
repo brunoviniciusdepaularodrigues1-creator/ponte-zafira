@@ -4,6 +4,8 @@
 
 A **Ponte Zafira** é um projeto educacional e conceitual que integra modelagem simbólica, formalização matemática e experimentação computacional. Seu objetivo é explorar **como modelos podem ser construídos, analisados e comparados**, mantendo clareza sobre limites, escopo e a separação entre símbolo, hipótese e dado.
 
+> **A Ponte Zafira não reivindica nova física confirmada**; ela organiza hipóteses testáveis sob critérios explícitos de coerência e refutabilidade.
+
 > **Status:** Projeto conceitual em desenvolvimento  
 > **Aviso:** Este repositório **não faz afirmações sobre a realidade física fundamental**.  
 > ⚠️ **Este é um projeto exploratório e educacional.** Não representa resultados físicos finais.
