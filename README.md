@@ -189,6 +189,21 @@ Este projeto é uma **exploração conceitual e educacional**, não uma afirmaç
 
 ---
 
+## 🔌 Experimentos derivados (testes de hipóteses físicas)
+
+A Ponte Zafira é a base conceitual e estrutural. A partir dela, hipóteses físicas específicas são testadas em repositórios separados, mantendo apenas os princípios operacionais da **Chave** (coerência, clareza, sem evasão) e do **0** (possibilidade real de descartar, honestidade com falhas).
+
+### Zero Field Primordial
+
+Primeiro experimento: um campo escalar real mínimo como componente cosmológica, testado de ponta a ponta contra dados observacionais BAO.
+
+- **Repositório**: [`zero-field-primordial`](https://github.com/brunoviniciusdepaularodrigues1-creator/zero-field-primordial) (em desenvolvimento)
+- **Status**: Hipótese descartável; não herda conclusões filosóficas da Ponte Zafira.
+- **Escopo**: Lagrangiana → equações em FRW → evolução numérica → BAO χ² → veredito explícito.
+- **Princípios operacionais**: Chave (definição clara, sem linguagem evasiva) + 0 (sem blindagem de resultado, documentar falhas sem tentar "salvar").
+
+---
+
 ## 🤝 Contribuições e Feedback
 
 Sugestões, críticas e melhorias são bem-vindas. Abra uma issue ou pull request.
