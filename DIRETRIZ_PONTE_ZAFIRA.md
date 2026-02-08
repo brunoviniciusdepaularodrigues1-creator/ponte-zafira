@@ -76,11 +76,14 @@ Os checkpoints são marcos de versão que não devem ser reescritos.
 
 - ✅ Dataset público já escolhido: `data/H_z_data.csv` (H(z) inspirado em DESI DR2).
 - ✅ Script `run_ucs_model.py` e `analise_estatistica.py` já existem.
-- ⏳ **Pendente**: rodar ajuste de parâmetros completo (MCMC ou grid search) e gerar:
-  - Figura comparando H(z) UCS vs ΛCDM vs dados.
-  - Tabela com χ², AIC, BIC.
-  - Gráfico de w(z) (equação de estado).
-- ⏳ **Pendente**: escrever seção "Resultados" em `VALIDACAO_OBSERVACIONAL/resultados_ucs.md` com:
+✅ **Documentação técnica atualizada**: `DOCS_UCS.md` agora inclui Seções 4-7 reescritas com Markdown limpo:
+  - **Seção 4: Metodologia** (4.1 Likelihood, 4.2 Priors, 4.3 Sampler com MCMC e emcee)
+  - **Seção 5: Resultados Esperados** (5.1 Comparação UCS vs ΛCDM com tabelas χ², AIC, BIC; 5.2 Predições de Superfícies)
+  - **Seção 6: Limitações e Cuidados** (6 itens, incluindo preservação de resultados negativos)
+  - **Seção 7: Como Usar Este Documento** (Por Físicos/Cosmólogos, Estudantes, Desenvolvedores)
+- ⏳ **Pendente**: Rodar MCMC completo com dados reais, gerar resultados numéricos efetivos (χ², AIC, BIC).
+- ⏳ **Pendente**: Criar figuras comparando H(z) UCS vs ΛCDM vs dados.
+- ⏳ **Pendente**: Escrever seção "Resultados" com análise quantitativa em `VALIDACAO_OBSERVACIONAL/`.
   - Descrição do dataset usado.
   - Método de ajuste.
   - O que o modelo acerta, onde falha, principais limitações.
