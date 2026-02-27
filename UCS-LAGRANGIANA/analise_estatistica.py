@@ -98,14 +98,12 @@ class StatisticalValidator:
         print(f"{'BIC':<15} | {res['H0_LCDM']['bic']:<15.4f} | {res['H1_UCS']['bic']:<15.4f}")
         print("-"*60)
         
-        print(f"
-Model Selection Criteria:")
+        print("\nModel Selection Criteria:")
         print(f"  ΔAIC (H1 - H0) = {res['delta_aic']:.4f}")
         print(f"  ΔBIC (H1 - H0) = {res['delta_bic']:.4f}")
         
         # Interpretation
-        print("
-Interpretation (Jeffreys' Scale):")
+        print("\nInterpretation (Jeffreys' Scale):")
         if res['delta_aic'] < -2:
             print("  - Evidence favors UCS Model (H1) over LCDM.")
         elif res['delta_aic'] > 2:

@@ -80,7 +80,7 @@ class BridgeValidator:
     
     def _check_layer_2(self, content: str):
         """Verifica circularidade"""
-        if re.search(r'\b\w+\s+\w+\s+\1\b', content):
+        if re.search(r'\b(\w+)\s+\w+\s+\1\b', content):
             self.violations.append({
                 "type": 3,
                 "description": "Possível definição circular detectada"
