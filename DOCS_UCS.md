@@ -127,6 +127,8 @@ $$\\mathcal{L} = \\exp\\left( -\\frac{1}{2} \\sum_i \\left( \\frac{H_i^{obs} - H
 4. **Degenerescências:** Parâmetros $\\lambda$ e $\\Phi_0$ podem ser degenerados na fácie $H(z)$. Dados de CMB podem quebrar essa degenersencia.
 
 5. **Não é "Nova Física":** O UCS não refuta $\\Lambda$CDM. É um exercício de modelagem, não uma alternação fundamental.
+6. 
+6. **Resultados Negativos:** Ajustes que falham, incompatibilidades com dados, devem ser preservados e documentados, não apagados. Isso é fundamental para a integridade científica e para evitar viés de publicação.
 
 ---
 
