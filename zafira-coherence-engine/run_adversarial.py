@@ -13,6 +13,7 @@ from core.psi0_actor import PolicyActor
 from core.psi0_value_function import ValueFunction
 from core.psi0_coherence import CoherenceLayer
 from core.action_space import ACTIONS
+from core.psi0_router import classify_task
 
 actor = PolicyActor()
 value_fn = ValueFunction()
@@ -20,25 +21,25 @@ coherence = CoherenceLayer()
 
 harness = EvaluationHarness(ADVERSARIAL_BENCHMARK)
 
-print("=" * 60)
-print("ZAFIRA — NÍVEL 7.5: ADVERSARIAL BENCHMARK")
-print("=" * 60)
+print("=" * 70)
+print("ZAFIRA — NÍVEL 7 (COMPLETO): ADVERSARIAL BENCHMARK")
+print("=" * 70)
 
 print("\n=== TESTE SEM COHERENCE ===")
 res_a = harness.run(actor, value_fn, coherence, mode="without_coherence")
 score_a = compute_system_performance(res_a)
 
 for r in res_a:
-    print(f"  {r['task']} | {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f}")
+    print(f"  {r['task']} [{r['task_type']}] | {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f}")
 
 print(f"  SYSTEM SCORE A: {score_a:.2f}")
 
-print("\n=== TESTE COM COHERENCE ===")
+print("\n=== TESTE COM COHERENCE DINÂMICA + ROUTING ===")
 res_b = harness.run(actor, value_fn, coherence, mode="with_coherence")
 score_b = compute_system_performance(res_b)
 
 for r in res_b:
-    print(f"  {r['task']} | {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f}")
+    print(f"  {r['task']} [{r['task_type']}] | {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f}")
 
 print(f"  SYSTEM SCORE B: {score_b:.2f}")
 

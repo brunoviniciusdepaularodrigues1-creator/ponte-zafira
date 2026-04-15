@@ -48,3 +48,27 @@ class CoherenceLayer:
 
     def get_dominant(self):
         return max(self.global_policy, key=self.global_policy.get)
+
+    def apply_contextual_bias(self, actor_probs, strategy_bias):
+        """
+        Combina actor_probs com bias de estratégia contextual e política global.
+        Três níveis: actor (local) + strategy (contextual) + global (coherence)
+        """
+        blended = {}
+        alpha_global = 0.10   # peso da coerência global
+        alpha_strategy = 0.20  # peso do routing contextual
+        alpha_actor = 0.70     # peso do actor
+        
+        for k in actor_probs:
+            blended[k] = (
+                alpha_actor * actor_probs.get(k, 0.33) +
+                alpha_strategy * strategy_bias.get(k, 0.33) +
+                alpha_global * self.global_policy.get(k, 0.33)
+            )
+        
+        # renormaliza
+        s = sum(blended.values())
+        for k in blended:
+            blended[k] /= s
+        
+        return blended

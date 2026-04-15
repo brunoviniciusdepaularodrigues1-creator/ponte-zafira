@@ -4,6 +4,8 @@ from core.psi0_actor import PolicyActor
 from core.action_space import ACTIONS
 from core.psi0_coherence import CoherenceLayer
 from core.dispatcher import execute
+from core.psi0_router import classify_task, get_strategy_bias
+from core.psi0_semantic_reward import semantic_evaluate
 import random
 
 
@@ -19,11 +21,16 @@ class EvaluationHarness:
         for task in self.benchmark:
 
             state = encode_state("F", task["input"], {})
+            
+            # 🔥 Nível 7: Routing Contextual
+            task_type = classify_task(task["input"])
+            strategy_bias = get_strategy_bias(task_type)
 
             raw_probs = actor.softmax("F")
 
             if mode == "with_coherence":
-                probs = coherence.apply_bias(raw_probs)
+                # 🔥 Nível 7: Coherence Dinâmica
+                probs = coherence.apply_contextual_bias(raw_probs, strategy_bias)
             else:
                 probs = raw_probs
 
@@ -39,7 +46,8 @@ class EvaluationHarness:
             else:
                 output = execute(action, task["input"])
 
-            score = self.evaluate(output, task["ground_truth"], task.get("alt_truth"))
+            # 🔥 Nível 7: Semantic Reward
+            score = semantic_evaluate(output, task["ground_truth"], task.get("alt_truth"))
 
             value = value_fn.predict(state, "F", action)
             advantage = score - value
@@ -53,36 +61,11 @@ class EvaluationHarness:
                 "executor": executor,
                 "score": score,
                 "value": value,
-                "advantage": advantage
+                "advantage": advantage,
+                "task_type": task_type
             })
 
         return results
-
-    def evaluate(self, output, ground_truth, alt_truth=None):
-        if output is None:
-            return 0.0
-        
-        # Comparação exata
-        if output == ground_truth:
-            return 1.0
-        
-        # Comparação com tolerância numérica
-        try:
-            if abs(float(output) - float(ground_truth)) < 0.01:
-                return 1.0
-        except (ValueError, TypeError):
-            pass
-        
-        # Comparação com respostas alternativas
-        if alt_truth:
-            for alt in alt_truth:
-                try:
-                    if abs(float(output) - float(alt)) < 0.01:
-                        return 0.8  # parcialmente correto (resposta válida mas não principal)
-                except (ValueError, TypeError):
-                    pass
-        
-        return 0.0
 
 
 def compute_system_performance(results):

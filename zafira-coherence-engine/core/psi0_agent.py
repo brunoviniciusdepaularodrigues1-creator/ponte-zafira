@@ -19,6 +19,8 @@ from core.psi0_actor import PolicyActor
 from core.action_space import ACTIONS
 from core.psi0_coherence import CoherenceLayer
 from core.dispatcher import execute
+from core.psi0_semantic_reward import semantic_evaluate
+from core.psi0_router import classify_task, get_strategy_bias
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -100,11 +102,16 @@ class Psi0Agent:
                 stage = top["stage"]
                 task_input = top["input"]
                 
+                # 🔥 Nível 7: Routing Contextual
+                task_type = classify_task(task_input)
+                strategy_bias = get_strategy_bias(task_type)
+                print(f"Tipo de Tarefa: {task_type}")
+
                 # 1. Actor sugere probabilidades
                 raw_probs = self.actor.softmax(stage)
                 
-                # 2. Coherence aplica bias global
-                blended_probs = self.coherence.apply_bias(raw_probs)
+                # 2. Coherence aplica bias global + bias de estratégia (Nível 7)
+                blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias)
                 
                 # 3. Seleção final baseada nas probabilidades reguladas
                 chosen_action = random.choices(
@@ -117,22 +124,23 @@ class Psi0Agent:
                 value = self.value_fn.predict(state_vector, stage, chosen_action)
                 
                 print(f"  Probs Actor: {raw_probs}")
-                print(f"  Probs Blended (Coherence): {blended_probs}")
+                print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
                 # 🔥 Nível 7: Execução Real via Dispatcher
                 output = execute(chosen_action, task_input)
                 print(f"  Execução: {task_input} -> {output}")
                 
-                # Avaliação de sucesso baseada na tarefa (simulada ou real se disponível)
-                # Para o modo treino contínuo, usamos o internal_evaluate como base
+                # 🔥 Nível 7: Semantic Reward (em vez de heurística fixa)
+                # Como não temos o ground_truth em tempo real no modo treino genérico,
+                # usamos uma heurística de sucesso do output para o internal_score,
+                # mas em sistemas de benchmark usamos o semantic_evaluate.
                 internal_score = 0.5
-                res_path = f"executor_{'agent' if chosen_executor=='symbolic_solver' else ('agent_v2' if chosen_executor=='numeric_solver' else 'llm')}/execution_result.json"
-                # Fallback para simular score se o arquivo não existir
                 if output is not None:
-                    internal_score = 0.8 # Sucesso básico
+                    # No modo treino real, o internal_score viria da avaliação do resultado
+                    internal_score = 0.8 
                 else:
-                    internal_score = 0.2 # Falha
+                    internal_score = 0.2
                 
                 # 🔥 Specialization Signal Tracker
                 self.specialization[chosen_action]["total"] += 1
@@ -164,7 +172,8 @@ class Psi0Agent:
                     "internal_score": internal_score,
                     "coherence": top.get("coherence", 0.5),
                     "advantage": advantage,
-                    "state_vector": state_vector
+                    "state_vector": state_vector,
+                    "task_type": task_type
                 }
                 self.log_experience(experience)
 
@@ -184,7 +193,8 @@ class Psi0Agent:
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
-                    "specialization": self.specialization
+                    "specialization": self.specialization,
+                    "task_type": task_type
                 }
 
                 with open("bridge_interface.json.tmp", "w") as f:
