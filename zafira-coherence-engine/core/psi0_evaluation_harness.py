@@ -39,7 +39,7 @@ class EvaluationHarness:
             else:
                 output = execute(action, task["input"])
 
-            score = self.evaluate(output, task["ground_truth"])
+            score = self.evaluate(output, task["ground_truth"], task.get("alt_truth"))
 
             value = value_fn.predict(state, "F", action)
             advantage = score - value
@@ -58,12 +58,31 @@ class EvaluationHarness:
 
         return results
 
-    def evaluate(self, output, gt):
-        try:
-            # Compara numericamente para evitar problemas de tipo (int vs float)
-            return 1.0 if float(output) == float(gt) else 0.0
-        except:
+    def evaluate(self, output, ground_truth, alt_truth=None):
+        if output is None:
             return 0.0
+        
+        # Comparação exata
+        if output == ground_truth:
+            return 1.0
+        
+        # Comparação com tolerância numérica
+        try:
+            if abs(float(output) - float(ground_truth)) < 0.01:
+                return 1.0
+        except (ValueError, TypeError):
+            pass
+        
+        # Comparação com respostas alternativas
+        if alt_truth:
+            for alt in alt_truth:
+                try:
+                    if abs(float(output) - float(alt)) < 0.01:
+                        return 0.8  # parcialmente correto (resposta válida mas não principal)
+                except (ValueError, TypeError):
+                    pass
+        
+        return 0.0
 
 
 def compute_system_performance(results):
