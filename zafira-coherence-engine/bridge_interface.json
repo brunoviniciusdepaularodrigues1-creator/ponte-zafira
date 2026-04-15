@@ -1,7 +1,7 @@
 {
   "agent": "psi0",
-  "timestamp": "2026-04-15T12:27:59.724860",
-  "generation": 185,
+  "timestamp": "2026-04-15T12:35:19.779775",
+  "generation": 229,
   "best_executor": "v1",
   "feedback_applied": 1.0,
   "best_decision": {
@@ -60,9 +60,9 @@
       "executor": "v2",
       "score": 0.9,
       "config": {
-        "length_weight": 0.3936305894832788,
-        "word_weight": 0.2938301889696123,
-        "complexity_weight": 0.389794403773542
+        "length_weight": 0.39818424091492277,
+        "word_weight": 0.3618751034530965,
+        "complexity_weight": 0.41870655666032636
       }
     },
     {

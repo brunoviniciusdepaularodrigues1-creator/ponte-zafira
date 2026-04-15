@@ -1,7 +1,7 @@
-# MANIFESTO DE COERÊNCIA ψ₀
+# MANIFESTO DE COERÊNCIA ψ₀ — Zafira Coherence Engine
 
 ## 1. O Propósito
-O ecossistema ψ₀ não é apenas um sistema de processamento de tarefas; é uma **arquitetura cognitiva híbrida** projetada para manter a coerência entre a intenção (ψ₀) e a execução (Executores), sob a governança normativa da Ponte Zafira.
+O **Zafira Coherence Engine** não é apenas um sistema de processamento de tarefas; é uma **arquitetura cognitiva híbrida** projetada para manter a coerência entre a intenção (ψ₀) e a execução (Executores), sob a governança normativa da Ponte Zafira.
 
 ## 2. Princípios Fundamentais
 - **Coerência sobre Velocidade:** Uma decisão lenta e coerente é superior a uma execução rápida e caótica.

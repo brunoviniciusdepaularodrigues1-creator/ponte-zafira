@@ -1,13 +1,13 @@
 {
   "executor": "v2",
   "config": {
-    "length_weight": 0.37994404148328986,
-    "word_weight": 0.39521762770709,
-    "complexity_weight": 0.42007550817805395
+    "length_weight": 0.34723924590398836,
+    "word_weight": 0.23407766223292065,
+    "complexity_weight": 0.422180997471201
   },
   "result": "PROCESSADO DIFERENTE: curto",
   "score": 0.9,
-  "timestamp": "2026-04-15T12:28:04.783629",
+  "timestamp": "2026-04-15T12:35:19.833498",
   "source": {
     "input": "curto\n",
     "stage": "A",

@@ -1,6 +1,6 @@
-# psi0-budget-system — Arquitetura Cognitiva Híbrida
+# zafira-coherence-engine — Motor de Coerência Universal
 
-Este sistema é o motor de decisão e execução do ecossistema ψ₀, orquestrado pela Ponte Zafira. Ele implementa uma rede multiagente para processamento de tarefas de cosmologia e sistemas complexos.
+Este sistema é o motor de decisão e execução do ecossistema ψ₀, orquestrado pela Ponte Zafira. Ele implementa uma rede multiagente para processamento de tarefas de cosmologia e sistemas complexos, agora consolidado como o **Zafira Coherence Engine**.
 
 ## 🚀 Navegação Rápida
 
