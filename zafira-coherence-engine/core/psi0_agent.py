@@ -31,7 +31,6 @@ class Psi0Agent:
         self.learning_rate = 0.1
         
         # Caminhos absolutos
-        self.policy_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_policy.json"))
         self.memory_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_memory.jsonl"))
         
         self.value_fn = ValueFunction()
@@ -73,7 +72,7 @@ class Psi0Agent:
         print("Zafira Coherence Engine: Psi0Agent Evolutivo Iniciado...")
         try:
             while True:
-                print("\n--- Ciclo de Aprendizado Cognitivo ---")
+                print("\n--- Ciclo de Aprendizado Cognitivo (Actor-Critic) ---")
                 results = process()
                 if not results:
                     time.sleep(self.interval)
@@ -88,33 +87,18 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 5 (Corrigida): Arbitragem de Decisão
+                # 🔥 CAMADA 5 (Final): Actor-Critic Puro
                 stage = top["stage"]
                 
-                # 1. Actor sugere
-                actor_choice, actor_probs = self.actor.select(stage)
-
-                # 2. Value sugere (predictions de cada executor)
-                executors = ["v1", "v2", "llm"]
-                predictions = []
-                for exe in executors:
-                    value = self.value_fn.predict(state_vector, stage, exe)
-                    predictions.append((exe, value))
-
-                value_choice = max(predictions, key=lambda x: x[1])[0]
-
-                # 3. Arbitrador Final - Consenso ou Fallback
-                if actor_choice == value_choice:
-                    chosen_executor = actor_choice
-                else:
-                    # Fallback baseado no valor previsto de cada sugestão
-                    actor_value = self.value_fn.predict(state_vector, stage, actor_choice)
-                    value_value = self.value_fn.predict(state_vector, stage, value_choice)
-                    chosen_executor = actor_choice if actor_value >= value_value else value_choice
+                # 1. Actor escolhe (Única fonte de decisão)
+                chosen_executor, probs = self.actor.select(stage)
                 
-                print(f"  Actor sugere: {actor_choice} | Value sugere: {value_choice} | Final: {chosen_executor}")
+                # 2. Critic avalia a expectativa (Baseline)
+                value = self.value_fn.predict(state_vector, stage, chosen_executor)
                 
-                # Simulação de leitura de resultado
+                print(f"  Actor escolheu: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
+                
+                # Simulação de leitura de resultado (Execução)
                 internal_score = 0.5
                 res_path = f"executor_{'agent' if chosen_executor=='v1' else ('agent_v2' if chosen_executor=='v2' else 'llm')}/execution_result{'_v2' if chosen_executor=='v2' else ('_llm' if chosen_executor=='llm' else '')}.json"
                 if os.path.exists(res_path):
@@ -122,30 +106,30 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # 🔥 Feedback Actor-Critic
-                # Critic avalia
-                value = self.value_fn.predict(state_vector, stage, chosen_executor)
+                # 3. Advantage (O quanto o resultado superou a expectativa)
                 advantage = internal_score - value
 
-                # Critic aprende
+                # 4. Critic aprende (Ajusta pesos para prever melhor o reward real)
                 self.value_fn.update(state_vector, stage, chosen_executor, internal_score)
 
-                # Actor aprende
+                # 5. Actor aprende (Reforça ou enfraquece a política baseada na vantagem)
                 self.actor.update(stage, chosen_executor, advantage)
-                print(f"Feedback Actor-Critic: Advantage={advantage:.4f}, Internal Score={internal_score}")
                 
-                # 1. Registrar Experiência
+                print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
+                
+                # Registrar Experiência
                 experience = {
                     "timestamp": datetime.now().isoformat(),
                     "input_stage": top["stage"],
                     "executor": chosen_executor,
                     "internal_score": internal_score,
                     "coherence": top.get("coherence", 0.5),
-                    "advantage": advantage
+                    "advantage": advantage,
+                    "state_vector": state_vector
                 }
                 self.log_experience(experience)
 
-                # 3. Exportar Estado Completo (Persistência da Camada 1)
+                # Exportar Estado Completo (Persistência da Camada 1)
                 feedbacks = self.read_all_feedbacks()
                 
                 scored = []
@@ -165,12 +149,9 @@ class Psi0Agent:
                     best = max(scored, key=lambda x: x["reward"])
                     best_score = best["reward"]
                     best_executor = best["executor"]
-                    best_config = best.get("config", {})
                 else:
-                    best = {}
                     best_score = 0
                     best_executor = None
-                    best_config = {}
 
                 bridge_data = {
                     "agent": "zafira-psi0",
@@ -179,13 +160,12 @@ class Psi0Agent:
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "advantage": advantage,
-                    "probabilities": actor_probs,
+                    "probabilities": probs,
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "best_reward": best_score,
-                    "best_executor": best_executor,
-                    "value_predictions": predictions
+                    "best_executor": best_executor
                 }
 
                 # Escrita atômica para evitar arquivos corrompidos
@@ -193,7 +173,7 @@ class Psi0Agent:
                     json.dump(bridge_data, f, indent=2, ensure_ascii=False)
                 os.replace("bridge_interface.json.tmp", "bridge_interface.json")
                 
-                print(f"Estado persistido no bridge com state_vector: {state_vector}")
+                print(f"Estado persistido no bridge.")
                 time.sleep(self.interval)
         except KeyboardInterrupt:
             print("\nPsi0Agent finalizado.")
