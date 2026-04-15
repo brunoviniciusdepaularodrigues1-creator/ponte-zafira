@@ -15,6 +15,7 @@ from core.executor_mutator import create_variant
 from core.psi0_state_encoder import encode_state
 from core.psi0_reward import compute_reward
 from core.psi0_value_function import ValueFunction
+from core.psi0_actor import PolicyActor
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -35,6 +36,7 @@ class Psi0Agent:
         
         self.policy = self._load_policy()
         self.value_fn = ValueFunction()
+        self.actor = PolicyActor()
 
     def _load_policy(self):
         if os.path.exists(self.policy_file):
@@ -125,18 +127,10 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 4: Value Function (Previsão de Resultado Vetorial)
+                # 🔥 CAMADA 5: Actor (Seleção de Executor via Política Explícita)
                 stage = top["stage"]
-                executors = ["v1", "v2", "llm"]
-                predictions = []
-                for exe in executors:
-                    # Agora passa o state_vector para o predict
-                    value = self.value_fn.predict(state_vector, stage, exe)
-                    predictions.append((exe, value))
-                
-                # Escolhe o melhor valor previsto
-                chosen_executor = max(predictions, key=lambda x: x[1])[0]
-                print(f"Executor escolhido via Value Function (Camada 4): {chosen_executor} (Predições: {predictions})")
+                chosen_executor, probs = self.actor.select(stage)
+                print(f"Executor escolhido via Actor (Camada 5): {chosen_executor} (Probabilidades: {probs})")
                 
                 # Simulação de leitura de resultado
                 internal_score = 0.5
@@ -146,8 +140,17 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # 🔥 CAMADA 4: Atualização do Valor com State Vector
-                self.value_fn.update(state_vector, top["stage"], chosen_executor, internal_score)
+                # 🔥 CAMADA 5: Feedback Actor-Critic
+                # Critic avalia
+                value = self.value_fn.predict(state_vector, stage, chosen_executor)
+                advantage = internal_score - value
+
+                # Critic aprende
+                self.value_fn.update(state_vector, stage, chosen_executor, internal_score)
+
+                # Actor aprende
+                self.actor.update(stage, chosen_executor, advantage)
+                print(f"Feedback Actor-Critic: Advantage={advantage:.4f}, Internal Score={internal_score}")
                 
                 # 1. Registrar Experiência
                 experience = {
@@ -155,11 +158,12 @@ class Psi0Agent:
                     "input_stage": top["stage"],
                     "executor": chosen_executor,
                     "internal_score": internal_score,
-                    "coherence": top.get("coherence", 0.5)
+                    "coherence": top.get("coherence", 0.5),
+                    "advantage": advantage
                 }
                 self.log_experience(experience)
 
-                # 2. Policy Learning Loop
+                # 2. Policy Learning Loop (Mantido para compatibilidade ou log)
                 old_val, new_val = self.update_policy(top["stage"], chosen_executor, internal_score)
 
                 # 3. Exportar Estado Completo (Persistência da Camada 1)
@@ -195,13 +199,14 @@ class Psi0Agent:
                     "state_vector": state_vector,
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
+                    "advantage": advantage,
+                    "probabilities": probs,
                     "policy_update": {"old": old_val, "new": new_val},
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "best_reward": best_score,
-                    "best_executor": best_executor,
-                    "value_predictions": predictions
+                    "best_executor": best_executor
                 }
 
                 # Escrita atômica para evitar arquivos corrompidos
