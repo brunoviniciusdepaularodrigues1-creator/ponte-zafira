@@ -43,11 +43,8 @@ class EvaluationHarness:
             value = value_fn.predict(state, "F", action)
             advantage = score - value
 
-            value_fn.update(state, "F", action, score)
-            actor.update("F", action, advantage)
-
-            if mode == "with_coherence":
-                coherence.update(action, score)
+            # NÃO atualizar nada aqui — apenas medir
+            # value_fn.update, actor.update, coherence.update REMOVIDOS
 
             results.append({
                 "task": task["id"],
