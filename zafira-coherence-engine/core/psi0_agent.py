@@ -14,6 +14,7 @@ from core.psi0_ranker import rank_results
 from core.executor_mutator import create_variant
 from core.psi0_state_encoder import encode_state
 from core.psi0_reward import compute_reward
+from core.psi0_value_function import ValueFunction
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -33,6 +34,7 @@ class Psi0Agent:
         self.memory_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_memory.jsonl"))
         
         self.policy = self._load_policy()
+        self.value_fn = ValueFunction()
 
     def _load_policy(self):
         if os.path.exists(self.policy_file):
@@ -123,8 +125,17 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # Seleção Probabilística
-                chosen_executor, probs = self.select_strategy_probabilistic(top)
+                # 🔥 CAMADA 3: Value Function (Previsão de Resultado)
+                stage = top["stage"]
+                executors = ["v1", "v2", "llm"]
+                predictions = []
+                for exe in executors:
+                    value = self.value_fn.predict(stage, exe)
+                    predictions.append((exe, value))
+                
+                # Escolhe o melhor valor previsto
+                chosen_executor = max(predictions, key=lambda x: x[1])[0]
+                print(f"Executor escolhido via Value Function: {chosen_executor} (Predições: {predictions})")
                 
                 # Simulação de leitura de resultado
                 internal_score = 0.5
@@ -133,6 +144,9 @@ class Psi0Agent:
                     with open(res_path, "r") as f:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
+                
+                # 🔥 CAMADA 3: Atualização do Valor
+                self.value_fn.update(top["stage"], chosen_executor, internal_score)
                 
                 # 1. Registrar Experiência
                 experience = {
@@ -180,13 +194,13 @@ class Psi0Agent:
                     "state_vector": state_vector, # 🔥 AQUI ESTÁ O CAMPO
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
-                    "probabilities": probs,
                     "policy_update": {"old": old_val, "new": new_val},
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "best_reward": best_score,
-                    "best_executor": best_executor
+                    "best_executor": best_executor,
+                    "value_predictions": predictions
                 }
 
                 # Escrita atômica para evitar arquivos corrompidos
