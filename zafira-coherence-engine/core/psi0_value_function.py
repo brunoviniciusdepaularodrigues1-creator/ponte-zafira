@@ -2,9 +2,9 @@ import json
 import os
 
 EXECUTOR_EMBEDDINGS = {
-    "v1":  [1.0, 0.0, 0.0],
-    "v2":  [0.0, 1.0, 0.0],
-    "llm": [0.0, 0.0, 1.0]
+    "A1": [1.0, 0.0, 0.0],
+    "A2": [0.0, 1.0, 0.0],
+    "A3": [0.0, 0.0, 1.0]
 }
 
 class ValueFunction:

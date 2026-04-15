@@ -16,6 +16,7 @@ from core.psi0_state_encoder import encode_state
 from core.psi0_reward import compute_reward
 from core.psi0_value_function import ValueFunction
 from core.psi0_actor import PolicyActor
+from core.action_space import ACTIONS
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -87,16 +88,17 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 5 (Final): Actor-Critic Puro
+                # 🔥 CAMADA 5.5: Abstração de Ações
                 stage = top["stage"]
                 
-                # 1. Actor escolhe (Única fonte de decisão)
-                chosen_executor, probs = self.actor.select(stage)
+                # 1. Actor escolhe ação abstrata
+                chosen_action, probs = self.actor.select(stage)
+                chosen_executor = ACTIONS[chosen_action]
                 
-                # 2. Critic avalia a expectativa (Baseline)
-                value = self.value_fn.predict(state_vector, stage, chosen_executor)
+                # 2. Critic avalia a expectativa (Baseline) usando a ação abstrata
+                value = self.value_fn.predict(state_vector, stage, chosen_action)
                 
-                print(f"  Actor escolheu: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
+                print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
                 # Simulação de leitura de resultado (Execução)
                 internal_score = 0.5
@@ -109,11 +111,11 @@ class Psi0Agent:
                 # 3. Advantage (O quanto o resultado superou a expectativa)
                 advantage = internal_score - value
 
-                # 4. Critic aprende (Ajusta pesos para prever melhor o reward real)
-                self.value_fn.update(state_vector, stage, chosen_executor, internal_score)
+                # 4. Critic aprende usando a ação abstrata
+                self.value_fn.update(state_vector, stage, chosen_action, internal_score)
 
-                # 5. Actor aprende (Reforça ou enfraquece a política baseada na vantagem)
-                self.actor.update(stage, chosen_executor, advantage)
+                # 5. Actor aprende usando a ação abstrata
+                self.actor.update(stage, chosen_action, advantage)
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
@@ -121,6 +123,7 @@ class Psi0Agent:
                 experience = {
                     "timestamp": datetime.now().isoformat(),
                     "input_stage": top["stage"],
+                    "action": chosen_action,
                     "executor": chosen_executor,
                     "internal_score": internal_score,
                     "coherence": top.get("coherence", 0.5),
@@ -157,6 +160,7 @@ class Psi0Agent:
                     "agent": "zafira-psi0",
                     "timestamp": datetime.now().isoformat(),
                     "state_vector": state_vector,
+                    "chosen_action": chosen_action,
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "advantage": advantage,
