@@ -127,7 +127,7 @@ class Psi0Agent:
                 # 6. Aprendizado Unificado
                 self.value_fn.update(state_vector, stage, chosen_action, internal_score)
                 self.actor.update(stage, chosen_action, advantage)
-                self.coherence.update(chosen_action, internal_score)
+                self.coherence.update(chosen_action, advantage)
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
