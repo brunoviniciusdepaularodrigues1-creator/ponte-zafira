@@ -8,6 +8,7 @@ Este sistema é o motor de decisão e execução do ecossistema ψ₀, orquestra
 - **[Eixo Conceitual](SYSTEM_LIMITS.md)** — Blindagem ética e técnica do sistema.
 - **[Eixo Técnico](core/)** — Núcleo de coerência, agentes e executores.
 - **[Observabilidade](logs/system_history.json)** — Histórico global de eventos e performance.
+- **[Artigo Técnico](TECHNICAL_PAPER.md)** — Formalização científica do framework.
 
 ## ⚙️ Arquitetura de Infraestrutura Distribuída
 
