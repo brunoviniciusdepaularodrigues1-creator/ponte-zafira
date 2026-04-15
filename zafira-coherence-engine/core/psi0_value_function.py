@@ -25,15 +25,21 @@ class ValueFunction:
             json.dump(self.W, f, indent=2)
 
     def _build_input(self, state_vector, executor):
-        return state_vector + EXECUTOR_EMBEDDINGS[executor]
+        sv = state_vector[:5]  # garante tamanho fixo
+        ev = EXECUTOR_EMBEDDINGS[executor]
+        return sv + ev
+
+    def _normalize(self, x):
+        norm = sum(i*i for i in x) ** 0.5
+        return [i / (norm + 1e-8) for i in x]
 
     def predict(self, state_vector, stage, executor):
-        x = self._build_input(state_vector, executor)
+        x = self._normalize(self._build_input(state_vector, executor))
         W = self.W["weights"]
         return sum(w * xi for w, xi in zip(W, x))
 
     def update(self, state_vector, stage, executor, reward, lr=0.05):
-        x = self._build_input(state_vector, executor)
+        x = self._normalize(self._build_input(state_vector, executor))
         W = self.W["weights"]
 
         prediction = self.predict(state_vector, stage, executor)
@@ -41,7 +47,8 @@ class ValueFunction:
 
         new_W = []
         for w, xi in zip(W, x):
-            new_W.append(w + lr * error * xi)
+            # Adicionado clamp entre -2.0 e 2.0
+            new_W.append(max(-2.0, min(2.0, w + lr * error * xi)))
 
         self.W["weights"] = new_W
         self.save()
