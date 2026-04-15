@@ -34,23 +34,8 @@ class Psi0Agent:
         self.policy_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_policy.json"))
         self.memory_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_memory.jsonl"))
         
-        self.policy = self._load_policy()
         self.value_fn = ValueFunction()
         self.actor = PolicyActor()
-
-    def _load_policy(self):
-        if os.path.exists(self.policy_file):
-            with open(self.policy_file, "r") as f:
-                return json.load(f)
-        return {
-            "C": {"v1": 0.3, "v2": 0.5, "llm": 0.9},
-            "F": {"v1": 0.8, "v2": 0.6, "llm": 0.7},
-            "A": {"v1": 0.9, "v2": 0.4, "llm": 0.5}
-        }
-
-    def _save_policy(self):
-        with open(self.policy_file, "w") as f:
-            json.dump(self.policy, f, indent=2)
 
     def log_experience(self, experience):
         """Salva a experiência estruturada no log de memória."""
@@ -69,30 +54,6 @@ class Psi0Agent:
         
         internal_score = (base_score * 0.6) + (coherence * 0.4) - penalty
         return round(max(0, min(1, internal_score)), 2)
-
-    def select_strategy_probabilistic(self, top_decision, temperature=0.2):
-        """Seleção Probabilística (Softmax + Sampling)."""
-        stage = top_decision.get("stage", "F")
-        if stage not in self.policy: stage = "F"
-            
-        executors = list(self.policy[stage].keys())
-        scores = [self.policy[stage][exe] for exe in executors]
-        
-        exp_scores = [math.exp(s / temperature) for s in scores]
-        sum_exp = sum(exp_scores)
-        probs = [e / sum_exp for e in exp_scores]
-        
-        chosen = random.choices(executors, weights=probs, k=1)[0]
-        return chosen, probs
-
-    def update_policy(self, stage, executor, reward):
-        """Policy Learning Loop."""
-        if stage not in self.policy: stage = "F"
-        old_value = self.policy[stage][executor]
-        new_value = old_value + self.learning_rate * (reward - old_value)
-        self.policy[stage][executor] = round(new_value, 4)
-        self._save_policy()
-        return old_value, new_value
 
     def read_all_feedbacks(self):
         feedbacks = []
@@ -127,10 +88,31 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 5: Actor (Seleção de Executor via Política Explícita)
+                # 🔥 CAMADA 5 (Corrigida): Arbitragem de Decisão
                 stage = top["stage"]
-                chosen_executor, probs = self.actor.select(stage)
-                print(f"Executor escolhido via Actor (Camada 5): {chosen_executor} (Probabilidades: {probs})")
+                
+                # 1. Actor sugere
+                actor_choice, actor_probs = self.actor.select(stage)
+
+                # 2. Value sugere (predictions de cada executor)
+                executors = ["v1", "v2", "llm"]
+                predictions = []
+                for exe in executors:
+                    value = self.value_fn.predict(state_vector, stage, exe)
+                    predictions.append((exe, value))
+
+                value_choice = max(predictions, key=lambda x: x[1])[0]
+
+                # 3. Arbitrador Final - Consenso ou Fallback
+                if actor_choice == value_choice:
+                    chosen_executor = actor_choice
+                else:
+                    # Fallback baseado no valor previsto de cada sugestão
+                    actor_value = self.value_fn.predict(state_vector, stage, actor_choice)
+                    value_value = self.value_fn.predict(state_vector, stage, value_choice)
+                    chosen_executor = actor_choice if actor_value >= value_value else value_choice
+                
+                print(f"  Actor sugere: {actor_choice} | Value sugere: {value_choice} | Final: {chosen_executor}")
                 
                 # Simulação de leitura de resultado
                 internal_score = 0.5
@@ -140,7 +122,7 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # 🔥 CAMADA 5: Feedback Actor-Critic
+                # 🔥 Feedback Actor-Critic
                 # Critic avalia
                 value = self.value_fn.predict(state_vector, stage, chosen_executor)
                 advantage = internal_score - value
@@ -162,9 +144,6 @@ class Psi0Agent:
                     "advantage": advantage
                 }
                 self.log_experience(experience)
-
-                # 2. Policy Learning Loop (Mantido para compatibilidade ou log)
-                old_val, new_val = self.update_policy(top["stage"], chosen_executor, internal_score)
 
                 # 3. Exportar Estado Completo (Persistência da Camada 1)
                 feedbacks = self.read_all_feedbacks()
@@ -200,13 +179,13 @@ class Psi0Agent:
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "advantage": advantage,
-                    "probabilities": probs,
-                    "policy_update": {"old": old_val, "new": new_val},
+                    "probabilities": actor_probs,
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "best_reward": best_score,
-                    "best_executor": best_executor
+                    "best_executor": best_executor,
+                    "value_predictions": predictions
                 }
 
                 # Escrita atômica para evitar arquivos corrompidos
