@@ -1,0 +1,34 @@
+[
+  {
+    "input": "curto\n",
+    "stage": "A",
+    "interpretation": "Pronto para execução",
+    "coherence": 0.303,
+    "structure": 0.503,
+    "variation": 0.828
+  },
+  {
+    "input": "repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo\n",
+    "stage": "F",
+    "interpretation": "Organizando estrutura do conteúdo",
+    "coherence": 0.244,
+    "structure": 0.41,
+    "variation": 0.991
+  },
+  {
+    "input": "A complexidade estrutural de um sistema dinâmico depende da integração harmoniosa entre seus componentes fundamentais e as leis de conservação.\n",
+    "stage": "C",
+    "interpretation": "Entrada caótica, precisa de organização",
+    "coherence": 0.077,
+    "structure": 0.049,
+    "variation": 1.655
+  },
+  {
+    "input": "Este é um texto longo e detalhado projetado para testar a capacidade do sistema de processar informações complexas e extensas de forma coerente.\n",
+    "stage": "C",
+    "interpretation": "Entrada caótica, precisa de organização",
+    "coherence": 0.075,
+    "structure": 0.043,
+    "variation": 1.666
+  }
+]

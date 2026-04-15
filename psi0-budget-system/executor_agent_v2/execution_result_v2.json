@@ -1,0 +1,19 @@
+{
+  "executor": "v2",
+  "config": {
+    "length_weight": 0.37994404148328986,
+    "word_weight": 0.39521762770709,
+    "complexity_weight": 0.42007550817805395
+  },
+  "result": "PROCESSADO DIFERENTE: curto",
+  "score": 0.9,
+  "timestamp": "2026-04-15T12:28:04.783629",
+  "source": {
+    "input": "curto\n",
+    "stage": "A",
+    "interpretation": "Pronto para execução",
+    "coherence": 0.303,
+    "structure": 0.503,
+    "variation": 0.828
+  }
+}

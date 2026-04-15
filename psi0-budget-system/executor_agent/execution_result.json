@@ -1,0 +1,19 @@
+{
+  "executor": "v1",
+  "config": {
+    "length_weight": 0.3,
+    "word_weight": 0.3,
+    "complexity_weight": 0.4
+  },
+  "result": "EXECUTADO: curto",
+  "score": 1.0,
+  "timestamp": "2026-04-15T12:28:04.783545",
+  "source": {
+    "input": "curto\n",
+    "stage": "A",
+    "interpretation": "Pronto para execução",
+    "coherence": 0.303,
+    "structure": 0.503,
+    "variation": 0.828
+  }
+}
