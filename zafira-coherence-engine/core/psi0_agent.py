@@ -13,6 +13,7 @@ from core.psi0_executor import process, save_results
 from core.psi0_ranker import rank_results
 from core.executor_mutator import create_variant
 from core.psi0_state_encoder import encode_state
+from core.psi0_reward import compute_reward
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -148,6 +149,31 @@ class Psi0Agent:
 
                 # 3. Exportar Estado Completo (Persistência da Camada 1)
                 feedbacks = self.read_all_feedbacks()
+                
+                scored = []
+                for f in feedbacks:
+                    reward = compute_reward(
+                        top["stage"],
+                        f["executor"],
+                        f["score"],
+                        state_vector
+                    )
+                    scored.append({
+                        **f,
+                        "reward": reward
+                    })
+
+                if scored:
+                    best = max(scored, key=lambda x: x["reward"])
+                    best_score = best["reward"]
+                    best_executor = best["executor"]
+                    best_config = best.get("config", {})
+                else:
+                    best = {}
+                    best_score = 0
+                    best_executor = None
+                    best_config = {}
+
                 bridge_data = {
                     "agent": "zafira-psi0",
                     "timestamp": datetime.now().isoformat(),
@@ -158,7 +184,9 @@ class Psi0Agent:
                     "policy_update": {"old": old_val, "new": new_val},
                     "best_decision": top,
                     "ranking": ranked,
-                    "network_status": feedbacks
+                    "network_status": feedbacks,
+                    "best_reward": best_score,
+                    "best_executor": best_executor
                 }
 
                 # Escrita atômica para evitar arquivos corrompidos
