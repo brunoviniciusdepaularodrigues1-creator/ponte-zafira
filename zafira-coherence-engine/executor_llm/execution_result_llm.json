@@ -2,7 +2,7 @@
   "executor": "llm",
   "result": "LLM_PROCESSOU (Simples): curto",
   "score": 0.95,
-  "timestamp": "2026-04-15T12:52:04.650827",
+  "timestamp": "2026-04-15T13:19:22.920706",
   "source": {
     "input": "curto\n",
     "stage": "A",

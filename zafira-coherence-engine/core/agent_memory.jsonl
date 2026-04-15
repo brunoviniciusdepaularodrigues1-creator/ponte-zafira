@@ -18,3 +18,29 @@
 {"cycle": 18, "input_stage": "C", "executor": "llm", "internal_score": 0.85}
 {"cycle": 19, "input_stage": "F", "executor": "v1", "internal_score": 0.8}
 {"cycle": 20, "input_stage": "A", "executor": "v2", "internal_score": 0.94}
+{"cycle": 1, "input_stage": "A", "executor": "v1", "internal_score": 0.88}
+{"cycle": 2, "input_stage": "A", "executor": "v1", "internal_score": 0.86}
+{"cycle": 3, "input_stage": "C", "executor": "llm", "internal_score": 0.93}
+{"cycle": 4, "input_stage": "F", "executor": "v2", "internal_score": 0.88}
+{"cycle": 5, "input_stage": "F", "executor": "v2", "internal_score": 0.86}
+{"cycle": 6, "input_stage": "F", "executor": "v1", "internal_score": 0.8}
+{"cycle": 7, "input_stage": "A", "executor": "v1", "internal_score": 0.88}
+{"cycle": 8, "input_stage": "F", "executor": "v1", "internal_score": 0.82}
+{"cycle": 9, "input_stage": "F", "executor": "v1", "internal_score": 0.8}
+{"cycle": 10, "input_stage": "C", "executor": "v1", "internal_score": 0.56}
+{"cycle": 11, "input_stage": "A", "executor": "v1", "internal_score": 0.88}
+{"cycle": 12, "input_stage": "A", "executor": "v1", "internal_score": 0.88}
+{"cycle": 13, "input_stage": "F", "executor": "llm", "internal_score": 0.91}
+{"cycle": 14, "input_stage": "F", "executor": "v1", "internal_score": 0.82}
+{"cycle": 15, "input_stage": "A", "executor": "v1", "internal_score": 0.86}
+{"cycle": 16, "input_stage": "A", "executor": "v1", "internal_score": 0.88}
+{"cycle": 17, "input_stage": "A", "executor": "v1", "internal_score": 0.86}
+{"cycle": 18, "input_stage": "F", "executor": "v2", "internal_score": 0.86}
+{"cycle": 19, "input_stage": "F", "executor": "v2", "internal_score": 0.86}
+{"cycle": 20, "input_stage": "A", "executor": "llm", "internal_score": 0.85}
+{"timestamp": "2026-04-15T13:11:54.942410", "input_stage": "A", "executor": "llm", "internal_score": 0.59, "coherence": 0.303}
+{"timestamp": "2026-04-15T13:11:59.943872", "input_stage": "A", "executor": "v1", "internal_score": 0.72, "coherence": 0.303}
+{"timestamp": "2026-04-15T13:12:22.739861", "input_stage": "A", "executor": "v1", "internal_score": 0.72, "coherence": 0.303}
+{"timestamp": "2026-04-15T13:12:27.741555", "input_stage": "A", "executor": "v1", "internal_score": 0.72, "coherence": 0.303}
+{"timestamp": "2026-04-15T13:17:01.910442", "input_stage": "A", "executor": "v1", "internal_score": 0.72, "coherence": 0.303}
+{"timestamp": "2026-04-15T13:17:06.912089", "input_stage": "A", "executor": "v2", "internal_score": 0.66, "coherence": 0.303}
