@@ -1,46 +1,48 @@
 import json
 import os
-import math
+
+EXECUTOR_EMBEDDINGS = {
+    "v1":  [1.0, 0.0, 0.0],
+    "v2":  [0.0, 1.0, 0.0],
+    "llm": [0.0, 0.0, 1.0]
+}
 
 class ValueFunction:
     def __init__(self, path=None):
         self.path = path or os.path.join(os.path.dirname(__file__), "value_memory.json")
-        self.memory = self._load()
+        self.W = self._load_weights()
 
-    def _load(self):
+    def _load_weights(self):
         if os.path.exists(self.path):
             with open(self.path, "r") as f:
                 return json.load(f)
-        return []
+        return {
+            "weights": [0.1] * 8  # 5 state + 3 executor
+        }
 
     def save(self):
         with open(self.path, "w") as f:
-            json.dump(self.memory, f, indent=2)
+            json.dump(self.W, f, indent=2)
 
-    # distância vetorial simples
-    def _distance(self, a, b):
-        return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))
+    def _build_input(self, state_vector, executor):
+        return state_vector + EXECUTOR_EMBEDDINGS[executor]
 
     def predict(self, state_vector, stage, executor):
-        if not self.memory:
-            return 0.5
+        x = self._build_input(state_vector, executor)
+        W = self.W["weights"]
+        return sum(w * xi for w, xi in zip(W, x))
 
-        best_score = 0.5
+    def update(self, state_vector, stage, executor, reward, lr=0.05):
+        x = self._build_input(state_vector, executor)
+        W = self.W["weights"]
 
-        for item in self.memory:
-            dist = self._distance(state_vector, item["state_vector"])
-            similarity = math.exp(-dist)  # kernel exponencial
+        prediction = self.predict(state_vector, stage, executor)
+        error = reward - prediction
 
-            if item["stage"] == stage and item["executor"] == executor:
-                best_score = max(best_score, item["reward"] * similarity)
+        new_W = []
+        for w, xi in zip(W, x):
+            new_W.append(w + lr * error * xi)
 
-        return best_score
-
-    def update(self, state_vector, stage, executor, reward):
-        self.memory.append({
-            "state_vector": state_vector,
-            "stage": stage,
-            "executor": executor,
-            "reward": reward
-        })
+        self.W["weights"] = new_W
         self.save()
+        return prediction, new_W
