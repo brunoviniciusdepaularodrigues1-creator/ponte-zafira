@@ -1,5 +1,5 @@
 ACTIONS = {
-    "A1": "v1",
-    "A2": "v2",
-    "A3": "llm"
+    "A1": "symbolic_solver",
+    "A2": "numeric_solver",
+    "A3": "llm_solver"
 }

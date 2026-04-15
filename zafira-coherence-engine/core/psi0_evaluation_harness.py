@@ -3,6 +3,7 @@ from core.psi0_value_function import ValueFunction
 from core.psi0_actor import PolicyActor
 from core.action_space import ACTIONS
 from core.psi0_coherence import CoherenceLayer
+from core.dispatcher import execute
 import random
 
 
@@ -36,7 +37,7 @@ class EvaluationHarness:
             if self.executor_fn is not None:
                 output = self.executor_fn(task["input"])
             else:
-                output = self.simulate(task["input"])
+                output = execute(action, task["input"])
 
             score = self.evaluate(output, task["ground_truth"])
 
@@ -57,31 +58,12 @@ class EvaluationHarness:
 
         return results
 
-    def simulate(self, input_data):
-        try:
-            # Tenta resolver expressões simples (benchmark expandido)
-            if "2 + 2" in input_data:
-                return 4
-            if "x + 2 = 5" in input_data:
-                return 3
-            if "3 * x = 12" in input_data:
-                return 4
-            if "10 - 7" in input_data:
-                return 3
-            if "x / 2 = 6" in input_data:
-                return 12
-            if "raiz quadrada de 16" in input_data:
-                return 4
-            if "5 + 3 * 2" in input_data:
-                return 11
-            if "2x + 1 = 9" in input_data:
-                return 4
-            return 0
-        except:
-            return 0
-
     def evaluate(self, output, gt):
-        return 1.0 if output == gt else 0.0
+        try:
+            # Compara numericamente para evitar problemas de tipo (int vs float)
+            return 1.0 if float(output) == float(gt) else 0.0
+        except:
+            return 0.0
 
 
 def compute_system_performance(results):
