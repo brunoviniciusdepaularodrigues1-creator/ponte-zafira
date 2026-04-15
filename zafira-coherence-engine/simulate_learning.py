@@ -14,9 +14,9 @@ INPUTS = [
     {"input": "Sincronização de logs do sistema", "stage": "A", "coherence": 1.0}
 ]
 
-def simulate_learning_cycles(num_cycles=10):
+def simulate_learning_cycles(num_cycles=20):
     print("="*60)
-    print("🚀 SIMULANDO APRENDIZADO DO ZAFIRA COHERENCE ENGINE")
+    print("🚀 TREINAMENTO DO ZAFIRA COHERENCE ENGINE (EMERGÊNCIA)")
     print("="*60)
     
     agent = Psi0Agent()
@@ -34,7 +34,7 @@ def simulate_learning_cycles(num_cycles=10):
         # 1. Escolha de input
         top = random.choice(INPUTS)
         
-        # 2. Seleção Probabilística
+        # 2. Seleção Probabilística (Softmax)
         chosen, probs = agent.select_strategy_probabilistic(top)
         print(f"Input: {top['input']} (Stage: {top['stage']})")
         print(f"Seleção: {chosen} (Probs: {['%.2f' % p for p in probs]})")
@@ -43,12 +43,21 @@ def simulate_learning_cycles(num_cycles=10):
         res_data = results[chosen]
         internal_score = agent.internal_evaluate(chosen, res_data, top)
         
-        # 4. Aprendizado
-        agent.update_consequences(top["stage"], chosen, internal_score)
-        print(f"Aprendizado: Score Interno {internal_score} registrado para {chosen} em {top['stage']}")
+        # 4. Registrar Experiência
+        experience = {
+            "cycle": i+1,
+            "input_stage": top["stage"],
+            "executor": chosen,
+            "internal_score": internal_score
+        }
+        agent.log_experience(experience)
+        
+        # 5. Policy Learning Loop
+        old_val, new_val = agent.update_policy(top["stage"], chosen, internal_score)
+        print(f"Aprendizado: {chosen} em {top['stage']} | {old_val} -> {new_val}")
         
     print("\n" + "="*60)
-    print("✅ APRENDIZADO CONCLUÍDO. Verifique core/agent_memory.json")
+    print("✅ TREINAMENTO CONCLUÍDO. Verifique core/agent_policy.json")
     print("="*60)
 
 if __name__ == "__main__":

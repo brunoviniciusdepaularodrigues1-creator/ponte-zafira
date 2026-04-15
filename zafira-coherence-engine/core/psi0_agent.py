@@ -24,23 +24,34 @@ class Psi0Agent:
     def __init__(self, interval=5):
         self.interval = interval
         self.generation = 0
-        # Caminho absoluto para garantir que o arquivo seja encontrado
-        self.memory_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_memory.json"))
-        self.memory = self._load_memory()
+        self.learning_rate = 0.1
+        
+        # Caminhos absolutos
+        self.policy_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_policy.json"))
+        self.memory_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "agent_memory.jsonl"))
+        
+        self.policy = self._load_policy()
 
-    def _load_memory(self):
-        if os.path.exists(self.memory_file):
-            with open(self.memory_file, "r") as f:
+    def _load_policy(self):
+        if os.path.exists(self.policy_file):
+            with open(self.policy_file, "r") as f:
                 return json.load(f)
         return {
-            "decisions": [],
-            "executor_performance": {"v1": [], "v2": [], "llm": []},
-            "consequences": {} # Mapeia (stage, executor) -> avg_score
+            "C": {"v1": 0.3, "v2": 0.5, "llm": 0.9},
+            "F": {"v1": 0.8, "v2": 0.6, "llm": 0.7},
+            "A": {"v1": 0.9, "v2": 0.4, "llm": 0.5}
         }
 
-    def _save_memory(self):
-        with open(self.memory_file, "w") as f:
-            json.dump(self.memory, f, indent=2)
+    def _save_policy(self):
+        with open(self.policy_file, "w") as f:
+            json.dump(self.policy, f, indent=2)
+
+    def log_experience(self, experience):
+        """
+        Salva a experiência estruturada no log de memória (agent_memory.jsonl).
+        """
+        with open(self.memory_file, "a") as f:
+            f.write(json.dumps(experience, ensure_ascii=False) + "\n")
 
     def internal_evaluate(self, executor, result_data, top_decision):
         """
@@ -61,38 +72,40 @@ class Psi0Agent:
 
     def select_strategy_probabilistic(self, top_decision, temperature=0.2):
         """
-        Seleção Probabilística (Softmax):
-        Permite exploração e aprendizado, evitando heurísticas fixas.
+        Seleção Probabilística (Softmax + Sampling):
+        Utiliza o estado interno de crença (policy) para decidir com exploração.
         """
         stage = top_decision.get("stage", "F")
-        executors = ["v1", "v2", "llm"]
-        
-        # Calcula scores baseados na memória de consequências
-        scores = []
-        for exe in executors:
-            key = f"{stage}_{exe}"
-            perf = self.memory["consequences"].get(key, 0.5)
-            scores.append(perf)
+        if stage not in self.policy:
+            stage = "F" # Fallback
             
-        # Softmax para probabilidades
+        executors = list(self.policy[stage].keys())
+        scores = [self.policy[stage][exe] for exe in executors]
+        
+        # Softmax para converter scores em probabilidades
         exp_scores = [math.exp(s / temperature) for s in scores]
         sum_exp = sum(exp_scores)
         probs = [e / sum_exp for e in exp_scores]
         
+        # Amostragem baseada nas probabilidades (Sampling)
         chosen = random.choices(executors, weights=probs, k=1)[0]
         return chosen, probs
 
-    def update_consequences(self, stage, executor, internal_score):
-        key = f"{stage}_{executor}"
-        if key not in self.memory["consequences"]:
-            self.memory["consequences"][key] = internal_score
-        else:
-            # Média móvel para aprendizado contínuo
-            alpha = 0.3
-            self.memory["consequences"][key] = (1 - alpha) * self.memory["consequences"][key] + alpha * internal_score
+    def update_policy(self, stage, executor, reward):
+        """
+        Policy Learning Loop:
+        Atualiza o estado interno de crença (policy) usando aprendizado incremental.
+        """
+        if stage not in self.policy:
+            stage = "F"
+            
+        # Regra de Aprendizado: policy += lr * (reward - policy)
+        old_value = self.policy[stage][executor]
+        new_value = old_value + self.learning_rate * (reward - old_value)
+        self.policy[stage][executor] = round(new_value, 4)
         
-        self.memory["executor_performance"][executor].append(internal_score)
-        self._save_memory()
+        self._save_policy()
+        return old_value, new_value
 
     def run(self):
         print("Zafira Coherence Engine: Psi0Agent Evolutivo Iniciado...")
@@ -126,18 +139,28 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # Aprendizado: Atualiza memória de consequências
-                self.update_consequences(top["stage"], chosen_executor, internal_score)
-                print(f"Aprendizado: Score Interno {internal_score} registrado para {chosen_executor} em {top['stage']}")
+                # 1. Registrar Experiência
+                experience = {
+                    "timestamp": datetime.now().isoformat(),
+                    "input_stage": top["stage"],
+                    "executor": chosen_executor,
+                    "internal_score": internal_score,
+                    "coherence": top.get("coherence", 0.5)
+                }
+                self.log_experience(experience)
 
-                # Exportar Estado
+                # 2. Policy Learning Loop (Aprendizado por Reforço)
+                old_val, new_val = self.update_policy(top["stage"], chosen_executor, internal_score)
+                print(f"Aprendizado: {chosen_executor} em {top['stage']} | {old_val} -> {new_val}")
+
+                # 3. Exportar Estado
                 bridge_data = {
                     "agent": "zafira-psi0",
                     "timestamp": datetime.now().isoformat(),
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "probabilities": probs,
-                    "memory_status": "updated"
+                    "policy_update": {"old": old_val, "new": new_val}
                 }
 
                 with open("bridge_interface.json", "w") as f:
