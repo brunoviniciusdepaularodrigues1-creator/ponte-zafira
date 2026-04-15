@@ -17,6 +17,7 @@ from core.psi0_reward import compute_reward
 from core.psi0_value_function import ValueFunction
 from core.psi0_actor import PolicyActor
 from core.action_space import ACTIONS
+from core.psi0_coherence import CoherenceLayer
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -36,6 +37,7 @@ class Psi0Agent:
         
         self.value_fn = ValueFunction()
         self.actor = PolicyActor()
+        self.coherence = CoherenceLayer()
 
     def log_experience(self, experience):
         """Salva a experiência estruturada no log de memória."""
@@ -73,7 +75,7 @@ class Psi0Agent:
         print("Zafira Coherence Engine: Psi0Agent Evolutivo Iniciado...")
         try:
             while True:
-                print("\n--- Ciclo de Aprendizado Cognitivo (Actor-Critic) ---")
+                print("\n--- Ciclo de Aprendizado Cognitivo (Actor-Critic + Coherence) ---")
                 results = process()
                 if not results:
                     time.sleep(self.interval)
@@ -88,16 +90,27 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 5.5: Abstração de Ações
+                # 🔥 CAMADA 5 Estável: Coherence Regulator
                 stage = top["stage"]
                 
-                # 1. Actor escolhe ação abstrata
-                chosen_action, probs = self.actor.select(stage)
+                # 1. Actor sugere probabilidades
+                raw_probs = self.actor.softmax(stage)
+                
+                # 2. Coherence aplica bias global
+                blended_probs = self.coherence.apply_bias(raw_probs)
+                
+                # 3. Seleção final baseada nas probabilidades reguladas
+                chosen_action = random.choices(
+                    list(blended_probs.keys()),
+                    weights=list(blended_probs.values())
+                )[0]
                 chosen_executor = ACTIONS[chosen_action]
                 
-                # 2. Critic avalia a expectativa (Baseline) usando a ação abstrata
+                # 4. Critic avalia a expectativa (Baseline)
                 value = self.value_fn.predict(state_vector, stage, chosen_action)
                 
+                print(f"  Probs Actor: {raw_probs}")
+                print(f"  Probs Blended (Coherence): {blended_probs}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
                 # Simulação de leitura de resultado (Execução)
@@ -108,14 +121,13 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # 3. Advantage (O quanto o resultado superou a expectativa)
+                # 5. Advantage
                 advantage = internal_score - value
 
-                # 4. Critic aprende usando a ação abstrata
+                # 6. Aprendizado Unificado
                 self.value_fn.update(state_vector, stage, chosen_action, internal_score)
-
-                # 5. Actor aprende usando a ação abstrata
                 self.actor.update(stage, chosen_action, advantage)
+                self.coherence.update(chosen_action, internal_score)
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
@@ -164,7 +176,8 @@ class Psi0Agent:
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "advantage": advantage,
-                    "probabilities": probs,
+                    "raw_probabilities": raw_probs,
+                    "blended_probabilities": blended_probs,
                     "best_decision": top,
                     "ranking": ranked,
                     "network_status": feedbacks,
