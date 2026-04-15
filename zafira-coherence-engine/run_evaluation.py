@@ -7,32 +7,31 @@ sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from core.psi0_benchmark import BENCHMARK
-from core.psi0_evaluator import EvaluationHarness
-from core.psi0_metrics import compute_system_performance
-from core.psi0_actor import PolicyActor
-from core.psi0_value_function import ValueFunction
-from core.psi0_coherence import CoherenceLayer
+from core.psi0_evaluation_harness import EvaluationHarness
+from core.psi0_evaluation_harness import compute_system_performance
 
-print("=" * 50)
-print("ZAFIRA — NÍVEL 6: EVALUATION HARNESS")
-print("=" * 50)
-
-actor = PolicyActor()
-value_fn = ValueFunction()
-coherence = CoherenceLayer()
 
 harness = EvaluationHarness(BENCHMARK)
 
-# Roda múltiplas épocas de avaliação
-for epoch in range(3):
-    print(f"\n--- Época {epoch + 1} ---")
-    results = harness.run_policy(actor, value_fn, coherence)
-    
-    for r in results:
-        print(f"  Task: {r['task']} | Ação: {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f} | Advantage: {r['advantage']:.4f}")
-    
-    score = compute_system_performance(results)
-    print(f"  SYSTEM SCORE: {score:.2f}")
+print("\n=== TESTE SEM COHERENCE ===")
+res_a = harness.run(mode="without_coherence")
+score_a = compute_system_performance(res_a)
 
-print("\n" + "=" * 50)
-print("Avaliação concluída.")
+for r in res_a:
+    print(f"  Task: {r['task']} | Ação: {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f} | Advantage: {r['advantage']:.4f}")
+
+print("SYSTEM SCORE A:", score_a)
+
+
+print("\n=== TESTE COM COHERENCE ===")
+res_b = harness.run(mode="with_coherence")
+score_b = compute_system_performance(res_b)
+
+for r in res_b:
+    print(f"  Task: {r['task']} | Ação: {r['action']} → {r['executor']} | Score: {r['score']} | Value: {r['value']:.4f} | Advantage: {r['advantage']:.4f}")
+
+print("SYSTEM SCORE B:", score_b)
+
+
+print("\n=== DIFERENÇA ===")
+print("Δ:", score_b - score_a)
