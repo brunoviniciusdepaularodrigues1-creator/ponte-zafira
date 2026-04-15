@@ -9,12 +9,19 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from core.psi0_benchmark import BENCHMARK
 from core.psi0_evaluation_harness import EvaluationHarness
 from core.psi0_evaluation_harness import compute_system_performance
+from core.psi0_actor import PolicyActor
+from core.psi0_value_function import ValueFunction
+from core.psi0_coherence import CoherenceLayer
 
+# Cria os objetos UMA vez para persistência do aprendizado durante a sessão de teste
+actor = PolicyActor()
+value_fn = ValueFunction()
+coherence = CoherenceLayer()
 
 harness = EvaluationHarness(BENCHMARK)
 
-print("\n=== TESTE SEM COHERENCE ===")
-res_a = harness.run(mode="without_coherence")
+print("\n=== TESTE SEM COHERENCE (Benchmark Expandido) ===")
+res_a = harness.run(actor, value_fn, coherence, mode="without_coherence")
 score_a = compute_system_performance(res_a)
 
 for r in res_a:
@@ -23,8 +30,8 @@ for r in res_a:
 print("SYSTEM SCORE A:", score_a)
 
 
-print("\n=== TESTE COM COHERENCE ===")
-res_b = harness.run(mode="with_coherence")
+print("\n=== TESTE COM COHERENCE (Benchmark Expandido) ===")
+res_b = harness.run(actor, value_fn, coherence, mode="with_coherence")
 score_b = compute_system_performance(res_b)
 
 for r in res_b:
