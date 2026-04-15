@@ -1,0 +1,8 @@
+{
+  "node_id": "psi0_node_1",
+  "profile": "Conservador",
+  "sensitivity": 0.2,
+  "risk_tolerance": 0.1,
+  "coherence_threshold": 0.9,
+  "description": "Prioriza estabilidade e ações técnicas (A) com alta coerência."
+}

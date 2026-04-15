@@ -1,0 +1,8 @@
+{
+  "node_id": "psi0_node_3",
+  "profile": "Analítico",
+  "sensitivity": 0.5,
+  "risk_tolerance": 0.4,
+  "coherence_threshold": 0.7,
+  "description": "Equilíbrio entre Caos e Ação, priorizando Validação (V) e Learning (L)."
+}

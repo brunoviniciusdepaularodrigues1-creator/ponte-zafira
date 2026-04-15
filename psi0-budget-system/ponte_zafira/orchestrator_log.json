@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-04-15T12:26:04.708058",
+  "orchestration": {
+    "chosen_executor": "v1",
+    "reason": "Executando ação técnica com v1 (Alta Coerência)",
+    "global_score": 1.0,
+    "source_stage": "A",
+    "source_coherence": 0.303
+  }
+}

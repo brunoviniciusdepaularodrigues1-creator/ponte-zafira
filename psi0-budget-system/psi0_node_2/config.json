@@ -1,0 +1,8 @@
+{
+  "node_id": "psi0_node_2",
+  "profile": "Exploratório",
+  "sensitivity": 0.8,
+  "risk_tolerance": 0.7,
+  "coherence_threshold": 0.4,
+  "description": "Busca por Caos (C) e novas formas (F) em inputs complexos."
+}

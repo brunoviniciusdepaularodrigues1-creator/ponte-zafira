@@ -1,0 +1,11 @@
+{
+  "node_id": "psi0_node_1",
+  "profile": "Conservador",
+  "timestamp": "2026-04-15T11:30:51.183715",
+  "best_decision": {
+    "input": "Sincronização de logs do sistema. Operação de rotina.",
+    "stage": "A",
+    "coherence": 0.95,
+    "complexity": 0.2
+  }
+}

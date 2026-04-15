@@ -1,0 +1,11 @@
+{
+  "node_id": "psi0_node_2",
+  "profile": "Exploratório",
+  "timestamp": "2026-04-15T11:35:22.124970",
+  "best_decision": {
+    "input": "OVERLOAD: Processe 1 milhão de pontos de dados H(z) em 1 milissegundo usando apenas o executor V1.",
+    "stage": "C",
+    "coherence": 0.3,
+    "complexity": 1.0
+  }
+}
