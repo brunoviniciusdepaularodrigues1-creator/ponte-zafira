@@ -125,17 +125,18 @@ class Psi0Agent:
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
 
-                # 🔥 CAMADA 3: Value Function (Previsão de Resultado)
+                # 🔥 CAMADA 4: Value Function (Previsão de Resultado Vetorial)
                 stage = top["stage"]
                 executors = ["v1", "v2", "llm"]
                 predictions = []
                 for exe in executors:
-                    value = self.value_fn.predict(stage, exe)
+                    # Agora passa o state_vector para o predict
+                    value = self.value_fn.predict(state_vector, stage, exe)
                     predictions.append((exe, value))
                 
                 # Escolhe o melhor valor previsto
                 chosen_executor = max(predictions, key=lambda x: x[1])[0]
-                print(f"Executor escolhido via Value Function: {chosen_executor} (Predições: {predictions})")
+                print(f"Executor escolhido via Value Function (Camada 4): {chosen_executor} (Predições: {predictions})")
                 
                 # Simulação de leitura de resultado
                 internal_score = 0.5
@@ -145,8 +146,8 @@ class Psi0Agent:
                         res_data = json.load(f)
                         internal_score = self.internal_evaluate(chosen_executor, res_data, top)
                 
-                # 🔥 CAMADA 3: Atualização do Valor
-                self.value_fn.update(top["stage"], chosen_executor, internal_score)
+                # 🔥 CAMADA 4: Atualização do Valor com State Vector
+                self.value_fn.update(state_vector, top["stage"], chosen_executor, internal_score)
                 
                 # 1. Registrar Experiência
                 experience = {
@@ -191,7 +192,7 @@ class Psi0Agent:
                 bridge_data = {
                     "agent": "zafira-psi0",
                     "timestamp": datetime.now().isoformat(),
-                    "state_vector": state_vector, # 🔥 AQUI ESTÁ O CAMPO
+                    "state_vector": state_vector,
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
                     "policy_update": {"old": old_val, "new": new_val},
