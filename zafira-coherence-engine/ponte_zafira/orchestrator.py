@@ -4,8 +4,8 @@ import os
 import datetime
 import subprocess
 
-# Configurações de Caminhos
-BASE_DIR = "/home/ubuntu/psi0-budget-system"
+# Configurações de Caminhos (Atualizado para Zafira Coherence Engine)
+BASE_DIR = "/home/ubuntu/zafira-coherence-engine"
 LOG_FILE = os.path.join(BASE_DIR, "logs/system_history.json")
 ORCHESTRATOR_LOG = os.path.join(BASE_DIR, "ponte_zafira/orchestrator_log.json")
 
@@ -29,15 +29,11 @@ def log_event(data):
         json.dump(history, f, indent=2, ensure_ascii=False)
 
 def select_node(input_data):
-    """
-    Meta-Orquestração com Detecção de Incerteza:
-    Calcula incerteza e decide se o sistema deve entrar em Modo de Degradação.
-    """
+    """Meta-Orquestração com Detecção de Incerteza."""
     complexity = input_data.get("complexity", 0.5)
     coherence = input_data.get("coherence", 0.5)
     uncertainty = 1.0 - coherence
     
-    # Ajuste 1: Detector de Incerteza Crítica
     if uncertainty > 0.7:
         return "psi0_node_3", "INCERTEZA CRÍTICA: Ativando Modo de Degradação (Nó Analítico)"
     
@@ -49,17 +45,12 @@ def select_node(input_data):
         return "psi0_node_3", "Complexidade média detectada: Usando Nó Analítico"
 
 def decide_executor(node_decision, input_data):
-    """
-    Orquestração de Execução com Modo de Degradação:
-    Simplifica a ação se a incerteza for alta para evitar erros críticos.
-    """
+    """Orquestração de Execução com Modo de Degradação."""
     stage = node_decision["stage"]
     coherence = node_decision["coherence"]
     uncertainty = 1.0 - coherence
     
-    # Ajuste 2: Modo de Degradação Graciosa
     if uncertainty > 0.6:
-        # Se incerto, não executa direto -> Pede reforço LLM ou simplifica para V1
         return "llm", "MODO DEGRADAÇÃO: Incerteza alta, solicitando reforço cognitivo (LLM)"
     
     if stage == "C":
@@ -82,6 +73,9 @@ def run_meta_cycle(input_text, complexity=0.5, coherence=0.5):
     # 2. Execução do Nó (Simulada via script)
     node_dir = NODES[node_id]["dir"]
     # Aqui chamaríamos o runner real, mas para simulação vamos usar a lógica interna
+    # Import dinâmico para evitar problemas de path
+    import sys
+    sys.path.append(os.path.join(BASE_DIR))
     from core.psi0_node_runner import Psi0Node
     node = Psi0Node(node_dir)
     decision = node.process_input(input_data)
@@ -107,7 +101,7 @@ def run_meta_cycle(input_text, complexity=0.5, coherence=0.5):
         "coherence": coherence,
         "uncertainty": 1.0 - coherence,
         "failure_type": failure_type,
-        "global_score": 0.9 if executor != "llm" else 0.85, # Mock de score
+        "global_score": 0.9 if executor != "llm" else 0.85,
         "reason": f"{node_reason} -> {exec_reason}"
     })
 

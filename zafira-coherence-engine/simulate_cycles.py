@@ -6,7 +6,7 @@ import subprocess
 from datetime import datetime, timedelta
 
 # Configurações
-BASE_DIR = "/home/ubuntu/psi0-budget-system"
+BASE_DIR = "/home/ubuntu/zafira-coherence-engine"
 BRIDGE_FILE = os.path.join(BASE_DIR, "bridge_interface.json")
 ORCHESTRATOR_SCRIPT = os.path.join(BASE_DIR, "ponte_zafira/orchestrator.py")
 
@@ -27,7 +27,7 @@ EXECUTORS = ["v1", "v2", "llm"]
 def simulate_cycle(cycle_num, last_stage=None):
     print(f"\n--- Simulando Ciclo {cycle_num + 1} ---")
     
-    # 1. ψ₀ decide (Simulado com lógica de transição progressiva)
+    # 1. ψ₀ decide
     if last_stage == "C":
         choice = next(i for i in INPUTS if i["stage"] == "F")
         print(f"ψ₀ forçou transição progressiva: C -> F")
@@ -36,10 +36,14 @@ def simulate_cycle(cycle_num, last_stage=None):
     
     timestamp = (datetime.now() - timedelta(minutes=(10 - cycle_num) * 5)).isoformat()
     
+    # 🔥 Incluindo state_vector na simulação para manter consistência com a Camada 1
+    state_vector = [round(random.random(), 3) for _ in range(5)]
+    
     bridge_data = {
-        "agent": "psi0",
+        "agent": "zafira-psi0",
         "timestamp": timestamp,
         "generation": cycle_num,
+        "state_vector": state_vector,
         "best_executor": random.choice(EXECUTORS),
         "feedback_applied": round(random.uniform(0.7, 0.99), 2),
         "best_decision": choice,
@@ -55,7 +59,7 @@ def simulate_cycle(cycle_num, last_stage=None):
     
     print(f"ψ₀ enviou decisão: {choice['input']} (Stage: {choice['stage']})")
     
-    # 2. Orquestrador processa (Execução Real do script modificado)
+    # 2. Orquestrador processa
     original_cwd = os.getcwd()
     os.chdir(os.path.join(BASE_DIR, "ponte_zafira"))
     
@@ -72,6 +76,10 @@ def simulate_cycle(cycle_num, last_stage=None):
         with open("../executor_llm/execution_result_llm.json", "w") as f:
             json.dump({"result": "LLM_PROCESSOU", "score": 0.9}, f)
 
+        # Atualizar caminhos no orchestrator.py se necessário
+        # (O orchestrator.py já foi lido e parece usar BASE_DIR fixo em /home/ubuntu/psi0-budget-system)
+        # Vamos corrigir o orchestrator.py também para usar o novo BASE_DIR
+        
         proc = subprocess.Popen(["python3", "orchestrator.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(2)
         proc.terminate()
@@ -82,14 +90,14 @@ def simulate_cycle(cycle_num, last_stage=None):
     return choice["stage"]
 
 if __name__ == "__main__":
-    # Limpar histórico anterior para nova análise de otimização
+    # Limpar histórico anterior
     LOG_FILE = os.path.join(BASE_DIR, "logs/system_history.json")
     if os.path.exists(LOG_FILE):
         os.remove(LOG_FILE)
-        print("Histórico anterior removido para nova análise de otimização.")
+        print("Histórico anterior removido.")
 
-    print("Iniciando simulação de 10 ciclos otimizados...")
+    print("Iniciando simulação de 10 ciclos...")
     last_stage = None
     for i in range(10):
         last_stage = simulate_cycle(i, last_stage)
-    print("\nSimulação concluída. Verifique logs/system_history.json")
+    print("\nSimulação concluída.")
