@@ -1,0 +1,29 @@
+{
+  "system": "zafira-coherence-engine",
+  "phase": "7_to_7.5",
+  "status": "interrupted_by_credit_limit",
+  "last_active_module": "Psi0Agent.run",
+
+  "capabilities": {
+    "actor_critic": true,
+    "coherence_layer": true,
+    "dispatcher": true,
+    "evaluation_harness": true,
+    "adversarial_benchmark": true,
+    "specialization_tracker": true
+  },
+
+  "last_known_metrics": {
+    "system_score": 0.60,
+    "advantage_trend": "stabilizing",
+    "value_function_learning": "active"
+  },
+
+  "state_files": {
+    "memory": "agent_memory.jsonl",
+    "bridge": "bridge_interface.json",
+    "policy": "agent_policy.json"
+  },
+
+  "next_step": "N7.5_multi_agent_adversarial_system"
+}
