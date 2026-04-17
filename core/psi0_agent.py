@@ -4,6 +4,7 @@ import sys
 import json
 import random
 import math
+import numpy as np
 from datetime import datetime
 
 # Adiciona a raiz do projeto ao sys.path para permitir imports de core
@@ -48,44 +49,24 @@ class Psi0Agent:
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
 
+    def compute_entropy(self, probs):
+        """Calcula a entropia de Shannon para uma distribuição de probabilidades."""
+        p_values = np.array(list(probs.values()))
+        p_values = p_values[p_values > 0] # Evitar log(0)
+        if len(p_values) <= 1: return 0.0
+        return -np.sum(p_values * np.log2(p_values))
+
     def log_experience(self, experience):
         """Salva a experiência estruturada no log de memória."""
         with open(self.memory_file, "a") as f:
             f.write(json.dumps(experience, ensure_ascii=False) + "\n")
 
-    def internal_evaluate(self, executor, result_data, top_decision):
-        """Avaliação Interna de Score."""
-        base_score = result_data.get("score", 0.5)
-        stage = top_decision.get("stage", "F")
-        coherence = top_decision.get("coherence", 0.5)
-        
-        penalty = 0
-        if stage == "C" and executor == "v1": penalty = 0.2
-        if stage == "A" and executor == "llm": penalty = 0.1
-        
-        internal_score = (base_score * 0.6) + (coherence * 0.4) - penalty
-        return round(max(0, min(1, internal_score)), 2)
-
-    def read_all_feedbacks(self):
-        feedbacks = []
-        for f_path in FEEDBACK_FILES:
-            try:
-                if os.path.exists(f_path):
-                    with open(f_path, "r") as f:
-                        data = json.load(f)
-                        executor_id = data.get("executor", "v1" if "v1" in f_path else ("v2" if "v2" in f_path else "llm"))
-                        score = data.get("score", 0.5)
-                        config = data.get("config", {})
-                        feedbacks.append({"executor": executor_id, "score": score, "config": config})
-            except Exception: pass
-        return feedbacks
-
     def run(self):
-        print("Zafira Coherence Engine: Psi0Agent Evolutivo Iniciado...")
+        print("Zafira Coherence Engine: Psi0Agent N10.5 (Adaptive Entropy Router) Iniciado...")
         try:
             while True:
                 self.cycle += 1
-                print(f"\n--- Ciclo {self.cycle}: Aprendizado Cognitivo (Actor-Critic + Coherence) ---")
+                print(f"\n--- Ciclo {self.cycle}: Adaptive Entropy Control ---")
                 results = process()
                 if not results:
                     time.sleep(self.interval)
@@ -98,166 +79,82 @@ class Psi0Agent:
                 # 🔥 CAMADA 1: State Encoding
                 history_stats = {"llm_success": 0.9, "v1_success": 0.8, "v2_success": 0.7}
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
-                print(f"Estado Vetorial (Camada 1): {state_vector}")
-
-                # 🔥 CAMADA 5 Estável: Coherence Regulator
-                stage = top["stage"]
-                task_input = top["input"]
                 
-                # 🔥 Nível 7: Routing Contextual
+                # 🔥 Nível 7/10: Routing Contextual
+                task_input = top["input"]
                 task_type = classify_task(task_input)
                 strategy_bias = get_strategy_bias(task_type)
                 print(f"Tipo de Tarefa: {task_type}")
 
-                # 1. Actor sugere probabilidades
-                raw_probs = self.actor.softmax(stage)
-                
-                # 2. Coherence aplica bias global + bias de estratégia (Nível 7)
+                # 1. Actor e Coherence sugerem probabilidades
+                raw_probs = self.actor.softmax(top["stage"])
                 blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias)
 
-                # 🔥 Nível 8: MetaPolicy influencia a decisão do router
-                meta_scores = self.meta.get_scores()
-                # Normalizar meta_scores para somar 1
+                # 🔥 Nível 10.5: Adaptive Entropy Control
+                # Calculamos a entropia do blend atual (Intuição/Coerência)
+                current_entropy = self.compute_entropy(blended_probs)
+                
+                # Lógica de Modulação Adaptativa
+                if current_entropy > 0.7:
+                    # Sistema muito indeciso → Força especialização (MetaPolicy ganha peso)
+                    meta_weight = 0.5
+                    coherence_weight = 0.5
+                    status_incerteza = "ALTA (Forçando Especialização)"
+                elif current_entropy < 0.4:
+                    # Sistema muito rígido → Força exploração (Coerência/Intuição ganha peso)
+                    meta_weight = 0.2
+                    coherence_weight = 0.8
+                    status_incerteza = "BAIXA (Forçando Exploração)"
+                else:
+                    # Zona Ideal (0.4 - 0.7)
+                    meta_weight = 0.3
+                    coherence_weight = 0.7
+                    status_incerteza = "IDEAL"
+
+                print(f"Entropia Atual: {current_entropy:.4f} | Estado: {status_incerteza}")
+                print(f"Modulação: Coherence={coherence_weight} | MetaPolicy={meta_weight}")
+
+                # 2. MetaPolicy scores (Experiência)
+                meta_scores, _ = self.meta.get_scores()
                 total_meta_score = sum(meta_scores.values())
                 meta_probs = {k: v / total_meta_score if total_meta_score > 0 else 1/len(meta_scores) for k, v in meta_scores.items()}
 
-                # Blend final: 0.7 para o blend atual (coerência/actor) + 0.3 para meta_policy scores
+                # 3. Blend Adaptativo Final
                 final_probs = {}
                 for action in blended_probs:
-                    final_probs[action] = (0.7 * blended_probs[action]) + (0.3 * meta_probs.get(action, 0))
+                    final_probs[action] = (coherence_weight * blended_probs[action]) + (meta_weight * meta_probs.get(action, 0))
                 
-                # Normalizar final_probs para garantir que somem 1
-                total_final_probs = sum(final_probs.values())
-                if total_final_probs > 0:
-                    final_probs = {k: v / total_final_probs for k, v in final_probs.items()}
-                else:
-                    # Fallback para distribuição uniforme se todas as probabilidades forem zero
-                    final_probs = {k: 1/len(final_probs) for k in final_probs}
+                # Normalização final
+                total_final = sum(final_probs.values())
+                final_probs = {k: v / total_final for k, v in final_probs.items()}
 
-                # 3. Seleção final baseada nas probabilidades reguladas
-                chosen_action = random.choices(
-                    list(final_probs.keys()),
-                    weights=list(final_probs.values())
-                )[0]
-                
-
+                # 4. Seleção e Execução
+                chosen_action = random.choices(list(final_probs.keys()), weights=list(final_probs.values()))[0]
                 chosen_executor = ACTIONS[chosen_action]
-                
-                # 4. Critic avalia a expectativa (Baseline)
-                value = self.value_fn.predict(state_vector, stage, chosen_action)
-                
-                print(f"  Probs Actor: {raw_probs}")
-                print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
-                print(f"  Probs MetaPolicy: {meta_probs}")
-                print(f"  Probs Finais (Blended + MetaPolicy): {final_probs}")
-                print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
-                
-                # 🔥 Nível 7: Execução Real via Dispatcher
                 output = execute(chosen_action, task_input)
-                print(f"  Execução: {task_input} -> {output}")
                 
-                # 🔥 Nível 7: Semantic Reward (em vez de heurística fixa)
-                # Como não temos o ground_truth em tempo real no modo treino genérico,
-                # usamos uma heurística de sucesso do output para o internal_score,
-                # mas em sistemas de benchmark usamos o semantic_evaluate.
-                internal_score = 0.1 # Default para falha
-                
-                # Avaliação mais granular baseada no tipo de agente e na qualidade do output
-                if chosen_action == "A1": # Symbolic Solver
-                    if output is not None and ("[" in str(output) or "I" in str(output) or "sqrt" in str(output)) and "error" not in str(output).lower():
-                        internal_score = 0.9 # Alta pontuação para resultados simbólicos válidos
-                    elif output is not None and len(str(output)) > 0 and "error" not in str(output).lower():
-                        internal_score = 0.7 # Pontuação média para outros resultados não vazios
-                    else:
-                        internal_score = 0.2
-                elif chosen_action == "A2": # Numeric Solver
-                    try:
-                        # Tenta converter para float ou lista de floats
-                        if isinstance(output, str) and output.startswith("[") and output.endswith("]"):
-                            # Tenta parsear lista de números
-                            nums = [float(s.strip()) for s in output[1:-1].split(',') if s.strip()]
-                            if nums: internal_score = 0.9
-                        elif float(output) is not None: 
-                            internal_score = 0.9 # Alta pontuação para resultados numéricos válidos
-                        else:
-                            internal_score = 0.2
-                    except (ValueError, TypeError): # Se não for um número válido
-                        internal_score = 0.2
-                elif chosen_action == "A3": # LLM Solver
-                    if output is not None and len(str(output)) > 5 and "error" not in str(output).lower() and "None" not in str(output):
-                        internal_score = 0.8 # Boa pontuação para respostas LLM coerentes
-                    else:
-                        internal_score = 0.2
-                
-                # Penalidade adicional se o output for 'curto' ou indicar falha
-                if output == "curto" or "falha" in str(output).lower():
-                    internal_score = 0.1
-                
-                # 🔥 Specialization Signal Tracker
-                self.specialization[chosen_action]["total"] += 1
-                if internal_score > 0.5:
-                    self.specialization[chosen_action]["wins"] += 1
-                
-                # 5. Advantage
-                advantage = internal_score - value
+                # 5. Avaliação e Aprendizado (Simplificado para o loop principal)
+                internal_score = 0.8 if output and "error" not in str(output).lower() else 0.2
+                advantage = internal_score - self.value_fn.predict(state_vector, top["stage"], chosen_action)
 
-                # 6. Aprendizado Unificado
-                self.value_fn.update(state_vector, stage, chosen_action, internal_score)
-                self.actor.update(stage, chosen_action, advantage)
+                self.value_fn.update(state_vector, top["stage"], chosen_action, internal_score)
+                self.actor.update(top["stage"], chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
                 
-                print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
-                
-                if self.cycle % 5 == 0:
-                    print("  Meta Policy Scores:", self.meta.get_scores())
-                    print("  Melhor ação atual:", self.meta.best_action())
-                    print("  Specialization Signal:")
-                    for action, stats in self.specialization.items():
-                        rate = stats["wins"] / stats["total"] if stats["total"] > 0 else 0
-                        print(f"    {action} ({ACTIONS[action]}): {stats['wins']}/{stats['total']} = {rate:.2f}")
-
-                # Registrar Experiência
+                # Logs e Persistência
                 experience = {
-                    "timestamp": datetime.now().isoformat(),
-                    "input_stage": top["stage"],
-                    "action": chosen_action,
-                    "executor": chosen_executor,
-                    "internal_score": internal_score,
-                    "coherence": top.get("coherence", 0.5),
-                    "advantage": advantage,
-                    "state_vector": state_vector,
-                    "task_type": task_type
+                    "cycle": self.cycle,
+                    "entropy": current_entropy,
+                    "meta_weight": meta_weight,
+                    "chosen_action": chosen_action,
+                    "score": internal_score
                 }
                 self.log_experience(experience)
-
-                # Exportar Estado Completo
-                feedbacks = self.read_all_feedbacks()
                 
-                bridge_data = {
-                    "agent": "zafira-psi0",
-                    "timestamp": datetime.now().isoformat(),
-                    "state_vector": state_vector,
-                    "chosen_action": chosen_action,
-                    "chosen_executor": chosen_executor,
-                    "internal_score": internal_score,
-                    "advantage": advantage,
-                    "raw_probabilities": raw_probs,
-                    "blended_probabilities": blended_probs,
-                    "best_decision": top,
-                    "ranking": ranked,
-                    "network_status": feedbacks,
-                    "specialization": self.specialization,
-                    "meta_policy_stats": self.meta.stats, # Adiciona o estado da MetaPolicy
-                    "task_type": task_type
-                }
-
-                with open("bridge_interface.json.tmp", "w") as f:
-                    json.dump(bridge_data, f, indent=2, ensure_ascii=False)
-                os.replace("bridge_interface.json.tmp", "bridge_interface.json")
-                
-                print(f"Estado persistido no bridge.")
+                print(f"Ação: {chosen_action} | Score: {internal_score} | Entropia Final: {self.compute_entropy(final_probs):.4f}")
                 time.sleep(self.interval)
+
         except KeyboardInterrupt:
             print("\nPsi0Agent finalizado.")
 
