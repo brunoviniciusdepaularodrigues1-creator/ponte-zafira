@@ -22,6 +22,7 @@ from core.dispatcher import execute
 from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
+from core.psi0_unified_value import UnifiedValueFunction
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -44,6 +45,8 @@ class Psi0Agent:
         self.actor = PolicyActor()
         self.coherence = CoherenceLayer()
         self.meta = MetaPolicy()
+        # 🔥 N16: Unified Value Function — espaço latente unificado
+        self.uvf = UnifiedValueFunction()
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -99,6 +102,12 @@ class Psi0Agent:
                 history_stats = {"llm_success": 0.9, "v1_success": 0.8, "v2_success": 0.7}
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
+                
+                # 🔥 N16: Unified State Vector — 9 dimensões
+                unified_state = self.uvf.build_unified_state(
+                    top.get("stage"), top.get("input"), history_stats, chosen_executor if 'chosen_executor' in dir() else 'v1'
+                )
+                print(f"Estado Unificado N16 (9 dims): {unified_state}")
 
                 # 🔥 CAMADA 5 Estável: Coherence Regulator
                 stage = top["stage"]
@@ -206,6 +215,9 @@ class Psi0Agent:
                 self.actor.update(stage, chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
+                # 🔥 N16: Atualização da Unified Value Function
+                uvf_pred, uvf_error = self.uvf.update(unified_state, chosen_executor, internal_score)
+                print(f"  N16 UVF: pred={uvf_pred:.4f} | erro={uvf_error:.4f}")
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
@@ -234,10 +246,15 @@ class Psi0Agent:
                 # Exportar Estado Completo
                 feedbacks = self.read_all_feedbacks()
                 
+                # 🔥 N16: Telemetria Unificada
+                n16_telemetry = self.uvf.get_telemetry(unified_state, chosen_executor, internal_score)
+                
                 bridge_data = {
-                    "agent": "zafira-psi0",
+                    "agent": "zafira-psi0-n16",
                     "timestamp": datetime.now().isoformat(),
                     "state_vector": state_vector,
+                    "unified_state": unified_state,  # 🔥 N16
+                    "n16_telemetry": n16_telemetry,  # 🔥 N16
                     "chosen_action": chosen_action,
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
@@ -248,7 +265,7 @@ class Psi0Agent:
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "specialization": self.specialization,
-                    "meta_policy_stats": self.meta.stats, # Adiciona o estado da MetaPolicy
+                    "meta_policy_stats": self.meta.stats,
                     "task_type": task_type
                 }
 
