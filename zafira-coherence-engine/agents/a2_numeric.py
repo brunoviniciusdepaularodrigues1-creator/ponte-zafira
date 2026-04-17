@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import re
+import math # Importar o módulo math
 
 class NumericSolver:
     def __init__(self):
@@ -12,34 +13,32 @@ class NumericSolver:
         Tenta resolver a tarefa usando aproximações numéricas e heurísticas rápidas.
         """
         try:
-            # Tenta encontrar números e operações básicas
-            # Exemplo: "sqrt(16) + 2 * 5"
             task_clean = task.lower().replace("solve", "").replace("simplify", "").strip()
             
-            # Heurística simples para expressões aritméticas
-            # Substitui funções comuns por numpy equivalents
-            task_clean = task_clean.replace("sqrt", "np.sqrt").replace("sin", "np.sin").replace("cos", "np.cos")
+            # Substitui funções comuns por equivalentes do módulo math
+            task_clean = task_clean.replace("sqrt", "math.sqrt").replace("sin", "math.sin").replace("cos", "math.cos")
+            task_clean = task_clean.replace("log", "math.log").replace("exp", "math.exp")
             
             # Se houver uma variável 'x', tenta uma busca numérica simples (ex: Newton-Raphson ou busca linear)
             if 'x' in task_clean:
-                # Exemplo: x**2 - 4 = 0
                 if '=' in task_clean:
                     lhs, rhs = task_clean.split('=')
                     f_str = f"({lhs.strip()}) - ({rhs.strip()})"
                 else:
                     f_str = task_clean
                 
-                # Define uma função f(x)
                 def f(x_val):
-                    return eval(f_str.replace('x', f'({x_val})'), {"np": np, "__builtins__": {}})
+                    # Usar um dicionário seguro para eval
+                    return eval(f_str.replace('x', f'({x_val})'), {"math": math, "np": np, "__builtins__": {}})
                 
-                # Busca linear simples em um intervalo para encontrar uma raiz
                 roots = []
-                for x_test in np.linspace(-100, 100, 1000):
-                    if abs(f(x_test)) < 0.1:
-                        roots.append(round(float(x_test), 4))
+                for x_test in np.linspace(-10, 10, 100):
+                    try:
+                        if abs(f(x_test)) < 0.1:
+                            roots.append(round(float(x_test), 4))
+                    except (TypeError, NameError): # Captura erros como 'a' não definido em (a+b)**2
+                        continue
                 
-                # Remove duplicatas próximas
                 unique_roots = []
                 if roots:
                     unique_roots.append(roots[0])
@@ -54,14 +53,34 @@ class NumericSolver:
                     "method": "numeric_search"
                 }
             else:
-                # Apenas cálculo direto
-                result = eval(task_clean, {"np": np, "__builtins__": {}})
-                return {
-                    "agent": self.name,
-                    "status": "success",
-                    "result": str(result),
-                    "method": "direct_eval"
-                }
+                # Para expressões aritméticas sem 'x'
+                # Extrai a expressão matemática da string
+                # Regex mais abrangente para capturar expressões matemáticas, incluindo funções como sqrt
+                match = re.search(r'([\d.+\-*/()\s]+|math\.sqrt\([\d.]+\)|\b(?:sin|cos|tan|log|exp)\b\([\d.+\-*/()]+\))', task_clean)
+                if match:
+                    expr = match.group(0)
+                    try:
+                        result = eval(expr, {"math": math, "np": np, "__builtins__": {}})
+                        return {
+                            "agent": self.name,
+                            "status": "success",
+                            "result": str(result),
+                            "method": "direct_eval"
+                        }
+                    except Exception as e:
+                        return {
+                            "agent": self.name,
+                            "status": "error",
+                            "error": f"Erro ao avaliar expressão: {e}",
+                            "result": None
+                        }
+                else:
+                    return {
+                        "agent": self.name,
+                        "status": "error",
+                        "error": "Nenhuma expressão numérica encontrada.",
+                        "result": None
+                    }
         except Exception as e:
             return {
                 "agent": self.name,
@@ -74,3 +93,6 @@ if __name__ == "__main__":
     solver = NumericSolver()
     print(json.dumps(solver.solve("x**2 - 4 = 0"), indent=2))
     print(json.dumps(solver.solve("sqrt(16) + 10"), indent=2))
+    print(json.dumps(solver.solve("calculate 15 * 3 + 2"), indent=2))
+    print(json.dumps(solver.solve("find the square root of 81"), indent=2))
+    print(json.dumps(solver.solve("calculate 100 / 4 - 5"), indent=2))

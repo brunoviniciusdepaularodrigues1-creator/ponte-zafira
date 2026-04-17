@@ -114,12 +114,33 @@ class Psi0Agent:
                 
                 # 2. Coherence aplica bias global + bias de estratégia (Nível 7)
                 blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias)
+
+                # 🔥 Nível 8: MetaPolicy influencia a decisão do router
+                meta_scores = self.meta.get_scores()
+                # Normalizar meta_scores para somar 1
+                total_meta_score = sum(meta_scores.values())
+                meta_probs = {k: v / total_meta_score if total_meta_score > 0 else 1/len(meta_scores) for k, v in meta_scores.items()}
+
+                # Blend final: 0.7 para o blend atual (coerência/actor) + 0.3 para meta_policy scores
+                final_probs = {}
+                for action in blended_probs:
+                    final_probs[action] = (0.7 * blended_probs[action]) + (0.3 * meta_probs.get(action, 0))
                 
+                # Normalizar final_probs para garantir que somem 1
+                total_final_probs = sum(final_probs.values())
+                if total_final_probs > 0:
+                    final_probs = {k: v / total_final_probs for k, v in final_probs.items()}
+                else:
+                    # Fallback para distribuição uniforme se todas as probabilidades forem zero
+                    final_probs = {k: 1/len(final_probs) for k in final_probs}
+
                 # 3. Seleção final baseada nas probabilidades reguladas
                 chosen_action = random.choices(
-                    list(blended_probs.keys()),
-                    weights=list(blended_probs.values())
+                    list(final_probs.keys()),
+                    weights=list(final_probs.values())
                 )[0]
+                
+
                 chosen_executor = ACTIONS[chosen_action]
                 
                 # 4. Critic avalia a expectativa (Baseline)
@@ -127,6 +148,8 @@ class Psi0Agent:
                 
                 print(f"  Probs Actor: {raw_probs}")
                 print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
+                print(f"  Probs MetaPolicy: {meta_probs}")
+                print(f"  Probs Finais (Blended + MetaPolicy): {final_probs}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
                 # 🔥 Nível 7: Execução Real via Dispatcher
@@ -137,12 +160,38 @@ class Psi0Agent:
                 # Como não temos o ground_truth em tempo real no modo treino genérico,
                 # usamos uma heurística de sucesso do output para o internal_score,
                 # mas em sistemas de benchmark usamos o semantic_evaluate.
-                internal_score = 0.5
-                if output is not None:
-                    # No modo treino real, o internal_score viria da avaliação do resultado
-                    internal_score = 0.8 
-                else:
-                    internal_score = 0.2
+                internal_score = 0.1 # Default para falha
+                
+                # Avaliação mais granular baseada no tipo de agente e na qualidade do output
+                if chosen_action == "A1": # Symbolic Solver
+                    if output is not None and ("[" in str(output) or "I" in str(output) or "sqrt" in str(output)) and "error" not in str(output).lower():
+                        internal_score = 0.9 # Alta pontuação para resultados simbólicos válidos
+                    elif output is not None and len(str(output)) > 0 and "error" not in str(output).lower():
+                        internal_score = 0.7 # Pontuação média para outros resultados não vazios
+                    else:
+                        internal_score = 0.2
+                elif chosen_action == "A2": # Numeric Solver
+                    try:
+                        # Tenta converter para float ou lista de floats
+                        if isinstance(output, str) and output.startswith("[") and output.endswith("]"):
+                            # Tenta parsear lista de números
+                            nums = [float(s.strip()) for s in output[1:-1].split(',') if s.strip()]
+                            if nums: internal_score = 0.9
+                        elif float(output) is not None: 
+                            internal_score = 0.9 # Alta pontuação para resultados numéricos válidos
+                        else:
+                            internal_score = 0.2
+                    except (ValueError, TypeError): # Se não for um número válido
+                        internal_score = 0.2
+                elif chosen_action == "A3": # LLM Solver
+                    if output is not None and len(str(output)) > 5 and "error" not in str(output).lower() and "None" not in str(output):
+                        internal_score = 0.8 # Boa pontuação para respostas LLM coerentes
+                    else:
+                        internal_score = 0.2
+                
+                # Penalidade adicional se o output for 'curto' ou indicar falha
+                if output == "curto" or "falha" in str(output).lower():
+                    internal_score = 0.1
                 
                 # 🔥 Specialization Signal Tracker
                 self.specialization[chosen_action]["total"] += 1
@@ -160,7 +209,7 @@ class Psi0Agent:
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
-                                if self.cycle % 5 == 0:
+                if self.cycle % 5 == 0:
                     print("  Meta Policy Scores:", self.meta.get_scores())
                     print("  Melhor ação atual:", self.meta.best_action())
                     print("  Specialization Signal:")
@@ -199,6 +248,7 @@ class Psi0Agent:
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "specialization": self.specialization,
+                    "meta_policy_stats": self.meta.stats, # Adiciona o estado da MetaPolicy
                     "task_type": task_type
                 }
 

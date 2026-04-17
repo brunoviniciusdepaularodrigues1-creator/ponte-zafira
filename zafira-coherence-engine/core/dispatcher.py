@@ -1,24 +1,29 @@
-from core.executor_real import solve_math
+import os
+import sys
+
+# Adiciona a raiz do projeto ao sys.path para permitir imports de core
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from agents.a1_symbolic import SymbolicSolver
+from agents.a2_numeric import NumericSolver
+from agents.a3_llm import LLMSolver
+
+# Instancia os agentes
+symbolic_solver = SymbolicSolver()
+numeric_solver = NumericSolver()
+llm_solver = LLMSolver()
 
 def execute(action, input_text):
     if action == "A1":
-        return solve_math(input_text)
+        result = symbolic_solver.solve(input_text)
+        return result.get("result")
 
     if action == "A2":
-        try:
-            # Tenta resolver numericamente
-            clean = input_text.replace("resolve", "").strip()
-            if "=" in clean:
-                # Tenta resolver equação simples numericamente (fallback simples)
-                parts = clean.split("=")
-                # Aqui o numeric_solver é mais limitado propositalmente para testar especialização
-                return float(eval(parts[1].strip()))
-            return float(eval(clean))
-        except:
-            return None
+        result = numeric_solver.solve(input_text)
+        return result.get("result")
 
     if action == "A3":
-        # A3 (LLM) está desabilitado propositalmente para forçar o agente a aprender A1/A2
-        return None
+        result = llm_solver.solve(input_text)
+        return result.get("result")
 
     return None

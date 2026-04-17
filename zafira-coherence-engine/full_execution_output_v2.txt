@@ -1,0 +1,595 @@
+Zafira Coherence Engine: Psi0Agent Evolutivo Iniciado...
+
+--- Ciclo 1: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.32635096212705145, 'A2': 0.29398668372746534, 'A3': 0.3796623541454832}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3239537057220319, 'A2': 0.35604391106663613, 'A3': 0.3200023832113319}
+  Probs MetaPolicy: {'A1': 0.3333333333333333, 'A2': 0.3333333333333333, 'A3': 0.3333333333333333}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.3267675940054224, 'A2': 0.3492307377466453, 'A3': 0.32400166824793236}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4731
+  Execução: calculate 100 / 4 - 5 -> 20
+  Feedback: Advantage=-0.2731 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 2: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.32803996414848446, 'A2': 0.2955081871416234, 'A3': 0.376451848709892}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3253559025718405, 'A2': 0.3572963167759823, 'A3': 0.3173477806521772}
+  Probs MetaPolicy: {'A1': 0.5, 'A2': 0.5, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.37774913180028835, 'A2': 0.4001074217431876, 'A3': 0.22214344645652404}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4170
+  Execução: calculate 100 / 4 - 5 -> None
+  Feedback: Advantage=-0.2170 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 3: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3256531267039723, 'A2': 0.29655784778897987, 'A3': 0.3777890255070478}
+  Probs Blended (Coherence + Strategy): {'A1': 0.32331390385698583, 'A2': 0.35820689316588816, 'A3': 0.3184792029771259}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2263197326998901, 'A2': 0.5507448252161218, 'A3': 0.22293544208398816}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4517
+  Execução: calculate 15 * 3 + 2 -> 47
+  Feedback: Advantage=-0.2517 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 4: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.32719892421212365, 'A2': 0.2979655369666479, 'A3': 0.37483553882122844}
+  Probs Blended (Coherence + Strategy): {'A1': 0.32460650257233303, 'A2': 0.359374588648421, 'A3': 0.31601890877924593}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2272245518006331, 'A2': 0.5515622120538947, 'A3': 0.22121323614547214}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3338
+  Execução: calculate 100 / 4 - 5 -> 20.0
+  Feedback: Advantage=0.5662 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 5: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.32442326752726924, 'A2': 0.30392095584526696, 'A3': 0.37165577662746385}
+  Probs Blended (Coherence + Strategy): {'A1': 0.40257194660034296, 'A2': 0.28372159582012657, 'A3': 0.3137064575795305}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.28180036262024005, 'A2': 0.4986051170740886, 'A3': 0.2195945203056713}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3603
+  Execução: solve x**2 - 4 = 0 -> []
+  Feedback: Advantage=-0.2603 | Internal Score=0.1
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.5, 'A3': 0.0}
+  Melhor ação atual: A2
+  Specialization Signal:
+    A1 (symbolic_solver): 0/1 = 0.00
+    A2 (numeric_solver): 1/2 = 0.50
+    A3 (llm_solver): 0/2 = 0.00
+Estado persistido no bridge.
+
+--- Ciclo 6: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.3257033628538464, 'A2': 0.3011743971963074, 'A3': 0.3731222399498463}
+  Probs Blended (Coherence + Strategy): {'A1': 0.40367141695817926, 'A2': 0.28140325331630156, 'A3': 0.3149253297255192}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.28256999187072546, 'A2': 0.4969822773214111, 'A3': 0.2204477308078634}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3473
+  Execução: solve x**3 - 8 = 0 -> []
+  Feedback: Advantage=-0.2473 | Internal Score=0.1
+Estado persistido no bridge.
+
+--- Ciclo 7: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.326913333220755, 'A2': 0.29857829790024665, 'A3': 0.37450836887899847}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3247168414350407, 'A2': 0.35919987966834943, 'A3': 0.31608327889661}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.22730178900452847, 'A2': 0.5514399157678446, 'A3': 0.22125829522762697}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.3992
+  Execução: calculate 15 * 3 + 2 -> None
+  Feedback: Advantage=-0.1992 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 8: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.19, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3247259877757215, 'A2': 0.2995485947611591, 'A3': 0.3757254174631194}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3228259325174998, 'A2': 0.3600485006215243, 'A3': 0.31712556686097587}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.22597815276224983, 'A2': 0.552033950435067, 'A3': 0.2219878968026831}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3289
+  Execução: simplify (a + b)**2 -> None
+  Feedback: Advantage=-0.1289 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 9: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.32535220273760973, 'A2': 0.2981978154378264, 'A3': 0.3764499818245638}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3234185889018995, 'A2': 0.35880042539115775, 'A3': 0.3177809857069428}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.22639301223132965, 'A2': 0.5511602977738105, 'A3': 0.22244668999485998}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3237
+  Execução: calculate 100 / 4 - 5 -> 20.0
+  Feedback: Advantage=0.5763 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 10: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.32254027104768296, 'A2': 0.3042633031960937, 'A3': 0.37319642575622347}
+  Probs Blended (Coherence + Strategy): {'A1': 0.30135215433188905, 'A2': 0.2632385655830319, 'A3': 0.4354092800850791}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21094650803232232, 'A2': 0.4842669959081223, 'A3': 0.3047864960595554}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3620
+  Execução: What is the highest mountain in the world? -> None
+  Feedback: Advantage=-0.1620 | Internal Score=0.2
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.3333333333333333, 'A3': 0.0}
+  Melhor ação atual: A2
+  Specialization Signal:
+    A1 (symbolic_solver): 0/2 = 0.00
+    A2 (numeric_solver): 2/6 = 0.33
+    A3 (llm_solver): 0/2 = 0.00
+Estado persistido no bridge.
+
+--- Ciclo 11: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.48, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3233340041633259, 'A2': 0.30255117821328914, 'A3': 0.37411481762338505}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3020738011949324, 'A2': 0.2617145551105478, 'A3': 0.4362116436945198}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21145166083645267, 'A2': 0.4832001885773835, 'A3': 0.3053481505861639}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3557
+  Execução: Explain artificial intelligence in one sentence. -> None
+  Feedback: Advantage=-0.1557 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 12: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.32409426646544093, 'A2': 0.30091125157386545, 'A3': 0.37499448196069374}
+  Probs Blended (Coherence + Strategy): {'A1': 0.4027693306487092, 'A2': 0.2802463532141947, 'A3': 0.31698431613709616}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2819385314540964, 'A2': 0.49617244724993625, 'A3': 0.2218890212959673}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3350
+  Execução: solve 2*y + 5 = 15 -> None
+  Feedback: Advantage=-0.1350 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 13: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3247515515533993, 'A2': 0.2994934523190026, 'A3': 0.3757549961275981}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3233848657132886, 'A2': 0.3589491493718647, 'A3': 0.31766598491484677}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.22636940599930203, 'A2': 0.5512644045603052, 'A3': 0.22236618944039271}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.3896
+  Execução: calculate 100 / 4 - 5 -> None
+  Feedback: Advantage=-0.1896 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 14: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.24, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3226762705860985, 'A2': 0.30041390324763295, 'A3': 0.37690982616626867}
+  Probs Blended (Coherence + Strategy): {'A1': 0.30157843224120473, 'A2': 0.2597555796709943, 'A3': 0.438665988087801}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 1.0, 'A3': 0.0}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21110490256884332, 'A2': 0.481828905769696, 'A3': 0.3070661916614607}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4299
+  Execução: Who wrote 'Don Quixote'? -> Miguel de Cervantes.
+  Feedback: Advantage=0.3701 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 15: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.32042058067429463, 'A2': 0.2983138398940729, 'A3': 0.38126557943163253}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3999916617306181, 'A2': 0.278279108572559, 'A3': 0.3217292296968228}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.4285714285714286, 'A3': 0.5714285714285715}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.27999416321143267, 'A2': 0.3233668045722199, 'A3': 0.39663903221634744}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3342
+  Execução: solve x**3 - 8 = 0 -> []
+  Feedback: Advantage=-0.2342 | Internal Score=0.1
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.2222222222222222, 'A3': 0.3333333333333333}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 0/3 = 0.00
+    A2 (numeric_solver): 2/9 = 0.22
+    A3 (llm_solver): 1/3 = 0.33
+Estado persistido no bridge.
+
+--- Ciclo 16: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.24, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.32153745320450755, 'A2': 0.29586801074226354, 'A3': 0.38259453605322896}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3009632570643474, 'A2': 0.2561919989686769, 'A3': 0.4428447439669757}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.39999999999999997, 'A3': 0.6}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21067427994504317, 'A2': 0.2993343992780738, 'A3': 0.48999132077688295}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.3862
+  Execução: Who wrote 'Don Quixote'? -> None
+  Feedback: Advantage=-0.1862 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 17: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.48, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3195098021999947, 'A2': 0.2967522409359836, 'A3': 0.3837379568640218}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2991925225112846, 'A2': 0.25697036063716905, 'A3': 0.4438371168515464}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.39999999999999997, 'A3': 0.6}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2094347657578992, 'A2': 0.2998792524460183, 'A3': 0.49068598179608247}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4410
+  Execução: Explain artificial intelligence in one sentence. -> Artificial intelligence is the simulation of human intelligence processes by machines, especially computer systems.
+  Feedback: Advantage=0.3590 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 18: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.31730431787003444, 'A2': 0.2947038455103709, 'A3': 0.38799183661959463}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3176462618396372, 'A2': 0.3555344909691422, 'A3': 0.3268192471912206}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.30769230769230765, 'A3': 0.6923076923076923}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.22235238328774604, 'A2': 0.34118183598609186, 'A3': 0.4364657807261621}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3300
+  Execução: calculate 100 / 4 - 5 -> 20.0
+  Feedback: Advantage=0.5700 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 19: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.31462396657492553, 'A2': 0.30066166377711107, 'A3': 0.38471436964796346}
+  Probs Blended (Coherence + Strategy): {'A1': 0.29567167069583344, 'A2': 0.2599008010108708, 'A3': 0.44442752829329574}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.37499999999999994, 'A3': 0.625}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2069701694870834, 'A2': 0.29443056070760953, 'A3': 0.498599269805307}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4770
+  Execução: What is the highest mountain in the world? -> Mount Everest
+  Feedback: Advantage=0.3230 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 20: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.3126657711283617, 'A2': 0.29879036863270747, 'A3': 0.3885438602389309}
+  Probs Blended (Coherence + Strategy): {'A1': 0.39431096808871113, 'A2': 0.2785992303537635, 'A3': 0.3270898015575254}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.33333333333333337, 'A3': 0.6666666666666667}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2760176776620978, 'A2': 0.29501946124763445, 'A3': 0.42896286109026777}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3674
+  Execução: solve 2*y + 5 = 15 -> None
+  Feedback: Advantage=-0.1674 | Internal Score=0.2
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.2727272727272727, 'A3': 0.6}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 0/4 = 0.00
+    A2 (numeric_solver): 3/11 = 0.27
+    A3 (llm_solver): 3/5 = 0.60
+Estado persistido no bridge.
+
+--- Ciclo 21: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.31344652936912737, 'A2': 0.29703937684291687, 'A3': 0.3895140937879557}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2950219750114597, 'A2': 0.2570461421493504, 'A3': 0.4479318828391899}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3125, 'A3': 0.6875}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2065153825080218, 'A2': 0.27368229950454526, 'A3': 0.5198023179874329}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4204
+  Execução: What is the highest mountain in the world? -> None
+  Feedback: Advantage=-0.2204 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 22: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.31107982951206015, 'A2': 0.2980633364917866, 'A3': 0.39085683399615323}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3929919181181116, 'A2': 0.2779317571323224, 'A3': 0.329076324749566}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3125, 'A3': 0.6875}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.27509434268267813, 'A2': 0.28830222999262567, 'A3': 0.43660342732469615}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4712
+  Execução: solve x**2 - 4 = 0 -> x = 2 ou x = -2
+  Feedback: Advantage=0.3288 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 23: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.24, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3090773878175404, 'A2': 0.2961446828345083, 'A3': 0.39477792934795136}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2915993609311922, 'A2': 0.25659630651329035, 'A3': 0.45180433255551744}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.2903225806451613, 'A3': 0.7096774193548387}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.20411955265183454, 'A2': 0.26671418875285163, 'A3': 0.5291662585953139}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4907
+  Execução: Who wrote 'Don Quixote'? -> Miguel de Cervantes.
+  Feedback: Advantage=0.3093 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 24: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.30718750010416374, 'A2': 0.29433387356947993, 'A3': 0.3984786263263562}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31029242025580184, 'A2': 0.3553420228550698, 'A3': 0.33436555688912845}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.2763157894736842, 'A3': 0.7236842105263158}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21720469417906127, 'A2': 0.33163415284065406, 'A3': 0.45116115298028464}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.5042
+  Execução: calculate 15 * 3 + 2 -> 47
+  Feedback: Advantage=-0.3042 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 25: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.30904638652359356, 'A2': 0.29611497872568243, 'A3': 0.39483863475072406}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31182737492203294, 'A2': 0.3567830711827648, 'A3': 0.33138955389520225}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3037974683544304, 'A3': 0.6962025316455697}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21827916244542306, 'A2': 0.34088739033426446, 'A3': 0.4408334472203125}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4890
+  Execução: calculate 15 * 3 + 2 -> 47
+  Feedback: Advantage=-0.2890 | Internal Score=0.2
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.2727272727272727, 'A3': 0.5555555555555556}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 0/5 = 0.00
+    A2 (numeric_solver): 3/11 = 0.27
+    A3 (llm_solver): 5/9 = 0.56
+Estado persistido no bridge.
+
+--- Ciclo 26: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.31080683243918544, 'A2': 0.2978017624176296, 'A3': 0.39139140514318493}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3132879620295064, 'A2': 0.3581535569131185, 'A3': 0.3285584810573751}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3292682926829268, 'A3': 0.6707317073170732}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21930157342065446, 'A2': 0.349487977644061, 'A3': 0.43121044893528454}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4020
+  Execução: calculate 100 / 4 - 5 -> None
+  Feedback: Advantage=-0.2020 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 27: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.19, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3086469867675991, 'A2': 0.29873503610318414, 'A3': 0.39261797712921664}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31141456106242815, 'A2': 0.358973845582657, 'A3': 0.32961159335491486}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3292682926829268, 'A3': 0.6707317073170732}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2179901927436997, 'A2': 0.35006217971273795, 'A3': 0.43194762754356236}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3471
+  Execução: calculate 7 * 7 + 1 -> 50
+  Feedback: Advantage=0.5529 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 28: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3060840848204295, 'A2': 0.3045581071795472, 'A3': 0.3893578080000233}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2895308432147959, 'A2': 0.2632278905240907, 'A3': 0.4472412662611134}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.375, 'A3': 0.6250000000000001}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2026715902503571, 'A2': 0.29675952336686345, 'A3': 0.5005688863827794}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3856
+  Execução: What is the highest mountain in the world? -> None
+  Feedback: Advantage=-0.1856 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 29: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.3069477273626424, 'A2': 0.3025958581307958, 'A3': 0.39045641450656177}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3903076520426173, 'A2': 0.2815126364384875, 'A3': 0.32817971151889513}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3564356435643564, 'A3': 0.6435643564356436}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.27321535642983213, 'A2': 0.3039895385762482, 'A3': 0.42279510499391976}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3650
+  Execução: solve x**2 - 4 = 0 -> []
+  Feedback: Advantage=-0.2650 | Internal Score=0.1
+Estado persistido no bridge.
+
+--- Ciclo 30: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.19, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3081749583005563, 'A2': 0.2998075138531398, 'A3': 0.39201752784630395}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31136700344696044, 'A2': 0.3591635161607509, 'A3': 0.3294694803922886}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.33962264150943394, 'A3': 0.6603773584905661}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.21795690241287233, 'A2': 0.3533012537653558, 'A3': 0.4287418438217719}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4707
+  Execução: simplify (a + b)**2 -> a**2 + 2*a*b + b**2
+  Feedback: Advantage=0.3293 | Internal Score=0.8
+  Meta Policy Scores: {'A1': 0.0, 'A2': 0.2857142857142857, 'A3': 0.6}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 0/6 = 0.00
+    A2 (numeric_solver): 4/14 = 0.29
+    A3 (llm_solver): 6/10 = 0.60
+Estado persistido no bridge.
+
+--- Ciclo 31: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3061822077146207, 'A2': 0.29786886964209375, 'A3': 0.3959489226432856}
+  Probs Blended (Coherence + Strategy): {'A1': 0.289979655144654, 'A2': 0.25781269326631534, 'A3': 0.45220765158903065}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3225806451612903, 'A3': 0.6774193548387096}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.20298575860125784, 'A2': 0.27724307883480787, 'A3': 0.5197711625639344}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4151
+  Execução: What is the highest mountain in the world? -> None
+  Feedback: Advantage=-0.2151 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 32: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3039023040613906, 'A2': 0.2988476746419534, 'A3': 0.39725002129665593}
+  Probs Blended (Coherence + Strategy): {'A1': 0.28801378529282623, 'A2': 0.2586663288276597, 'A3': 0.45331988587951416}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.3225806451612903, 'A3': 0.6774193548387096}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.20160964970497836, 'A2': 0.27784062372774887, 'A3': 0.5205497265672728}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.4879
+  Execução: What is the highest mountain in the world? -> Mount Everest
+  Feedback: Advantage=0.3121 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 33: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.30201539137250655, 'A2': 0.29699214586908995, 'A3': 0.4009924627584035}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3867071875452749, 'A2': 0.27737935501600625, 'A3': 0.3359134574387188}
+  Probs MetaPolicy: {'A1': 0.0, 'A2': 0.30985915492957744, 'A3': 0.6901408450704225}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2706950312816925, 'A2': 0.28712329499007766, 'A3': 0.44218167372823}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4043
+  Execução: solve 2*y + 5 = 15 -> [5]
+  Feedback: Advantage=0.4957 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 34: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.30726592058281693, 'A2': 0.2947580479852057, 'A3': 0.3979760314319773}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3104748000666048, 'A2': 0.3557734525987388, 'A3': 0.33375174733465635}
+  Probs MetaPolicy: {'A1': 0.11937984496124031, 'A2': 0.27286821705426356, 'A3': 0.6077519379844961}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.25314631353499545, 'A2': 0.33090188193539627, 'A3': 0.41595180452960834}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.5125
+  Execução: calculate 15 * 3 + 2 -> 47
+  Feedback: Advantage=-0.3125 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 35: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.30917356930707995, 'A2': 0.2965880420604962, 'A3': 0.39423838863242383}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31204677396608665, 'A2': 0.3572513124914805, 'A3': 0.33070191354243283}
+  Probs MetaPolicy: {'A1': 0.12574850299401197, 'A2': 0.2874251497005988, 'A3': 0.5868263473053893}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.25615729267446424, 'A2': 0.336303463654216, 'A3': 0.4075392436713198}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3738
+  Execução: calculate 100 / 4 - 5 -> 20.0
+  Feedback: Advantage=0.5262 | Internal Score=0.9
+  Meta Policy Scores: {'A1': 0.125, 'A2': 0.3333333333333333, 'A3': 0.5833333333333334}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 1/8 = 0.12
+    A2 (numeric_solver): 5/15 = 0.33
+    A3 (llm_solver): 7/12 = 0.58
+Estado persistido no bridge.
+
+--- Ciclo 36: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.19, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.30674832683051745, 'A2': 0.3021057988426823, 'A3': 0.3911458743268001}
+  Probs Blended (Coherence + Strategy): {'A1': 0.31026743545486446, 'A2': 0.3612750389870687, 'A3': 0.3284575255580669}
+  Probs MetaPolicy: {'A1': 0.12, 'A2': 0.31999999999999995, 'A3': 0.5599999999999999}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2531872048184051, 'A2': 0.34889252729094805, 'A3': 0.39792026789064683}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.3989
+  Execução: calculate 7 * 7 + 1 -> 50
+  Feedback: Advantage=0.5011 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 37: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.19, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.304415098093365, 'A2': 0.30741421184189016, 'A3': 0.38817069006474486}
+  Probs Blended (Coherence + Strategy): {'A1': 0.3085621418387683, 'A2': 0.3651331950538059, 'A3': 0.3263046631074258}
+  Probs MetaPolicy: {'A1': 0.11538461538461536, 'A2': 0.3461538461538461, 'A3': 0.5384615384615384}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.25060888390252245, 'A2': 0.359439390383818, 'A3': 0.3899517257136596}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4535
+  Execução: simplify (a + b)**2 -> (a + b)**2
+  Feedback: Advantage=0.2465 | Internal Score=0.7
+Estado persistido no bridge.
+
+--- Ciclo 38: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.42, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.30703148962260973, 'A2': 0.3062578958585675, 'A3': 0.38671061451882277}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2903237311566677, 'A2': 0.2643562026181127, 'A3': 0.4453200662252195}
+  Probs MetaPolicy: {'A1': 0.18823529411764706, 'A2': 0.3176470588235294, 'A3': 0.49411764705882355}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.25969720004496155, 'A2': 0.28034345947973777, 'A3': 0.4599593404753008}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4756
+  Execução: What is the highest mountain in the world? -> None
+  Feedback: Advantage=-0.2756 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 39: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.3, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.3041079621856768, 'A2': 0.30754995076136854, 'A3': 0.38834208705295464}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2878679956526574, 'A2': 0.2654505536569784, 'A3': 0.4466814506903642}
+  Probs MetaPolicy: {'A1': 0.17266187050359716, 'A2': 0.32374100719424465, 'A3': 0.5035971223021584}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2533061581079393, 'A2': 0.28293768971815825, 'A3': 0.4637561521739024}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4578
+  Execução: What is the capital of France? -> None
+  Feedback: Advantage=-0.2578 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 40: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.2, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3013874655498283, 'A2': 0.30875227606606603, 'A3': 0.3898602583841056}
+  Probs Blended (Coherence + Strategy): {'A1': 0.30556619425980375, 'A2': 0.3664766125772852, 'A3': 0.327957193162911}
+  Probs MetaPolicy: {'A1': 0.159468438538206, 'A2': 0.3289036544850498, 'A3': 0.5116279069767442}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2617368675433244, 'A2': 0.3552047251496146, 'A3': 0.383058407307061}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.5215
+  Execução: calculate 15 * 3 + 2 -> 47
+  Feedback: Advantage=-0.3215 | Internal Score=0.2
+  Meta Policy Scores: {'A1': 0.18181818181818182, 'A2': 0.375, 'A3': 0.5384615384615384}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 2/11 = 0.18
+    A2 (numeric_solver): 6/16 = 0.38
+    A3 (llm_solver): 7/13 = 0.54
+Estado persistido no bridge.
+
+--- Ciclo 41: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.3032730970040279, 'A2': 0.3106839854762228, 'A3': 0.3860429175197494}
+  Probs Blended (Coherence + Strategy): {'A1': 0.38712021767207533, 'A2': 0.2880341677808855, 'A3': 0.32484561454703925}
+  Probs MetaPolicy: {'A1': 0.1660015961691939, 'A2': 0.3423782920989624, 'A3': 0.4916201117318435}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.3207846312212109, 'A2': 0.3043374050763086, 'A3': 0.37487796370248055}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.5044
+  Execução: solve x**2 - 4 = 0 -> x = 2 ou x = -2
+  Feedback: Advantage=0.2956 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 42: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.30153969740877906, 'A2': 0.30890822791646916, 'A3': 0.3895520746747517}
+  Probs Blended (Coherence + Strategy): {'A1': 0.385924447688088, 'A2': 0.2868065864330104, 'A3': 0.3272689658789016}
+  Probs MetaPolicy: {'A1': 0.16115107913669066, 'A2': 0.33237410071942447, 'A3': 0.5064748201438849}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.31849243712266884, 'A2': 0.30047684071893466, 'A3': 0.38103072215839656}
+  Actor escolheu ação: A3 → Executor: llm_solver | Valor Previsto (Critic): 0.5192
+  Execução: solve x**2 - 4 = 0 -> x = 2 ou x = -2
+  Feedback: Advantage=0.2808 | Internal Score=0.8
+Estado persistido no bridge.
+
+--- Ciclo 43: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.24, 0.9, 0.8, 0.7]
+Tipo de Tarefa: reasoning
+  Probs Actor: {'A1': 0.29988771453720764, 'A2': 0.3072158766081979, 'A3': 0.3928964088545945}
+  Probs Blended (Coherence + Strategy): {'A1': 0.2847907196364995, 'A2': 0.26564182000291364, 'A3': 0.4495674603605868}
+  Probs MetaPolicy: {'A1': 0.15717092337917488, 'A2': 0.32416502946954817, 'A3': 0.518664047151277}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.24650478075930213, 'A2': 0.28319878284290406, 'A3': 0.4702964363977939}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.4258
+  Execução: Who wrote 'Don Quixote'? -> None
+  Feedback: Advantage=-0.2258 | Internal Score=0.2
+Estado persistido no bridge.
+
+--- Ciclo 44: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.21, 0.9, 0.8, 0.7]
+Tipo de Tarefa: arithmetic
+  Probs Actor: {'A1': 0.3009254244535202, 'A2': 0.3048186161675125, 'A3': 0.39425595937896724}
+  Probs Blended (Coherence + Strategy): {'A1': 0.30570349715678896, 'A2': 0.3635927369257181, 'A3': 0.330703765917493}
+  Probs MetaPolicy: {'A1': 0.16022620169651272, 'A2': 0.31102733270499533, 'A3': 0.5287464655984919}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.2620603085187061, 'A2': 0.3478231156595012, 'A3': 0.39011657582179265}
+  Actor escolheu ação: A2 → Executor: numeric_solver | Valor Previsto (Critic): 0.4128
+  Execução: calculate 100 / 4 - 5 -> 20.0
+  Feedback: Advantage=0.4872 | Internal Score=0.9
+Estado persistido no bridge.
+
+--- Ciclo 45: Aprendizado Cognitivo (Actor-Critic + Coherence) ---
+Estado Vetorial (Camada 1): [0.13, 0.18, 0.9, 0.8, 0.7]
+Tipo de Tarefa: algebra
+  Probs Actor: {'A1': 0.2986803842097342, 'A2': 0.31000498480442323, 'A3': 0.3913146309858425}
+  Probs Blended (Coherence + Strategy): {'A1': 0.38406723536108145, 'A2': 0.2873520508040868, 'A3': 0.3285807138348318}
+  Probs MetaPolicy: {'A1': 0.1553062985332183, 'A2': 0.3321829163071614, 'A3': 0.5125107851596205}
+  Probs Finais (Blended + MetaPolicy): {'A1': 0.3154389543127225, 'A2': 0.3008013104550092, 'A3': 0.38375973523226836}
+  Actor escolheu ação: A1 → Executor: symbolic_solver | Valor Previsto (Critic): 0.4558
+  Execução: solve x**2 - 4 = 0 -> [-2, 2]
+  Feedback: Advantage=0.4442 | Internal Score=0.9
+  Meta Policy Scores: {'A1': 0.25, 'A2': 0.3888888888888889, 'A3': 0.6}
+  Melhor ação atual: A3
+  Specialization Signal:
+    A1 (symbolic_solver): 3/12 = 0.25
+    A2 (numeric_solver): 7/18 = 0.39
+    A3 (llm_solver): 9/15 = 0.60
+Estado persistido no bridge.

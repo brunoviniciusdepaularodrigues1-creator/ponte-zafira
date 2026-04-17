@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import random
 
 # Adiciona a raiz do projeto ao sys.path para permitir imports de core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -15,50 +16,47 @@ OUTPUT_DIR = "feedback_real"
 
 controller = Psi0Controller()
 
-def read_inputs():
-    if not os.path.exists(INPUT_DIR):
-        os.makedirs(INPUT_DIR)
-        return []
-    
-    files = os.listdir(INPUT_DIR)
-    data = []
-
-    for f in files:
-        file_path = os.path.join(INPUT_DIR, f)
-        if os.path.isfile(file_path):
-            with open(file_path, "r") as file:
-                content = file.read()
-                data.append(content)
-
-    return data
+BENCHMARK_TASKS = [
+    "solve x**2 - 4 = 0", # Symbolic
+    "calculate 15 * 3 + 2", # Numeric
+    "What is the capital of France?", # LLM
+    "simplify (a + b)**2", # Symbolic
+    "find the square root of 81", # Numeric
+    "Explain artificial intelligence in one sentence.", # LLM
+    "solve 2*y + 5 = 15", # Symbolic
+    "calculate 100 / 4 - 5", # Numeric
+    "Who wrote 'Don Quixote'?", # LLM
+    "solve x**3 - 8 = 0", # Symbolic
+    "calculate 7 * 7 + 1", # Numeric
+    "What is the highest mountain in the world?" # LLM
+]
 
 def process(adjustment=0.5):
-    inputs = read_inputs()
-    results = []
+    # Seleciona uma tarefa aleatória da lista de benchmark
+    item = random.choice(BENCHMARK_TASKS)
 
-    for item in inputs:
-        # Extração de características estruturais (Camada F)
-        features = extract_features(item)
+    # Extração de características estruturais (Camada F)
+    features = extract_features(item)
 
-        # Cálculo normalizado de energia (E) para estabilidade
-        E = (
-            (features["length"] / 100) * 0.3 +
-            (features["word_count"] / 50) * 0.3 +
-            features["complexity"] * 0.4
-        )
+    # Cálculo normalizado de energia (E) para estabilidade
+    E = (
+        (features["length"] / 100) * 0.3 +
+        (features["word_count"] / 50) * 0.3 +
+        features["complexity"] * 0.4
+    )
 
-        # Aplicação do ajuste de feedback (Learning - L)
-        # O ajuste influencia a percepção de energia do sistema
-        E = E * (1 + adjustment * 0.1)
+    # Aplicação do ajuste de feedback (Learning - L)
+    # O ajuste influencia a percepção de energia do sistema
+    E = E * (1 + adjustment * 0.1)
 
-        history = controller.run_cycle(E, steps=10)
-        final = history[-1]
+    history = controller.run_cycle(E, steps=10)
+    final = history[-1]
 
-        # Formatação estruturada (Camada Semântica)
-        formatted = format_output(item, final)
-        results.append(formatted)
-
-    return results
+    # Formatação estruturada (Camada Semântica)
+    formatted = format_output(item, final)
+    
+    # Retorna uma lista contendo apenas o resultado da tarefa selecionada
+    return [formatted]
 
 def save_results(results):
     os.makedirs(OUTPUT_DIR, exist_ok=True)

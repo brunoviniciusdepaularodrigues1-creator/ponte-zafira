@@ -1,49 +1,43 @@
 {
-  "agent": "psi0",
-  "timestamp": "2026-04-15T13:25:22.978289",
-  "generation": 514,
-  "best_executor": "v1",
-  "feedback_applied": 1.0,
+  "agent": "zafira-psi0",
+  "timestamp": "2026-04-16T22:36:16.911094",
+  "state_vector": [
+    0.13,
+    0.18,
+    0.9,
+    0.8,
+    0.7
+  ],
+  "chosen_action": "A1",
+  "chosen_executor": "symbolic_solver",
+  "internal_score": 0.9,
+  "advantage": 0.4868575381759182,
+  "raw_probabilities": {
+    "A1": 0.30653855087199405,
+    "A2": 0.31657888156598607,
+    "A3": 0.3768825675620199
+  },
+  "blended_probabilities": {
+    "A1": 0.3905699598501812,
+    "A2": 0.29362844375312247,
+    "A3": 0.31580159639669625
+  },
   "best_decision": {
-    "input": "curto\n",
-    "stage": "A",
-    "interpretation": "Pronto para execução",
-    "coherence": 0.303,
-    "structure": 0.503,
-    "variation": 0.828
+    "input": "solve x**3 - 8 = 0",
+    "stage": "F",
+    "interpretation": "Organizando estrutura do conteúdo",
+    "coherence": 0.215,
+    "structure": 0.358,
+    "variation": 1.085
   },
   "ranking": [
     {
-      "input": "curto\n",
-      "stage": "A",
-      "interpretation": "Pronto para execução",
-      "coherence": 0.303,
-      "structure": 0.503,
-      "variation": 0.828
-    },
-    {
-      "input": "repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo repetitivo\n",
+      "input": "solve x**3 - 8 = 0",
       "stage": "F",
       "interpretation": "Organizando estrutura do conteúdo",
-      "coherence": 0.244,
-      "structure": 0.41,
-      "variation": 0.991
-    },
-    {
-      "input": "A complexidade estrutural de um sistema dinâmico depende da integração harmoniosa entre seus componentes fundamentais e as leis de conservação.\n",
-      "stage": "C",
-      "interpretation": "Entrada caótica, precisa de organização",
-      "coherence": 0.077,
-      "structure": 0.049,
-      "variation": 1.655
-    },
-    {
-      "input": "Este é um texto longo e detalhado projetado para testar a capacidade do sistema de processar informações complexas e extensas de forma coerente.\n",
-      "stage": "C",
-      "interpretation": "Entrada caótica, precisa de organização",
-      "coherence": 0.075,
-      "structure": 0.043,
-      "variation": 1.666
+      "coherence": 0.215,
+      "structure": 0.358,
+      "variation": 1.085
     }
   ],
   "network_status": [
@@ -70,5 +64,34 @@
       "score": 0.95,
       "config": {}
     }
-  ]
+  ],
+  "specialization": {
+    "A1": {
+      "wins": 6,
+      "total": 16
+    },
+    "A2": {
+      "wins": 8,
+      "total": 23
+    },
+    "A3": {
+      "wins": 13,
+      "total": 28
+    }
+  },
+  "meta_policy_stats": {
+    "A1": {
+      "correct": 6,
+      "total": 16
+    },
+    "A2": {
+      "correct": 8,
+      "total": 23
+    },
+    "A3": {
+      "correct": 13,
+      "total": 28
+    }
+  },
+  "task_type": "algebra"
 }
