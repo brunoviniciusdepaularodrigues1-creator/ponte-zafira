@@ -21,6 +21,7 @@ from core.psi0_coherence import CoherenceLayer
 from core.dispatcher import execute
 from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
+from core.meta_policy import MetaPolicy
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -42,6 +43,7 @@ class Psi0Agent:
         self.value_fn = ValueFunction()
         self.actor = PolicyActor()
         self.coherence = CoherenceLayer()
+        self.meta = MetaPolicy()
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -154,10 +156,13 @@ class Psi0Agent:
                 self.value_fn.update(state_vector, stage, chosen_action, internal_score)
                 self.actor.update(stage, chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
+                self.meta.update(chosen_action, internal_score)
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
-                if self.cycle % 5 == 0:
+                                if self.cycle % 5 == 0:
+                    print("  Meta Policy Scores:", self.meta.get_scores())
+                    print("  Melhor ação atual:", self.meta.best_action())
                     print("  Specialization Signal:")
                     for action, stats in self.specialization.items():
                         rate = stats["wins"] / stats["total"] if stats["total"] > 0 else 0
