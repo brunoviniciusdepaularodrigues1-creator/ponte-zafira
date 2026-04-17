@@ -1,0 +1,14 @@
+{
+  "symbolic": {
+    "score": 0.42193654677,
+    "count": 7
+  },
+  "numeric": {
+    "score": 0.43113288177,
+    "count": 7
+  },
+  "llm": {
+    "score": 0.63176108677,
+    "count": 7
+  }
+}
