@@ -25,6 +25,7 @@ from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
 from core.shadow_policy import ShadowPolicy
 from core.curiosity_engine import CuriosityEngine
+from core.world_model import WorldModel
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -55,6 +56,9 @@ class Psi0Agent:
         # Nível 12: Curiosity e Goal Generation
         self.curiosity = CuriosityEngine(bound=0.05)
         self.synthetic_goals = []
+        
+        # Nível 13: World Model
+        self.world_model = WorldModel(state_dim=10)
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -96,12 +100,25 @@ class Psi0Agent:
                 strategy_bias = get_strategy_bias(task_type)
                 print(f"Tipo de Tarefa: {task_type}")
 
+                # 🔥 Nível 13: Imagination Loop (Simulação Interna)
+                # O sistema "imagina" as consequências de cada ação antes de agir
+                simulated_rewards = {}
+                for action in ACTIONS.keys():
+                    _, pred_reward = self.world_model.predict(state_vector, action)
+                    simulated_rewards[action] = pred_reward
+                
                 # 1. Actor e Coherence sugerem probabilidades
                 raw_probs = self.actor.softmax(top["stage"])
                 
-                # Nível 12: Injeção de Curiosidade (Direção Interna)
+                # Nível 12 & 13: Injeção de Curiosidade + Antecipação Preditiva
                 curiosity_bonus = self.curiosity.get_curiosity_signal(task_type)
+                # O bias agora inclui o que o sistema "imagina" ser a melhor recompensa
+                anticipation_bias = {k: simulated_rewards[k] * 0.2 for k in simulated_rewards}
+                
                 blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias + curiosity_bonus)
+                # Blend final com antecipação
+                for a in blended_probs:
+                    blended_probs[a] = (blended_probs[a] * 0.8) + (anticipation_bias.get(a, 0) * 0.2)
 
                 # 🔥 Nível 10.5: Adaptive Entropy Control
                 # Calculamos a entropia do blend atual (Intuição/Coerência)
@@ -154,6 +171,11 @@ class Psi0Agent:
                 self.actor.update(top["stage"], chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
+                
+                # Nível 13: Atualizar World Model
+                # Simulamos um "next_state" para o update (simplificado)
+                next_state_sim = encode_state(top.get("stage"), "next", history_stats)
+                pred_error = self.world_model.update(state_vector, chosen_action, next_state_sim, internal_score)
                 
                 # Nível 12: Atualizar Curiosity Engine
                 surprise = self.curiosity.measure_surprise(task_type, internal_score)

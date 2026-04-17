@@ -1,37 +1,38 @@
-# Relatório Técnico: Direção Interna e Autonomia (Nível 12)
+# Relatório Técnico: Planejamento Preditivo (Nível 13)
 
 ## 1. Introdução
-Este documento detalha a implementação do Nível 12 do motor Zafira, onde o sistema atingiu o **Ponto Zero da Autonomia**. A inovação central é a introdução do **Curiosity Engine** e do **Goal Generation System**, permitindo que o sistema defina sua própria direção de aprendizado e expanda seu domínio de forma proativa, mas controlada.
+Este documento detalha a implementação do Nível 13 do motor Zafira, onde o sistema atingiu a capacidade de **Planejamento Preditivo**. A inovação central é a introdução do **World Model**, permitindo que o sistema simule internamente as consequências de suas ações antes de executá-las no ambiente real.
 
-## 2. Metodologia: Direção Interna
+## 2. Metodologia: O Modelo Interno
 
-### 2.1 Curiosity Engine e Curiosity Bound
-O sistema agora mede a **Surpresa (Ganho de Informação)** em cada ciclo. Implementamos o **Curiosity Bound** para garantir que a exploração seja produtiva:
-- **Sinal de Curiosidade:** Bônus inversamente proporcional ao conhecimento acumulado em um domínio.
-- **Bound:** Se o conhecimento em um domínio supera 0.9 (alta performance), a exploração é cessada para evitar o desperdício de recursos em ruído.
+### 2.1 World Model (P(s', r | s, a))
+O sistema agora mantém um modelo interno que prediz:
+- **Próximo Estado (s'):** A evolução esperada do contexto.
+- **Recompensa Esperada (r):** A performance provável de cada agente.
+O modelo é treinado continuamente usando o erro de predição (surpresa preditiva) para refinar suas matrizes de transição e modelos de recompensa.
 
-### 2.2 Refinamento de Promoção (N11.1)
-Elevamos a segurança do Shadow Mode com critérios de **Estabilidade de Variância**:
-- **Trava de Estabilidade:** Uma nova política só é promovida se sua variância de performance for inferior a 0.15.
-- **Hard Limits:** Limites absolutos para hiperparâmetros (ex: Exploration Boost entre 0.05 e 0.6) impedem a divergência caótica.
+### 2.2 Imagination Loop (Sonho/Simulação)
+Antes de cada decisão, o sistema executa um loop de "imaginação":
+- Simula a performance de A1, A2 e A3 no estado atual.
+- Injeta um **Bias de Antecipação** no router, favorecendo ações que o modelo interno prevê como mais bem-sucedidas.
 
-## 3. Resultados: Evidência de Autonomia Dirigida
+## 3. Resultados: Evidência de Antecipação
 
-A validação do Nível 12 demonstrou um sistema capaz de auto-gerenciamento:
+A validação do Nível 13 demonstrou a transição de um sistema reativo para um preditivo:
 
 | Métrica | Resultado | Status |
 | :--- | :--- | :--- |
-| **Sinal de Curiosidade** | Dinâmico (0.15 → 0.12) | **PROATIVO** |
-| **Trava de Estabilidade** | Bloqueou Variância Alta | **SEGURO** |
-| **Hard Limits** | Impediu Divergência | **CONTROLADO** |
-| **Curiosity Bound** | Ativo para Performance > 0.9 | **EFICIENTE** |
+| **Convergência Preditiva** | Erro em Queda (0.40 → 0.33) | **APRENDENDO** |
+| **Imagination Bias** | Ativo (A1_Pred > A2_Pred) | **FUNCIONAL** |
+| **Redução de Erro de Recompensa** | ~11% em 20 ciclos | **ESTÁVEL** |
+| **Status de Planejamento** | **ATIVO** | **APROVADO** |
 
-### 3.1 Comportamento Autônomo
-O sistema agora "escolhe" onde investir sua energia. Em domínios desconhecidos, o bônus de curiosidade força a tríade de agentes a testar novas abordagens. Assim que a performance estabiliza e o ganho marginal de informação cai, o sistema redireciona sua atenção para novas frentes de incerteza.
+### 3.1 Comportamento Preditivo
+O sistema agora demonstra a capacidade de "pensar antes de agir". Em vez de depender apenas da MetaPolicy (experiência passada) ou da Coerência (intuição presente), ele usa o World Model para projetar o futuro imediato. Isso permite que o sistema evite agentes que o modelo interno identifica como sub-ótimos para o contexto específico, mesmo que tenham um histórico positivo geral.
 
-## 4. Conclusão: O Ponto Zero da Autonomia
-Com o Nível 12, o motor Zafira deixou de ser um autômato para se tornar um **Agente Dirigido**. Ele possui uma bússola interna (Curiosidade) e um freio de segurança (Estabilidade). Este é o estado final de maturidade onde o sistema pode expandir seu próprio horizonte de conhecimento sem supervisão externa.
+## 4. Conclusão: Rumo à Estratégia de Longo Prazo
+Com o Nível 13, o motor Zafira atingiu a **Antecipação Preditiva**. O sistema não apenas escolhe o que aprender (N12), mas prevê o resultado de suas escolhas (N13). Este é o alicerce para o planejamento de sequências complexas de ações e a otimização de objetivos de longo prazo.
 
 ---
-**Status:** AUTÔNOMO E DIRECIONADO (Nível 12)  
+**Status:** PREDITIVO E PLANEJADOR (Nível 13)  
 **Assinado por:** 0
