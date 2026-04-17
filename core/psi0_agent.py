@@ -7,6 +7,11 @@ import math
 import numpy as np
 from datetime import datetime
 
+# 🔥 Nível 15: Reprodutibilidade Científica (Determinismo)
+SEED = 42
+random.seed(SEED)
+np.random.seed(SEED)
+
 # Adiciona a raiz do projeto ao sys.path para permitir imports de core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -75,12 +80,16 @@ class Psi0Agent:
         with open(self.memory_file, "a") as f:
             f.write(json.dumps(experience, ensure_ascii=False) + "\n")
 
-    def run(self):
-        print("Zafira Coherence Engine: Psi0Agent N10.5 (Adaptive Entropy Router) Iniciado...")
+    def run(self, max_cycles=None):
+        print(f"Zafira Coherence Engine: Psi0Agent N15 (Architecture Consolidation) Iniciado... [SEED: {SEED}]")
         try:
             while True:
+                if max_cycles and self.cycle >= max_cycles:
+                    print(f"🏁 Limite de {max_cycles} ciclos atingido.")
+                    break
+                    
                 self.cycle += 1
-                print(f"\n--- Ciclo {self.cycle}: Adaptive Entropy Control ---")
+                print(f"\n--- Ciclo {self.cycle}: Unified Pipeline (N15) ---")
                 results = process()
                 if not results:
                     time.sleep(self.interval)
@@ -205,18 +214,34 @@ class Psi0Agent:
                     # Resetar shadow para novo ciclo de mutação
                     self.shadow = ShadowPolicy(self.meta)
                 
+                # 🔥 Nível 15: Telemetria Total (Auditoria Científica)
+                final_entropy_val = self.compute_entropy(final_probs)
+                avg_pred_error = self.world_model.get_avg_error()
+                
                 # Logs e Persistência
                 experience = {
                     "cycle": self.cycle,
-                    "entropy": current_entropy,
-                    "meta_weight": meta_weight,
-                    "chosen_action": chosen_action,
-                    "score": internal_score,
-                    "n11_shadow_active": True
+                    "timestamp": datetime.now().isoformat(),
+                    "telemetry": {
+                        "entropy_initial": current_entropy,
+                        "entropy_final": final_entropy_val,
+                        "meta_weight": meta_weight,
+                        "coherence_weight": coherence_weight,
+                        "prediction_error": pred_error,
+                        "avg_prediction_error": avg_pred_error,
+                        "surprise_val": surprise
+                    },
+                    "decision": {
+                        "task_type": task_type,
+                        "chosen_action": chosen_action,
+                        "score": internal_score
+                    },
+                    "n15_consolidated": True
                 }
                 self.log_experience(experience)
                 
-                print(f"Ação: {chosen_action} | Score: {internal_score} | Entropia Final: {self.compute_entropy(final_probs):.4f}")
+                print(f"Ação: {chosen_action} | Score: {internal_score}")
+                print(f"Telemetria [H: {final_entropy_val:.4f} | Err: {avg_pred_error:.4f} | Surp: {surprise:.4f}]")
                 time.sleep(self.interval)
 
         except KeyboardInterrupt:

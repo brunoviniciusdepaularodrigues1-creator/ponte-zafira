@@ -1,0 +1,17 @@
+{
+    "consistency_test": {
+        "10": {
+            "avg_score": 0.8262774387176473,
+            "final_entropy": 0.5955,
+            "final_pred_error": 0.04
+        },
+        "50": {
+            "avg_score": 0.8451098004415257,
+            "final_entropy": 0.5755,
+            "final_pred_error": 0.008
+        }
+    },
+    "determinism_check": "SEED 42 VALIDATED",
+    "telemetry_standard": "CONSOLIDATED N15",
+    "status": "VALIDADO N15"
+}

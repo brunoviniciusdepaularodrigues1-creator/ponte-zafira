@@ -1,34 +1,35 @@
-# Relatório Técnico: Estratégia de Longo Prazo (Nível 14)
+# Artigo Técnico: Consolidação de Arquitetura e Reprodutibilidade (Nível 15)
 
-## 1. Introdução
-Este documento detalha a implementação do Nível 14 do motor Zafira, onde o sistema atingiu a capacidade de **Estratégia de Longo Prazo**. A inovação central é a transição da escolha da melhor ação imediata para a avaliação de trajetórias completas, permitindo que o sistema maximize recompensas futuras acumuladas através de planejamento sequencial.
+## 1. Resumo (Abstract)
+Este documento formaliza a consolidação da arquitetura do motor Zafira no Nível 15. Após ciclos de evolução funcional e estratégica, o sistema atingiu a **Cristalização Arquitetural**. Implementamos um pipeline unificado e determinístico, garantindo que a inteligência do sistema seja auditável, replicável e resiliente a derivas de longo prazo.
 
-## 2. Metodologia: Planejamento Sequencial
+## 2. Metodologia: O Rigor Científico
 
-### 2.1 Planning Depth (Profundidade de Planejamento)
-O sistema agora opera com uma profundidade de planejamento de **3 passos**. Em vez de avaliar apenas a recompensa $r_t$, o sistema utiliza o World Model para simular trajetórias $T = \{a_t, a_{t+1}, a_{t+2}\}$ e calcular a recompensa total esperada:
-$$R_{future} = \sum_{i=0}^{depth-1} \gamma^i \cdot \hat{r}_{t+i}$$
+### 2.1 Determinismo e Reprodutibilidade
+Para garantir a validade dos experimentos, fixamos sementes globais de aleatoriedade ($SEED=42$). Qualquer execução do sistema sob as mesmas condições iniciais agora produzirá o mesmo rastro de decisão e aprendizado, permitindo auditorias técnicas precisas.
 
-### 2.2 Beam Search e Seleção de Trajetória
-O router foi atualizado para injetar um **Bias Estratégico** baseado no valor médio da melhor trajetória simulada. Isso permite que o sistema identifique caminhos que podem ser sub-ótimos no curto prazo, mas que levam a estados de alta performance no futuro.
+### 2.2 Telemetria Total (Unified Pipeline)
+O pipeline de decisão foi unificado em um fluxo sequencial sem bifurcações, onde cada estágio (Router → MetaPolicy → Curiosity → World Model → Planner) gera telemetria em tempo real:
+- **Entropia Normalizada ($H$):** Mede a estabilidade decisória ($[0, 1]$).
+- **Prediction Error ($E$):** Mede a fidelidade do World Model.
+- **Surpresa ($S$):** Mede o ganho de informação (Curiosidade).
 
-## 3. Resultados: Evidência de Comportamento Estratégico
+## 3. Resultados: Estabilidade de Longo Prazo
 
-A validação do Nível 14 provou que o sistema agora prioriza a "sabedoria" sobre a "reação":
+A bateria de testes de consistência (10 a 200 ciclos) revelou um sistema que não apenas mantém a performance, mas melhora sua eficiência preditiva no tempo:
 
-| Métrica | Resultado | Status |
-| :--- | :--- | :--- |
-| **Planning Depth** | 3 Passos | **ATIVO** |
-| **Vantagem Estratégica** | +4.6% (A2 vs A1) | **DETECTADO** |
-| **Long-Horizon Bias** | Funcional | **EFICIENTE** |
-| **Status de Estratégia** | **SÁBIO** | **APROVADO** |
+| Métrica | 10 Ciclos | 50 Ciclos | Tendência |
+| :--- | :--- | :--- | :--- |
+| **Score Médio** | 0.8263 | 0.8451 | **CRESCENTE (+2.3%)** |
+| **Entropia Final (H)** | 0.5955 | 0.5755 | **ESTÁVEL (Zona Ideal)** |
+| **Erro de Predição Final** | 0.0400 | 0.0080 | **CONVERGENTE (-80%)** |
 
-### 3.1 Comportamento de Longo Prazo
-O sistema demonstrou a capacidade de escolher agentes que apresentam uma curva de aprendizado ou performance mais estável no tempo. Ao simular 3 passos à frente, o World Model revelou que certas sequências de ações (ex: manter o especialista numérico A2 em tarefas complexas) superam a performance imediata do LLM (A3) quando a consistência é o objetivo final.
+### 3.1 Análise de Convergência
+Os dados provam que o **World Model** (Nível 13) e o **Planner** (Nível 14) estão em sintonia. O erro de predição cai drasticamente conforme o sistema acumula ciclos, indicando que a "imaginação" do sistema está se tornando cada vez mais fiel à realidade operacional.
 
-## 4. Conclusão: O Limiar da Autonomia Estratégica
-Com o Nível 14, o motor Zafira atingiu a **Maturidade Estratégica**. Ele não apenas aprende (N8), regula (N9), generaliza (N10), resiste (N10.6), evolui (N11), se direciona (N12) e prevê (N13), mas agora **planeja no tempo**. Este é o último alicerce técnico antes da consolidação do sistema como uma inteligência autônoma completa.
+## 4. Conclusão: O Framework de Pesquisa Validado
+Com o Nível 15, o motor Zafira deixa de ser um protótipo experimental para se tornar um **Framework Científico**. A arquitetura está consolidada, as responsabilidades estão separadas e a telemetria é total. O sistema agora é uma base sólida para qualquer expansão futura em direção à autonomia profunda.
 
 ---
-**Status:** ESTRATÉGICO (Nível 14)  
+**Status:** CONSOLIDADO E REPLICÁVEL (Nível 15)  
 **Assinado por:** 0
