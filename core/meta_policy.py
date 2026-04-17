@@ -23,14 +23,19 @@ class MetaPolicy:
 
     def calculate_entropy(self):
         totals = np.array([data["total"] for data in self.stats.values()])
-        if totals.sum() == 0:
-            return 1.58  # Entropia máxima para 3 opções (log2(3))
+        total_sum = totals.sum()
+        if total_sum == 0:
+            return 1.0  # Máxima incerteza normalizada
         
-        probs = totals / totals.sum()
+        probs = totals / total_sum
         # Evitar log(0)
         probs = np.where(probs > 0, probs, 1e-10)
         entropy = -np.sum(probs * np.log2(probs))
-        return entropy
+        
+        # Normalização (H / log2(n_actions))
+        n_actions = len(self.stats)
+        max_entropy = np.log2(n_actions)
+        return float(entropy / max_entropy)
 
     def get_scores(self):
         scores = {}

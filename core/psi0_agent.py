@@ -23,6 +23,7 @@ from core.dispatcher import execute
 from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
+from core.shadow_policy import ShadowPolicy
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -45,6 +46,10 @@ class Psi0Agent:
         self.actor = PolicyActor()
         self.coherence = CoherenceLayer()
         self.meta = MetaPolicy()
+        
+        # Nível 11: Shadow Mode e Auto-Modificação
+        self.shadow = ShadowPolicy(self.meta)
+        self.performance_history = []
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -142,13 +147,33 @@ class Psi0Agent:
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
                 
+                # Nível 11: Atualizar Shadow Mode e Verificar Promoção
+                self.shadow.update_both(chosen_action, internal_score, is_shadow_choice=False)
+                self.performance_history.append(internal_score)
+                
+                # Se a performance cair drasticamente (> 30% abaixo da média), ativa rollback
+                if len(self.performance_history) > 10:
+                    avg_perf = np.mean(self.performance_history[-10:])
+                    if internal_score < avg_perf * 0.7:
+                        print("⚠️ Rollback Ativado: Queda de performance detectada!")
+                        self.meta.exploration_boost = 0.3 # Reverte para valor estável
+                
+                if self.shadow.evaluate_promotion():
+                    print("🚀 Promoção Nível 11: Shadow Policy provou ser superior!")
+                    new_params = self.shadow.get_mutated_params()
+                    self.meta.entropy_threshold = new_params["entropy_threshold"]
+                    self.meta.exploration_boost = new_params["exploration_boost"]
+                    # Resetar shadow para novo ciclo de mutação
+                    self.shadow = ShadowPolicy(self.meta)
+                
                 # Logs e Persistência
                 experience = {
                     "cycle": self.cycle,
                     "entropy": current_entropy,
                     "meta_weight": meta_weight,
                     "chosen_action": chosen_action,
-                    "score": internal_score
+                    "score": internal_score,
+                    "n11_shadow_active": True
                 }
                 self.log_experience(experience)
                 
