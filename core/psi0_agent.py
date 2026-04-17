@@ -24,6 +24,7 @@ from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
 from core.shadow_policy import ShadowPolicy
+from core.curiosity_engine import CuriosityEngine
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -50,6 +51,10 @@ class Psi0Agent:
         # Nível 11: Shadow Mode e Auto-Modificação
         self.shadow = ShadowPolicy(self.meta)
         self.performance_history = []
+        
+        # Nível 12: Curiosity e Goal Generation
+        self.curiosity = CuriosityEngine(bound=0.05)
+        self.synthetic_goals = []
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -93,7 +98,10 @@ class Psi0Agent:
 
                 # 1. Actor e Coherence sugerem probabilidades
                 raw_probs = self.actor.softmax(top["stage"])
-                blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias)
+                
+                # Nível 12: Injeção de Curiosidade (Direção Interna)
+                curiosity_bonus = self.curiosity.get_curiosity_signal(task_type)
+                blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias + curiosity_bonus)
 
                 # 🔥 Nível 10.5: Adaptive Entropy Control
                 # Calculamos a entropia do blend atual (Intuição/Coerência)
@@ -146,6 +154,9 @@ class Psi0Agent:
                 self.actor.update(top["stage"], chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
+                
+                # Nível 12: Atualizar Curiosity Engine
+                surprise = self.curiosity.measure_surprise(task_type, internal_score)
                 
                 # Nível 11: Atualizar Shadow Mode e Verificar Promoção
                 self.shadow.update_both(chosen_action, internal_score, is_shadow_choice=False)

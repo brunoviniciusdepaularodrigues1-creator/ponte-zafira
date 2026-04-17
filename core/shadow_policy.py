@@ -25,15 +25,25 @@ class ShadowPolicy:
             self.original_performance.append(reward)
 
     def evaluate_promotion(self):
-        """Verifica se a política shadow deve ser promovida."""
-        if len(self.shadow_performance) < 10:
+        """Verifica se a política shadow deve ser promovida (N11.1 com Estabilidade)."""
+        if len(self.shadow_performance) < 15: # Aumentado para 15 para maior rigor estatístico
             return False
         
         shadow_avg = np.mean(self.shadow_performance)
+        shadow_var = np.var(self.shadow_performance)
         original_avg = np.mean(self.original_performance) if self.original_performance else 0.5
         
-        # Só promove se o ganho for real (> 5% de melhoria)
-        return shadow_avg > (original_avg * 1.05)
+        # Trava de Estabilidade: Não promove se a variância for alta (> 0.15)
+        stability_ok = shadow_var < 0.15
+        
+        # Hard Limits: Impede que mutações saiam da zona de segurança
+        hard_limit_ok = (0.1 <= self.shadow_entropy_threshold <= 0.8) and \
+                        (0.05 <= self.shadow_exploration_boost <= 0.6)
+        
+        # Só promove se o ganho for real (> 5%), estável e dentro dos limites
+        is_better = shadow_avg > (original_avg * 1.05)
+        
+        return is_better and stability_ok and hard_limit_ok
 
     def get_mutated_params(self):
         return {
