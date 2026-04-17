@@ -1,0 +1,10 @@
+{
+    "avg_entropy": 0.4514587638269898,
+    "std_entropy": 0.38618257678995455,
+    "avg_distribution": {
+        "A1": 0.698,
+        "A2": 0.23099999999999996,
+        "A3": 0.07100000000000001
+    },
+    "diversity_maintained": true
+}
