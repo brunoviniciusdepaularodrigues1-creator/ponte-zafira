@@ -100,25 +100,31 @@ class Psi0Agent:
                 strategy_bias = get_strategy_bias(task_type)
                 print(f"Tipo de Tarefa: {task_type}")
 
-                # 🔥 Nível 13: Imagination Loop (Simulação Interna)
-                # O sistema "imagina" as consequências de cada ação antes de agir
-                simulated_rewards = {}
-                for action in ACTIONS.keys():
-                    _, pred_reward = self.world_model.predict(state_vector, action)
-                    simulated_rewards[action] = pred_reward
+                # 🔥 Nível 14: Long-Horizon Strategy (Planejamento de Sequência)
+                # O sistema avalia trajetórias de 3 passos à frente
+                planning_depth = 3
+                trajectories = {}
+                
+                # Simplificado: Testa sequências onde a primeira ação varia
+                for first_action in ACTIONS.keys():
+                    # Gera sequências plausíveis (ex: repetir a mesma ação ou alternar)
+                    # Para o N14, focamos na melhor primeira ação baseada no futuro
+                    seq = [first_action] * planning_depth
+                    future_reward = self.world_model.simulate_sequence(state_vector, seq)
+                    trajectories[first_action] = future_reward / planning_depth
                 
                 # 1. Actor e Coherence sugerem probabilidades
                 raw_probs = self.actor.softmax(top["stage"])
                 
-                # Nível 12 & 13: Injeção de Curiosidade + Antecipação Preditiva
+                # Nível 12, 13 & 14: Curiosidade + Antecipação + Estratégia
                 curiosity_bonus = self.curiosity.get_curiosity_signal(task_type)
-                # O bias agora inclui o que o sistema "imagina" ser a melhor recompensa
-                anticipation_bias = {k: simulated_rewards[k] * 0.2 for k in simulated_rewards}
+                # O bias agora é estratégico (longo prazo)
+                strategy_bias_n14 = {k: trajectories[k] * 0.3 for k in trajectories}
                 
                 blended_probs = self.coherence.apply_contextual_bias(raw_probs, strategy_bias + curiosity_bonus)
-                # Blend final com antecipação
+                # Blend final com foco estratégico
                 for a in blended_probs:
-                    blended_probs[a] = (blended_probs[a] * 0.8) + (anticipation_bias.get(a, 0) * 0.2)
+                    blended_probs[a] = (blended_probs[a] * 0.7) + (strategy_bias_n14.get(a, 0) * 0.3)
 
                 # 🔥 Nível 10.5: Adaptive Entropy Control
                 # Calculamos a entropia do blend atual (Intuição/Coerência)

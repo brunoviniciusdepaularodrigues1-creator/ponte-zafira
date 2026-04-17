@@ -61,3 +61,15 @@ class WorldModel:
     def get_avg_error(self):
         if not self.prediction_errors: return 1.0
         return np.mean(self.prediction_errors[-50:])
+
+    def simulate_sequence(self, state, actions_list):
+        """Simula uma sequência de ações e retorna a recompensa acumulada."""
+        total_reward = 0
+        current_state = state
+        
+        for action in actions_list:
+            next_state, reward = self.predict(current_state, action)
+            total_reward += reward
+            current_state = next_state
+            
+        return total_reward
