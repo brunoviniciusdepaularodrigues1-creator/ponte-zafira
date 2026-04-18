@@ -1,0 +1,71 @@
+{
+    "level": "N17.1",
+    "status": "ADVERSARIAL_VALIDATION",
+    "batches_passed": 2,
+    "total_batches": 5,
+    "robustness_score": 0.4,
+    "verdict": "ESPAÇO LATENTE FRÁGIL — organiza por forma superficial",
+    "ready_for_n18": false,
+    "batch_results": [
+        {
+            "batch": "adversarial_semantic",
+            "description": "Matemática pura vs matemática em linguagem poética",
+            "expected": "SAME_CLUSTER",
+            "avg_intra_dist": 0.0023,
+            "avg_inter_dist": 0.0057,
+            "separation_ratio": 2.4644,
+            "entropy_proxy": 0.0,
+            "collapse_detected": true,
+            "passed": false,
+            "avg_contrast_loss": 0.4865
+        },
+        {
+            "batch": "domain_mixed",
+            "description": "Álgebra simbólica vs raciocínio lógico puro",
+            "expected": "DIFFERENT_CLUSTERS",
+            "avg_intra_dist": 0.0018,
+            "avg_inter_dist": 0.0028,
+            "separation_ratio": 1.5578,
+            "entropy_proxy": 0.0,
+            "collapse_detected": true,
+            "passed": true,
+            "avg_contrast_loss": 0.4926
+        },
+        {
+            "batch": "logical_paradox",
+            "description": "Tautologias matemáticas vs paradoxos lógicos",
+            "expected": "DIFFERENT_CLUSTERS",
+            "avg_intra_dist": 0.0062,
+            "avg_inter_dist": 0.008,
+            "separation_ratio": 1.2956,
+            "entropy_proxy": 0.0,
+            "collapse_detected": true,
+            "passed": false,
+            "avg_contrast_loss": 0.4907
+        },
+        {
+            "batch": "label_shuffle",
+            "description": "Raiz quadrada (formas variadas) vs conhecimento geral",
+            "expected": "DIFFERENT_CLUSTERS",
+            "avg_intra_dist": 0.0029,
+            "avg_inter_dist": 0.0026,
+            "separation_ratio": 0.8891,
+            "entropy_proxy": 0.0,
+            "collapse_detected": true,
+            "passed": false,
+            "avg_contrast_loss": 0.414
+        },
+        {
+            "batch": "out_of_distribution",
+            "description": "Ruído puro vs texto literário coerente",
+            "expected": "DIFFERENT_CLUSTERS",
+            "avg_intra_dist": 0.0013,
+            "avg_inter_dist": 0.002,
+            "separation_ratio": 1.5608,
+            "entropy_proxy": 0.0,
+            "collapse_detected": true,
+            "passed": true,
+            "avg_contrast_loss": 0.4956
+        }
+    ]
+}
