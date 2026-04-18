@@ -1,71 +1,71 @@
 {
     "level": "N17.1",
     "status": "ADVERSARIAL_VALIDATION",
-    "batches_passed": 2,
+    "batches_passed": 3,
     "total_batches": 5,
-    "robustness_score": 0.4,
-    "verdict": "ESPAÇO LATENTE FRÁGIL — organiza por forma superficial",
+    "robustness_score": 0.6,
+    "verdict": "ESPAÇO LATENTE PARCIALMENTE ROBUSTO — ajustes necessários",
     "ready_for_n18": false,
     "batch_results": [
         {
             "batch": "adversarial_semantic",
             "description": "Matemática pura vs matemática em linguagem poética",
             "expected": "SAME_CLUSTER",
-            "avg_intra_dist": 0.0023,
-            "avg_inter_dist": 0.0057,
-            "separation_ratio": 2.4644,
-            "entropy_proxy": 0.0,
-            "collapse_detected": true,
+            "avg_intra_dist": 0.0089,
+            "avg_inter_dist": 0.0607,
+            "separation_ratio": 6.7827,
+            "entropy_proxy": 0.0005,
+            "collapse_detected": false,
             "passed": false,
-            "avg_contrast_loss": 0.4865
+            "avg_contrast_loss": 0.2094
         },
         {
             "batch": "domain_mixed",
             "description": "Álgebra simbólica vs raciocínio lógico puro",
             "expected": "DIFFERENT_CLUSTERS",
-            "avg_intra_dist": 0.0018,
-            "avg_inter_dist": 0.0028,
-            "separation_ratio": 1.5578,
+            "avg_intra_dist": 0.001,
+            "avg_inter_dist": 0.0042,
+            "separation_ratio": 4.194,
             "entropy_proxy": 0.0,
             "collapse_detected": true,
             "passed": true,
-            "avg_contrast_loss": 0.4926
+            "avg_contrast_loss": 0.3336
         },
         {
             "batch": "logical_paradox",
             "description": "Tautologias matemáticas vs paradoxos lógicos",
             "expected": "DIFFERENT_CLUSTERS",
-            "avg_intra_dist": 0.0062,
-            "avg_inter_dist": 0.008,
-            "separation_ratio": 1.2956,
+            "avg_intra_dist": 0.0046,
+            "avg_inter_dist": 0.0079,
+            "separation_ratio": 1.7292,
             "entropy_proxy": 0.0,
             "collapse_detected": true,
-            "passed": false,
-            "avg_contrast_loss": 0.4907
+            "passed": true,
+            "avg_contrast_loss": 0.4189
         },
         {
             "batch": "label_shuffle",
             "description": "Raiz quadrada (formas variadas) vs conhecimento geral",
             "expected": "DIFFERENT_CLUSTERS",
-            "avg_intra_dist": 0.0029,
-            "avg_inter_dist": 0.0026,
-            "separation_ratio": 0.8891,
+            "avg_intra_dist": 0.0025,
+            "avg_inter_dist": 0.0023,
+            "separation_ratio": 0.9139,
             "entropy_proxy": 0.0,
             "collapse_detected": true,
             "passed": false,
-            "avg_contrast_loss": 0.414
+            "avg_contrast_loss": 0.3098
         },
         {
             "batch": "out_of_distribution",
             "description": "Ruído puro vs texto literário coerente",
             "expected": "DIFFERENT_CLUSTERS",
-            "avg_intra_dist": 0.0013,
-            "avg_inter_dist": 0.002,
-            "separation_ratio": 1.5608,
-            "entropy_proxy": 0.0,
-            "collapse_detected": true,
+            "avg_intra_dist": 0.021,
+            "avg_inter_dist": 0.0717,
+            "separation_ratio": 3.4078,
+            "entropy_proxy": 0.0008,
+            "collapse_detected": false,
             "passed": true,
-            "avg_contrast_loss": 0.4956
+            "avg_contrast_loss": 0.5426
         }
     ]
 }
