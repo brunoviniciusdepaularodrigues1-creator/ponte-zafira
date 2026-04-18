@@ -1,6 +1,6 @@
 [
   {
-    "input": "solve x**2 - 4 = 0",
+    "input": "solve 2*y + 5 = 15",
     "stage": "F",
     "interpretation": "Organizando estrutura do conteúdo",
     "coherence": 0.215,

@@ -7,6 +7,12 @@ import math
 from datetime import datetime
 import numpy as np
 
+def calc_entropy(probs):
+    p = np.array(list(probs.values()))
+    p = p[p > 0]
+    return -np.sum(p * np.log(p)) if len(p) > 0 else 0.0
+
+
 # Adiciona a raiz do projeto ao sys.path para permitir imports de core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -52,7 +58,7 @@ class Psi0Agent:
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
-        self.encoder = LatentEncoder(input_dim=5, latent_dim=4)
+        self.encoder = LatentEncoder(input_dim=5, latent_dim=2)
         self.prediction_errors = []
 
     def log_experience(self, experience):
@@ -156,16 +162,16 @@ class Psi0Agent:
                 
                 # 4. Critic avalia a expectativa (Baseline)
                 value = self.value_fn.predict(latent, stage, chosen_action)
+                alpha = 0.05
+                entropy = calc_entropy(final_probs)
+                value = value - alpha * entropy
                 
                 print(f"  Probs Actor: {raw_probs}")
                 print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
                 print(f"  Probs MetaPolicy: {meta_probs}")
                 print(f"  Probs Finais (Blended + MetaPolicy): {final_probs}")
                 
-                def calc_entropy(probs):
-                    p = np.array(list(probs.values()))
-                    p = p[p > 0]
-                    return -np.sum(p * np.log(p)) if len(p) > 0 else 0.0
+
                 
                 print(f"  Entropia: {calc_entropy(final_probs):.4f}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")

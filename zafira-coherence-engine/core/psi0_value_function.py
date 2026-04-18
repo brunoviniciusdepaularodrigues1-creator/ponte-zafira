@@ -17,7 +17,7 @@ class ValueFunction:
             with open(self.path, "r") as f:
                 return json.load(f)
         return {
-            "weights": [0.1] * 7  # 4 latent + 3 executor
+            "weights": [0.1] * 5  # 2 latent + 3 executor
         }
 
     def save(self):

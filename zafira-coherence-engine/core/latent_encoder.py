@@ -2,7 +2,7 @@ import numpy as np
 
 class LatentEncoder:
 
-    def __init__(self, input_dim=9, latent_dim=4, lr=0.01):
+    def __init__(self, input_dim=5, latent_dim=2, lr=0.01):
         self.W = np.random.randn(input_dim, latent_dim) * 0.1
         self.lr = lr
 
