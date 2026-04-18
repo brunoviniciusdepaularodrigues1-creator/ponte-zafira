@@ -1,0 +1,8 @@
+{
+    "initial_recon_error": 1.53680272567558,
+    "final_recon_error": 1.1906662716249143,
+    "recon_improvement": 0.34613645405066573,
+    "latent_dim": 2,
+    "beta_balance": 0.5,
+    "status": "VALIDADO N16.6 FASE 2"
+}

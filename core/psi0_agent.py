@@ -214,9 +214,10 @@ class Psi0Agent:
                     # Resetar shadow para novo ciclo de mutação
                     self.shadow = ShadowPolicy(self.meta)
                 
-                # 🔥 Nível 15: Telemetria Total (Auditoria Científica)
+                # 🔥 Nível 16.6: Telemetria de Reconstrução
                 final_entropy_val = self.compute_entropy(final_probs)
                 avg_pred_error = self.world_model.get_avg_error()
+                avg_recon_error = self.world_model.get_avg_recon_error()
                 
                 # Logs e Persistência
                 experience = {
@@ -229,6 +230,7 @@ class Psi0Agent:
                         "coherence_weight": coherence_weight,
                         "prediction_error": pred_error,
                         "avg_prediction_error": avg_pred_error,
+                        "avg_recon_error": avg_recon_error,
                         "surprise_val": surprise
                     },
                     "decision": {
@@ -241,7 +243,7 @@ class Psi0Agent:
                 self.log_experience(experience)
                 
                 print(f"Ação: {chosen_action} | Score: {internal_score}")
-                print(f"Telemetria [H: {final_entropy_val:.4f} | Err: {avg_pred_error:.4f} | Surp: {surprise:.4f}]")
+                print(f"Telemetria [H: {final_entropy_val:.4f} | Err: {avg_pred_error:.4f} | Recon: {avg_recon_error:.4f}]")
                 time.sleep(self.interval)
 
         except KeyboardInterrupt:
