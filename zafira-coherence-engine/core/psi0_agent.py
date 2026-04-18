@@ -24,6 +24,7 @@ from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
 from core.latent_encoder import LatentEncoder
+from core.psi0_unified_value import UnifiedValueFunction
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -46,6 +47,8 @@ class Psi0Agent:
         self.actor = PolicyActor()
         self.coherence = CoherenceLayer()
         self.meta = MetaPolicy()
+        # 🔥 N16: Unified Value Function — espaço latente unificado
+        self.uvf = UnifiedValueFunction()
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
@@ -103,6 +106,8 @@ class Psi0Agent:
                 history_stats = {"llm_success": 0.9, "v1_success": 0.8, "v2_success": 0.7}
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
+                
+                # 🔥 N16.5: Latent Encoding
                 latent = self.encoder.encode(np.array(state_vector))
                 print(f"  Estado Latente (Encoder): {latent}")
 
@@ -156,10 +161,12 @@ class Psi0Agent:
                 print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
                 print(f"  Probs MetaPolicy: {meta_probs}")
                 print(f"  Probs Finais (Blended + MetaPolicy): {final_probs}")
+                
                 def calc_entropy(probs):
                     p = np.array(list(probs.values()))
                     p = p[p > 0]
                     return -np.sum(p * np.log(p)) if len(p) > 0 else 0.0
+                
                 print(f"  Entropia: {calc_entropy(final_probs):.4f}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
@@ -167,40 +174,34 @@ class Psi0Agent:
                 output = execute(chosen_action, task_input)
                 print(f"  Execução: {task_input} -> {output}")
                 
-                # 🔥 Nível 7: Semantic Reward (em vez de heurística fixa)
-                # Como não temos o ground_truth em tempo real no modo treino genérico,
-                # usamos uma heurística de sucesso do output para o internal_score,
-                # mas em sistemas de benchmark usamos o semantic_evaluate.
+                # 🔥 Nível 7: Semantic Reward
                 internal_score = 0.1 # Default para falha
                 
                 # Avaliação mais granular baseada no tipo de agente e na qualidade do output
                 if chosen_action == "A1": # Symbolic Solver
                     if output is not None and ("[" in str(output) or "I" in str(output) or "sqrt" in str(output)) and "error" not in str(output).lower():
-                        internal_score = 0.9 # Alta pontuação para resultados simbólicos válidos
+                        internal_score = 0.9
                     elif output is not None and len(str(output)) > 0 and "error" not in str(output).lower():
-                        internal_score = 0.7 # Pontuação média para outros resultados não vazios
+                        internal_score = 0.7
                     else:
                         internal_score = 0.2
                 elif chosen_action == "A2": # Numeric Solver
                     try:
-                        # Tenta converter para float ou lista de floats
                         if isinstance(output, str) and output.startswith("[") and output.endswith("]"):
-                            # Tenta parsear lista de números
                             nums = [float(s.strip()) for s in output[1:-1].split(',') if s.strip()]
                             if nums: internal_score = 0.9
                         elif float(output) is not None: 
-                            internal_score = 0.9 # Alta pontuação para resultados numéricos válidos
+                            internal_score = 0.9
                         else:
                             internal_score = 0.2
-                    except (ValueError, TypeError): # Se não for um número válido
+                    except (ValueError, TypeError):
                         internal_score = 0.2
                 elif chosen_action == "A3": # LLM Solver
                     if output is not None and len(str(output)) > 5 and "error" not in str(output).lower() and "None" not in str(output):
-                        internal_score = 0.8 # Boa pontuação para respostas LLM coerentes
+                        internal_score = 0.8
                     else:
                         internal_score = 0.2
                 
-                # Penalidade adicional se o output for 'curto' ou indicar falha
                 if output == "curto" or "falha" in str(output).lower():
                     internal_score = 0.1
                 
@@ -219,6 +220,11 @@ class Psi0Agent:
                 self.meta.update(chosen_action, internal_score)
                 self.encoder.update(np.array(state_vector), latent, advantage)
                 self.prediction_errors.append(abs(advantage))
+                
+                # 🔥 N16: Unified Value Function Integration
+                unified_state = self.uvf.build_unified_state(stage, task_input, history_stats, chosen_executor)
+                uvf_pred, uvf_error = self.uvf.update(unified_state, chosen_executor, internal_score)
+                print(f"  N16 UVF: pred={uvf_pred:.4f} | erro={uvf_error:.4f}")
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 

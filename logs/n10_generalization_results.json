@@ -1,0 +1,11 @@
+{
+    "n10_score": 0.74,
+    "n10_entropy": 0.7405656339191586,
+    "avg_distribution": {
+        "A1": 0.5725,
+        "A2": 0.0925,
+        "A3": 0.335
+    },
+    "llm_dependency": 0.335,
+    "status": "VALIDADO"
+}

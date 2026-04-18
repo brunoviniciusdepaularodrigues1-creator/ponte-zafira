@@ -1,0 +1,12 @@
+{
+    "cycles": 100,
+    "final_entropy": 1.526176003866425,
+    "avg_score": 0.6419999999999999,
+    "distribution": {
+        "A1": 0.28,
+        "A2": 0.25,
+        "A3": 0.47
+    },
+    "collapse_detected": false,
+    "resilience_status": "ALTA"
+}

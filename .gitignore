@@ -1,0 +1,24 @@
+# Python temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+venv/
+env/
+ENV/
+
+# Logs and temporary files
+*.log
+*.tmp
+bridge_interface.json.tmp
+full_execution_output*.txt
+agent_*log.txt
+executor_*log.txt
+orchestrator_log.txt
+
+# OS specific
+.DS_Store
+Thumbs.db
