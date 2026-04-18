@@ -17,7 +17,7 @@ class ValueFunction:
             with open(self.path, "r") as f:
                 return json.load(f)
         return {
-            "weights": [0.1] * 8  # 5 state + 3 executor
+            "weights": [0.1] * 7  # 4 latent + 3 executor
         }
 
     def save(self):
@@ -25,7 +25,8 @@ class ValueFunction:
             json.dump(self.W, f, indent=2)
 
     def _build_input(self, state_vector, executor):
-        sv = state_vector[:5]  # garante tamanho fixo
+        # Agora o state_vector é o vetor latente de dimensão 4
+        sv = list(state_vector)
         ev = EXECUTOR_EMBEDDINGS[executor]
         return sv + ev
 

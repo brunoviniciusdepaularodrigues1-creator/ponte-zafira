@@ -1,6 +1,6 @@
 [
   {
-    "input": "solve x**3 - 8 = 0",
+    "input": "solve x**2 - 4 = 0",
     "stage": "F",
     "interpretation": "Organizando estrutura do conteúdo",
     "coherence": 0.215,

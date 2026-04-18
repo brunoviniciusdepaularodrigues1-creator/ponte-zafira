@@ -1,6 +1,6 @@
 {
   "system": "zafira-coherence-engine",
-  "phase": "8_safe_mode",
+  "phase": "16.5",
   "status": "active",
   "last_active_module": "Psi0Agent.run",
   "capabilities": {
@@ -13,17 +13,20 @@
     "multi_agent_adversarial": true,
     "coherence_2.0": true,
     "evolutionary_router": true,
-    "meta_policy": true
+    "meta_policy": true,
+    "latent_encoder": true,
+    "entropy_tracking": true
   },
   "last_known_metrics": {
-    "system_score": 0.85,
-    "advantage_trend": "stabilizing",
-    "value_function_learning": "active"
+    "system_score": 0.88,
+    "advantage_trend": "evolving",
+    "value_function_learning": "active",
+    "latent_representation": "active"
   },
   "state_files": {
     "memory": "agent_memory.jsonl",
     "bridge": "bridge_interface.json",
     "policy": "agent_policy.json"
   },
-  "next_step": "N8_meta_policy_influences_real_decisions"
+  "next_step": "N17_hierarchical_latent_planning"
 }

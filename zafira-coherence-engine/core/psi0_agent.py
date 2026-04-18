@@ -5,6 +5,7 @@ import json
 import random
 import math
 from datetime import datetime
+import numpy as np
 
 # Adiciona a raiz do projeto ao sys.path para permitir imports de core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -22,6 +23,7 @@ from core.dispatcher import execute
 from core.psi0_semantic_reward import semantic_evaluate
 from core.psi0_router import classify_task, get_strategy_bias
 from core.meta_policy import MetaPolicy
+from core.latent_encoder import LatentEncoder
 
 # Arquivos de feedback dos múltiplos executores (Rede Heterogênea)
 FEEDBACK_FILES = [
@@ -47,6 +49,8 @@ class Psi0Agent:
         
         # Specialization Signal tracker
         self.specialization = {"A1": {"wins": 0, "total": 0}, "A2": {"wins": 0, "total": 0}, "A3": {"wins": 0, "total": 0}}
+        self.encoder = LatentEncoder(input_dim=5, latent_dim=4)
+        self.prediction_errors = []
 
     def log_experience(self, experience):
         """Salva a experiência estruturada no log de memória."""
@@ -99,6 +103,8 @@ class Psi0Agent:
                 history_stats = {"llm_success": 0.9, "v1_success": 0.8, "v2_success": 0.7}
                 state_vector = encode_state(top.get("stage"), top.get("input"), history_stats)
                 print(f"Estado Vetorial (Camada 1): {state_vector}")
+                latent = self.encoder.encode(np.array(state_vector))
+                print(f"  Estado Latente (Encoder): {latent}")
 
                 # 🔥 CAMADA 5 Estável: Coherence Regulator
                 stage = top["stage"]
@@ -144,12 +150,17 @@ class Psi0Agent:
                 chosen_executor = ACTIONS[chosen_action]
                 
                 # 4. Critic avalia a expectativa (Baseline)
-                value = self.value_fn.predict(state_vector, stage, chosen_action)
+                value = self.value_fn.predict(latent, stage, chosen_action)
                 
                 print(f"  Probs Actor: {raw_probs}")
                 print(f"  Probs Blended (Coherence + Strategy): {blended_probs}")
                 print(f"  Probs MetaPolicy: {meta_probs}")
                 print(f"  Probs Finais (Blended + MetaPolicy): {final_probs}")
+                def calc_entropy(probs):
+                    p = np.array(list(probs.values()))
+                    p = p[p > 0]
+                    return -np.sum(p * np.log(p)) if len(p) > 0 else 0.0
+                print(f"  Entropia: {calc_entropy(final_probs):.4f}")
                 print(f"  Actor escolheu ação: {chosen_action} → Executor: {chosen_executor} | Valor Previsto (Critic): {value:.4f}")
                 
                 # 🔥 Nível 7: Execução Real via Dispatcher
@@ -202,16 +213,21 @@ class Psi0Agent:
                 advantage = internal_score - value
 
                 # 6. Aprendizado Unificado
-                self.value_fn.update(state_vector, stage, chosen_action, internal_score)
+                self.value_fn.update(latent, stage, chosen_action, internal_score)
                 self.actor.update(stage, chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
                 self.meta.update(chosen_action, internal_score)
+                self.encoder.update(np.array(state_vector), latent, advantage)
+                self.prediction_errors.append(abs(advantage))
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
                 
                 if self.cycle % 5 == 0:
                     print("  Meta Policy Scores:", self.meta.get_scores())
                     print("  Melhor ação atual:", self.meta.best_action())
+                    print(f"  Entropia atual: {calc_entropy(final_probs):.4f}")
+                    avg_prediction_error = np.mean(self.prediction_errors[-5:]) if len(self.prediction_errors) > 0 else 0.0
+                    print(f"  Prediction error médio (últimos 5 ciclos): {avg_prediction_error:.4f}")
                     print("  Specialization Signal:")
                     for action, stats in self.specialization.items():
                         rate = stats["wins"] / stats["total"] if stats["total"] > 0 else 0
@@ -227,6 +243,7 @@ class Psi0Agent:
                     "coherence": top.get("coherence", 0.5),
                     "advantage": advantage,
                     "state_vector": state_vector,
+                    "latent_representation": latent.tolist(),
                     "task_type": task_type
                 }
                 self.log_experience(experience)
@@ -238,6 +255,7 @@ class Psi0Agent:
                     "agent": "zafira-psi0",
                     "timestamp": datetime.now().isoformat(),
                     "state_vector": state_vector,
+                    "latent_representation": latent.tolist(),
                     "chosen_action": chosen_action,
                     "chosen_executor": chosen_executor,
                     "internal_score": internal_score,
@@ -248,7 +266,8 @@ class Psi0Agent:
                     "ranking": ranked,
                     "network_status": feedbacks,
                     "specialization": self.specialization,
-                    "meta_policy_stats": self.meta.stats, # Adiciona o estado da MetaPolicy
+                    "meta_policy_stats": self.meta.stats,
+                    "latent_encoder_weights": self.encoder.W.tolist(),
                     "task_type": task_type
                 }
 
