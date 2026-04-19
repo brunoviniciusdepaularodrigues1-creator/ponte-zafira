@@ -118,9 +118,9 @@ class ZafiraCoherenceEngineV75:
 
 if __name__ == "__main__":
     engine = ZafiraCoherenceEngineV75()
-    engine.run_task("x**2 - 16 = 0")
-    engine.run_task("Qual é a raiz quadrada de 144?")
-    engine.run_task("Explique a teoria da relatividade em uma frase.")
-    engine.run_task("Resolva: 3x + 5 = 20")
-    engine.run_task("Calcule 25% de 320")
-    engine.run_task("Explique entropia em uma frase simples")
+    engine.run_task("x**2 - 9 = 0")
+    engine.run_task("x**2 - 25 = 0")
+    engine.run_task("Resolva: 2x + 8 = 14")
+    engine.run_task("Resolva: 5x - 10 = 0")
+    engine.run_task("Calcule 30% de 150")
+    engine.run_task("Calcule 15% de 80")

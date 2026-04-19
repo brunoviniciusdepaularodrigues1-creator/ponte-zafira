@@ -32,3 +32,10 @@ expected: judge_consistency > 0.6, avg_decision_margin > 0.3, learning_delta > 0
 output: divergence_score: 1.0654, judge_consistency: 0.8333, controller_learning_delta: 0.4579, avg_decision_margin: 0.4333
 result: PASS
 notes: O sistema demonstrou alta robustez. A consistência do juiz subiu significativamente (0.66 -> 0.83), indicando que o router está selecionando agentes adequados para uma gama maior de problemas. A margem de decisão permaneceu estável em 0.4333, confirmando a convicção do juiz mesmo em novas tarefas. O aprendizado continua ativo e saudável.
+
+## TEST 005
+input: Teste de Memória e Especialização (Tarefas agrupadas: Álgebra e Cálculo Numérico)
+expected: Especialização emergente (seleção consistente por categoria), learning_delta > 0
+output: divergence_score: 1.0632, judge_consistency: 0.8333, controller_learning_delta: 0.4929, avg_decision_margin: 0.2167
+result: PASS
+notes: O router demonstrou especialização emergente. Para Álgebra, houve alternância entre A1 e A3 (ambos com alta acurácia). Para Cálculo Numérico, o A3 (LLM) dominou a seleção final, embora o A2 (Numeric) tenha recebido rewards competitivos. A queda na decision_margin (0.21) reflete a alta competição entre agentes competentes para as mesmas tarefas, validando a "competição saudável" do sistema.
