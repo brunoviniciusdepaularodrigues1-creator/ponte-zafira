@@ -1,0 +1,46 @@
+Zafira Coherence Engine: Iniciando Teste Misto N18 Passo 2...
+
+--- Tarefa 1: solve x**2 - 4 = 0 ---
+  Preferência da Memória (MetaOrchestrator): A1
+  Selection Probs: {'A1': 0.41178310925261, 'A2': 0.3062480847009947, 'A3': 0.2819688060463951}
+  Selected Agent Type: A3 (llm_solver)
+  Execução: x = 2 ou x = -2
+  Judge Consistency: 0.9
+
+--- Tarefa 2: solve 2*x + 5 = 15 ---
+  Preferência da Memória (MetaOrchestrator): A3
+  Selection Probs: {'A1': 0.3403545378240386, 'A2': 0.2824385608914709, 'A3': 0.37720690128449036}
+  Selected Agent Type: A3 (llm_solver)
+  Execução: x = 5
+  Judge Consistency: 0.9
+
+--- Tarefa 3: calculate 7 * 7 + 1 ---
+  Preferência da Memória (MetaOrchestrator): A1
+  Selection Probs: {'A1': 0.35844977591927674, 'A2': 0.3595814180343281, 'A3': 0.28196880604639524}
+  Selected Agent Type: A3 (llm_solver)
+  Execução: 50
+  Judge Consistency: 0.9
+
+--- Tarefa 4: calculate 100 / 4 - 5 ---
+  Preferência da Memória (MetaOrchestrator): A3
+  Selection Probs: {'A1': 0.2870212044907053, 'A2': 0.33577189422480425, 'A3': 0.3772069012844904}
+  Selected Agent Type: A1 (symbolic_solver)
+  Execução: None
+  Judge Consistency: 0.3
+
+--- Tarefa 5: Explain artificial intelligence in one sentence. ---
+  Preferência da Memória (MetaOrchestrator): A1
+  Selection Probs: {'A1': 0.34511644258594343, 'A2': 0.2929147513676614, 'A3': 0.36196880604639514}
+  Selected Agent Type: A1 (symbolic_solver)
+  Execução: None
+  Judge Consistency: 0.3
+
+--- Tarefa 6: What is the capital of France? ---
+  Preferência da Memória (MetaOrchestrator): A2
+  Selection Probs: {'A1': 0.20225929972880058, 'A2': 0.38815284660575666, 'A3': 0.4095878536654428}
+  Selected Agent Type: A3 (llm_solver)
+  Execução: Paris
+  Judge Consistency: 0.9
+
+--- Resumo do Teste ---
+Learning Delta (Total Updates): 6

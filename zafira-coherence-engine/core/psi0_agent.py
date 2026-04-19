@@ -151,6 +151,15 @@ class Psi0Agent:
                     # Fallback para distribuição uniforme se todas as probabilidades forem zero
                     final_probs = {k: 1/len(final_probs) for k in final_probs}
 
+                # 🔥 N18 Passo 2: Injetar preferência da memória do MetaOrchestrator como viés leve
+                preferred = self.meta.get_preference(task_type)
+                if preferred is not None and preferred in final_probs:
+                    memory_bias = 0.05
+                    final_probs[preferred] += memory_bias
+                    # Re-normalizar após aplicar o viés
+                    total_final_probs = sum(final_probs.values())
+                    final_probs = {k: v / total_final_probs for k, v in final_probs.items()}
+
                 # 3. Seleção final baseada nas probabilidades reguladas
                 chosen_action = random.choices(
                     list(final_probs.keys()),
@@ -223,7 +232,7 @@ class Psi0Agent:
                 self.value_fn.update(latent, stage, chosen_action, internal_score)
                 self.actor.update(stage, chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
-                self.meta.update(chosen_action, internal_score)
+                self.meta.update(task_type, chosen_action, internal_score)
                 self.encoder.update(np.array(state_vector), latent, advantage)
                 self.prediction_errors.append(abs(advantage))
                 
