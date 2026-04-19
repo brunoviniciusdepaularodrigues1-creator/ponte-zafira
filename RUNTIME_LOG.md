@@ -18,3 +18,10 @@ notes: A consistência do juiz subiu levemente (0.60 -> 0.615), mas a divergênc
 - Ran system -> register test result.
 - Changed code/config -> register before/after behavior.
 - Strange behavior -> register anomaly and suspected cause.
+
+## TEST 003
+input: Implementação de decision_margin no AdversarialJudge
+expected: avg_decision_margin registrado, judge_consistency mantida ou ↑
+output: divergence_score: 1.0689, judge_consistency: 0.6667, controller_learning_delta: 0.2553, avg_decision_margin: 0.4333
+result: PASS
+notes: A métrica decision_margin foi integrada com sucesso. O valor de 0.4333 indica uma convicção moderada do juiz (quase metade da escala de score). A consistência do juiz subiu para 0.66, sugerindo que a melhor visibilidade das métricas ajuda a validar a estabilidade do sistema.

@@ -39,6 +39,13 @@ class AdversarialJudge:
             score = (acc * 0.5) + (agreement_score * 0.2) + (stab * 0.2) + (coh * 0.1)
             final_scores[agent_name] = round(score, 4)
             
+        # N17.2 Etapa 4: Cálculo da Margem de Decisão (Decision Margin)
+        # Identifica se o juiz decidiu com convicção ou por diferença mínima
+        sorted_scores = sorted(final_scores.values(), reverse=True)
+        top1 = sorted_scores[0] if len(sorted_scores) > 0 else 0.0
+        top2 = sorted_scores[1] if len(sorted_scores) > 1 else 0.0
+        decision_margin = round(top1 - top2, 4)
+            
         return {
             "judge": self.name,
             "final_scores": final_scores,
@@ -46,7 +53,8 @@ class AdversarialJudge:
                 "accuracy": accuracy_scores,
                 "agreement": agreement_score,
                 "stability": stability_scores,
-                "coherence": coherence_scores
+                "coherence": coherence_scores,
+                "decision_margin": decision_margin
             }
         }
 

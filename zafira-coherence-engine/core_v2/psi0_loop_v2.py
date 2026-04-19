@@ -109,6 +109,7 @@ class ZafiraCoherenceEngineV75:
             "final_scores": evaluation["final_scores"],
             "rewards": rewards,
             "agreement": evaluation["metrics"]["agreement"],
+            "decision_margin": evaluation["metrics"]["decision_margin"],
             "pre_policy": pre_policy,
             "post_policy": post_policy
         }

@@ -11,6 +11,7 @@ def calculate_metrics(log_path):
     divergences = []
     consistencies = []
     learning_deltas = []
+    decision_margins = []
     
     with open(log_path, 'r') as f:
         for line in f:
@@ -41,6 +42,11 @@ def calculate_metrics(log_path):
                     for agent_type in pre:
                         delta += abs(post[agent_type]["score"] - pre[agent_type]["score"])
                     learning_deltas.append(delta)
+                
+                # 4. Decision Margin (Convicção do Juiz)
+                margin = entry.get("decision_margin")
+                if margin is not None:
+                    decision_margins.append(margin)
                     
             except Exception as e:
                 continue
@@ -53,12 +59,14 @@ def calculate_metrics(log_path):
     avg_consistency = np.mean(consistencies)
     total_delta = sum(learning_deltas)
     learning_ratio = total_delta / len(learning_deltas) if learning_deltas else 0
+    avg_margin = np.mean(decision_margins) if decision_margins else 0.0
 
     print(f"--- MÉTRICAS DE VALIDAÇÃO MULTIAGENTE ---")
     print(f"divergence_score: {avg_divergence:.4f}")
     print(f"judge_consistency: {avg_consistency:.4f}")
     print(f"controller_learning_delta: {total_delta:.4f}")
     print(f"controller_learning_ratio: {learning_ratio:.4f}")
+    print(f"avg_decision_margin: {avg_margin:.4f}")
     print(f"---------------------------------------")
 
 if __name__ == "__main__":
