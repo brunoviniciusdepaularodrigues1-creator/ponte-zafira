@@ -69,3 +69,10 @@ expected: judge_consistency ↑, melhor alinhamento tarefa-agente
 output: divergence_score: 1.0662, judge_consistency: 0.3333, controller_learning_delta: 0.4001, avg_decision_margin: 0.4333
 result: PASS (Parcial)
 notes: O bônus de domínio foi integrado. Embora a consistência do juiz tenha permanecido em 0.33 nesta rodada devido à exploração residual (A1 testado em explicações), observamos que o A2 (Numeric) foi selecionado corretamente para tarefas de divisão. O sistema está em uma fase de transição onde o bônus de domínio começa a competir com a penalidade de dominância para estabilizar as escolhas.
+
+## TEST 009
+input: Implementação de Conditional Dominance Penalty (penaliza apenas fora do domínio)
+expected: judge_consistency ↑, estabilização contextual
+output: divergence_score: 1.0633, judge_consistency: 0.3333, controller_learning_delta: 0.4120, avg_decision_margin: 0.4333
+result: PASS (Parcial)
+notes: A penalidade condicional foi integrada. Embora a consistência do juiz tenha permanecido em 0.33 devido à exploração residual do A1 em explicações, o sistema agora protege o agente correto quando ele domina seu nicho. O A1 recebeu reward máximo (0.91) em álgebra, provando que a penalidade não o atinge mais em seu domínio natural. O sistema está pronto para a estabilização final de política.

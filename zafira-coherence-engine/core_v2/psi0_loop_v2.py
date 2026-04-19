@@ -110,11 +110,17 @@ class ZafiraCoherenceEngineV75:
             
             reward = reward + domain_bonus
             
-            # N17.2 Etapa 8: Penalidade de Dominância para evitar monocultura
+            # N17.2 Etapa 11: Penalidade de Dominância Condicional ao Contexto
+            # Só penaliza se o agente estiver dominante (> 0.7) E fora do domínio correto
             mapped_type = {"a1": "symbolic", "a2": "numeric", "a3": "llm"}.get(agent_type_code)
             dominance_penalty = 0.0
             if mapped_type and self.router.policy[mapped_type]["score"] > 0.7:
-                dominance_penalty = 0.05
+                if "x" in task_lower or "=" in task_lower:
+                    if mapped_type != "symbolic": dominance_penalty = 0.05
+                elif "%" in task_lower or "calcule" in task_lower:
+                    if mapped_type != "numeric": dominance_penalty = 0.05
+                elif "explique" in task_lower:
+                    if mapped_type != "llm": dominance_penalty = 0.05
                 
             reward = reward - dominance_penalty
             rewards[name] = round(max(0, reward), 4)
