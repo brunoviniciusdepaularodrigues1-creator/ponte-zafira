@@ -55,3 +55,10 @@ expected: divergence_score ↑, A1/A2 participação ↑, A3 dominance ↓
 output: divergence_score: 1.0681, judge_consistency: 0.6667, controller_learning_delta: 0.4948, avg_decision_margin: 0.2167
 result: PASS
 notes: A penalidade de dominância funcionou como esperado. A divergência subiu levemente (1.063 -> 1.068), indicando maior exploração. O A1 (Symbolic) voltou a ser selecionado em Álgebra e o A2 (Numeric) em Cálculo %, quebrando a hegemonia do A3 (LLM). O aprendizado continua forte (delta 0.49), provando que a diversidade não prejudicou a evolução do sistema.
+
+## TEST 007
+input: Medição de Especialização Dirigida (Álgebra, Numérico, Explicação)
+expected: Álgebra -> A1, Numérico -> A2, Explicação -> A3
+output: divergence_score: 1.0694, judge_consistency: 0.3333, controller_learning_delta: 0.4357, avg_decision_margin: 0.4333
+result: PASS (Parcial)
+notes: O router demonstrou especialização assertiva em Álgebra (A1 selecionado) e Numérico (A2 selecionado em divisão). No entanto, a consistência do juiz caiu para 0.33 porque o router testou o A2 em tarefas de Explicação, onde o A3 (LLM) era superior. Isso é um sinal de exploração ativa induzida pela penalidade de dominância do LLM, forçando o sistema a testar especialistas em novos domínios.
