@@ -48,3 +48,10 @@ output:
 - percentage: A3 - LLM Solver, reinforcement clear (score 0.75 vs 0.36 numeric)
 result: PASS
 notes: A análise detalhada dos logs revela que o A3 (LLM) consolidou-se como a escolha preferencial em ambas as categorias devido à sua versatilidade e consistência de acerto. No entanto, o A2 (Numeric) mostrou um fortalecimento moderado em Cálculo % (subindo de 0.28 para 0.36), indicando que o sistema está começando a diferenciar nichos, embora o LLM ainda domine pela segurança de resultado.
+
+## TEST 006
+input: Implementação de Dominance Penalty (0.05 se score > 0.7)
+expected: divergence_score ↑, A1/A2 participação ↑, A3 dominance ↓
+output: divergence_score: 1.0681, judge_consistency: 0.6667, controller_learning_delta: 0.4948, avg_decision_margin: 0.2167
+result: PASS
+notes: A penalidade de dominância funcionou como esperado. A divergência subiu levemente (1.063 -> 1.068), indicando maior exploração. O A1 (Symbolic) voltou a ser selecionado em Álgebra e o A2 (Numeric) em Cálculo %, quebrando a hegemonia do A3 (LLM). O aprendizado continua forte (delta 0.49), provando que a diversidade não prejudicou a evolução do sistema.

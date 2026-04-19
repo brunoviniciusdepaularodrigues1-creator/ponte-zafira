@@ -95,6 +95,19 @@ class ZafiraCoherenceEngineV75:
             hallucination_penalty = 0.5 if res["status"] == "error" or not res["result"] else 0.0
             
             reward = correctness + specialization_bonus + disagreement_resolution_bonus - hallucination_penalty
+            
+            # N17.2 Etapa 8: Penalidade de Dominância para evitar monocultura
+            # Se o agente está muito dominante na política (> 0.7), aplica penalidade leve
+            agent_type = name.split(" - ")[0].lower() # Extrai tipo (ex: a1, a2, a3)
+            # Mapeia a1/a2/a3 para symbolic/numeric/llm conforme router
+            type_map = {"a1": "symbolic", "a2": "numeric", "a3": "llm"}
+            mapped_type = type_map.get(agent_type)
+            
+            dominance_penalty = 0.0
+            if mapped_type and self.router.policy[mapped_type]["score"] > 0.7:
+                dominance_penalty = 0.05
+                
+            reward = reward - dominance_penalty
             rewards[name] = round(max(0, reward), 4)
             
         return rewards
