@@ -96,13 +96,22 @@ class ZafiraCoherenceEngineV75:
             
             reward = correctness + specialization_bonus + disagreement_resolution_bonus - hallucination_penalty
             
-            # N17.2 Etapa 8: Penalidade de Dominância para evitar monocultura
-            # Se o agente está muito dominante na política (> 0.7), aplica penalidade leve
-            agent_type = name.split(" - ")[0].lower() # Extrai tipo (ex: a1, a2, a3)
-            # Mapeia a1/a2/a3 para symbolic/numeric/llm conforme router
-            type_map = {"a1": "symbolic", "a2": "numeric", "a3": "llm"}
-            mapped_type = type_map.get(agent_type)
+            # N17.2 Etapa 10: Bônus de Domínio para coerência contextual
+            domain_bonus = 0.0
+            task_lower = task.lower()
+            agent_type_code = name.split(" - ")[0].lower() # a1, a2, a3
             
+            if "x" in task_lower or "=" in task_lower:
+                if agent_type_code == "a1": domain_bonus = 0.05
+            elif "%" in task_lower or "calcule" in task_lower:
+                if agent_type_code == "a2": domain_bonus = 0.05
+            elif "explique" in task_lower:
+                if agent_type_code == "a3": domain_bonus = 0.05
+            
+            reward = reward + domain_bonus
+            
+            # N17.2 Etapa 8: Penalidade de Dominância para evitar monocultura
+            mapped_type = {"a1": "symbolic", "a2": "numeric", "a3": "llm"}.get(agent_type_code)
             dominance_penalty = 0.0
             if mapped_type and self.router.policy[mapped_type]["score"] > 0.7:
                 dominance_penalty = 0.05

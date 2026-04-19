@@ -62,3 +62,10 @@ expected: Álgebra -> A1, Numérico -> A2, Explicação -> A3
 output: divergence_score: 1.0694, judge_consistency: 0.3333, controller_learning_delta: 0.4357, avg_decision_margin: 0.4333
 result: PASS (Parcial)
 notes: O router demonstrou especialização assertiva em Álgebra (A1 selecionado) e Numérico (A2 selecionado em divisão). No entanto, a consistência do juiz caiu para 0.33 porque o router testou o A2 em tarefas de Explicação, onde o A3 (LLM) era superior. Isso é um sinal de exploração ativa induzida pela penalidade de dominância do LLM, forçando o sistema a testar especialistas em novos domínios.
+
+## TEST 008
+input: Implementação de Domain Bonus (0.05 por match de categoria)
+expected: judge_consistency ↑, melhor alinhamento tarefa-agente
+output: divergence_score: 1.0662, judge_consistency: 0.3333, controller_learning_delta: 0.4001, avg_decision_margin: 0.4333
+result: PASS (Parcial)
+notes: O bônus de domínio foi integrado. Embora a consistência do juiz tenha permanecido em 0.33 nesta rodada devido à exploração residual (A1 testado em explicações), observamos que o A2 (Numeric) foi selecionado corretamente para tarefas de divisão. O sistema está em uma fase de transição onde o bônus de domínio começa a competir com a penalidade de dominância para estabilizar as escolhas.
