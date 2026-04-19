@@ -103,11 +103,41 @@ class EvolutionaryRouter:
         }
 
     def _detect_task_type(self, task):
-        task = task.lower()
-        if any(op in task for op in ["**", "x", "y", "z", "solve", "simplify"]):
-            return "symbolic"
-        if any(op in task for op in ["sqrt", "sin", "cos", "log", "exp"]) or any(c.isdigit() for c in task):
+        """
+        N18 Passo 3 — Classificador estrutural em ordem de prioridade.
+        Evita falsos positivos de 'symbolic' para operações aritméticas puras.
+
+        Ordem: explanation > numeric (explícito) > algebra (variável/equação) > numeric (puro) > llm
+        """
+        t = task.lower().strip()
+
+        # 1. Explicação — prioridade máxima
+        if any(kw in t for kw in ["explique", "explain", "descreva", "describe",
+                                   "por que", "why", "como funciona", "how does",
+                                   "o que é", "what is", "o que são"]):
+            return "llm"
+
+        # 2. Numérico explícito (palavras-chave que forçam numérico)
+        if any(kw in t for kw in ["%", "calcule", "calculate", "quanto é",
+                                   "dividido por", "divided by", "soma de",
+                                   "sqrt", "sin", "cos", "log", "exp"]):
             return "numeric"
+
+        # 3. Álgebra — equações ou expressões com variável
+        has_variable = any(op in t for op in ["x", "y", "z", "**", "solve",
+                                               "simplify", "resolva", "find x",
+                                               "find y"])
+        has_equals   = "=" in t
+        if has_variable or has_equals:
+            return "symbolic"
+
+        # 4. Numérico puro — operação aritmética com dígitos, sem variável
+        has_operator = any(op in t for op in ["+", "-", "*", "/"])
+        has_digit    = any(ch.isdigit() for ch in t)
+        if has_operator and has_digit:
+            return "numeric"
+
+        # 5. Fallback — LLM lida com o desconhecido
         return "llm"
 
     def update_policy(self, agent_type, reward):
