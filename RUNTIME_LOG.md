@@ -83,3 +83,12 @@ expected: Especialização consolidada, judge_consistency ↑, learning_delta > 
 output: divergence_score: 1.0643, judge_consistency: 0.4444, controller_learning_delta: 0.6706, avg_decision_margin: 0.3611
 result: PASS
 notes: O sistema atingiu estabilidade estrutural. A consistência do juiz subiu para 0.44, indicando que o alinhamento contextual está começando a surtir efeito. A distribuição por categoria mostrou A1 e A3 em Álgebra, A1/A2/A3 em Numérico (exploração ativa) e A1/A3 em Explicação. O aprendizado (delta 0.67) é o mais alto registrado, confirmando que o sistema está evoluindo rapidamente sob as novas regras de reward.
+
+---
+## N17.2 CLOSED
+**Status**: Validated in GitHub
+**Commit de fechamento**: e2becbf
+**Residual issue**: Occasional off-domain exploration in explanation tasks
+**Outcome**: Competition + Diversity + Coherence + Learning stabilized
+**Baseline**: Multi-agent competitive loop operacional e antifrágil.
+---
