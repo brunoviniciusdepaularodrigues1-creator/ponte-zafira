@@ -1,10 +1,7 @@
 [
   {
-    "input": "solve x**3 - 8 = 0",
-    "stage": "F",
-    "interpretation": "Organizando estrutura do conteúdo",
-    "coherence": 0.215,
-    "structure": 0.358,
-    "variation": 1.085
+    "stage": "A",
+    "input": "Determine os autovalores da matriz [[1, 2], [3, 4]].",
+    "coherence": 0.8
   }
 ]

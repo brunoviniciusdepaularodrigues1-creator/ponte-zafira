@@ -121,10 +121,19 @@ class Psi0Agent:
                 total_meta_score = sum(meta_scores.values())
                 meta_probs = {k: v / total_meta_score if total_meta_score > 0 else 1/len(meta_scores) for k, v in meta_scores.items()}
 
+                # 🔥 Nível 18 Passo 2: Injetar preferência da memória no router (Memory Bias)
+                # O viés orienta a seleção com base no histórico de sucesso por categoria
+                preferred_agent = self.meta.get_preference(task_type)
+                memory_bias = 0.05
+                
                 # Blend final: 0.7 para o blend atual (coerência/actor) + 0.3 para meta_policy scores
                 final_probs = {}
                 for action in blended_probs:
-                    final_probs[action] = (0.7 * blended_probs[action]) + (0.3 * meta_probs.get(action, 0))
+                    base_val = (0.7 * blended_probs[action]) + (0.3 * meta_probs.get(action, 0))
+                    # Aplicar o bônus leve se for o agente preferido
+                    if action == preferred_agent:
+                        base_val += memory_bias
+                    final_probs[action] = base_val
                 
                 # Normalizar final_probs para garantir que somem 1
                 total_final_probs = sum(final_probs.values())
