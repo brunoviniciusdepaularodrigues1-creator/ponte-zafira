@@ -39,3 +39,12 @@ expected: Especialização emergente (seleção consistente por categoria), lear
 output: divergence_score: 1.0632, judge_consistency: 0.8333, controller_learning_delta: 0.4929, avg_decision_margin: 0.2167
 result: PASS
 notes: O router demonstrou especialização emergente. Para Álgebra, houve alternância entre A1 e A3 (ambos com alta acurácia). Para Cálculo Numérico, o A3 (LLM) dominou a seleção final, embora o A2 (Numeric) tenha recebido rewards competitivos. A queda na decision_margin (0.21) reflete a alta competição entre agentes competentes para as mesmas tarefas, validando a "competição saudável" do sistema.
+
+## TEST 005B
+input: grouped policy consolidation analysis from TEST 005
+expected: stable policy reinforcement by task category
+output:
+- algebra: A3 - LLM Solver, reinforcement clear (score 0.75 vs 0.26 symbolic)
+- percentage: A3 - LLM Solver, reinforcement clear (score 0.75 vs 0.36 numeric)
+result: PASS
+notes: A análise detalhada dos logs revela que o A3 (LLM) consolidou-se como a escolha preferencial em ambas as categorias devido à sua versatilidade e consistência de acerto. No entanto, o A2 (Numeric) mostrou um fortalecimento moderado em Cálculo % (subindo de 0.28 para 0.36), indicando que o sistema está começando a diferenciar nichos, embora o LLM ainda domine pela segurança de resultado.
