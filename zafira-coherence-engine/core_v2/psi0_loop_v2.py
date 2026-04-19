@@ -7,6 +7,7 @@ from agents.a2_numeric import NumericSolver
 from agents.a3_llm import LLMSolver
 from judge.adversarial_judge import AdversarialJudge
 from core_v2.psi0_router_v2 import EvolutionaryRouter
+from core_v2.meta_orchestrator import MetaOrchestrator
 
 class ZafiraCoherenceEngineV75:
     def __init__(self):
@@ -16,6 +17,7 @@ class ZafiraCoherenceEngineV75:
         self.agents = [self.a1, self.a2, self.a3]
         self.judge = AdversarialJudge()
         self.router = EvolutionaryRouter(self.agents)
+        self.meta = MetaOrchestrator()
         self.history_path = "agent_evolution_v75_log.txt"
 
     def run_task(self, task):
@@ -55,6 +57,8 @@ class ZafiraCoherenceEngineV75:
         # 5. Atualização da Política (Router Evolutivo)
         for agent in self.agents:
             self.router.update_policy(agent.type, rewards[agent.name])
+            # N18 Passo 1: Atualizar memória do Meta-Orquestrador
+            self.meta.update(task, agent.type, rewards[agent.name])
             
         # Capture post-policy state for observability
         post_policy = copy.deepcopy(self.router.policy)
@@ -155,3 +159,7 @@ if __name__ == "__main__":
     engine.run_task("Explique energia em uma frase simples")
     engine.run_task("Explique o que é divisão em uma frase")
     engine.run_task("Explique porcentagem para uma criança")
+    
+    print("\n--- RESUMO DA MEMÓRIA DO META-ORQUESTRADOR (N18) ---")
+    import json
+    print(json.dumps(engine.meta.get_summary(), indent=2))
