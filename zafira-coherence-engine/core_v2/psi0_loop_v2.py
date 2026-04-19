@@ -146,9 +146,12 @@ class ZafiraCoherenceEngineV75:
 
 if __name__ == "__main__":
     engine = ZafiraCoherenceEngineV75()
-    engine.run_task("x**2 - 36 = 0")
-    engine.run_task("Resolva: 4x - 12 = 0")
-    engine.run_task("Calcule 18% de 250")
-    engine.run_task("Qual é 144 dividido por 12?")
-    engine.run_task("Explique gravidade em uma frase simples")
-    engine.run_task("Explique o que é porcentagem em uma frase")
+    engine.run_task("x**2 - 49 = 0")
+    engine.run_task("Resolva: 6x + 3 = 21")
+    engine.run_task("x**2 - 1 = 0")
+    engine.run_task("Calcule 12% de 200")
+    engine.run_task("Qual é 225 dividido por 15?")
+    engine.run_task("Calcule 40% de 90")
+    engine.run_task("Explique energia em uma frase simples")
+    engine.run_task("Explique o que é divisão em uma frase")
+    engine.run_task("Explique porcentagem para uma criança")

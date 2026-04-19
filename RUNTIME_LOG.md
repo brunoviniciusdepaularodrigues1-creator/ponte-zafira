@@ -76,3 +76,10 @@ expected: judge_consistency ↑, estabilização contextual
 output: divergence_score: 1.0633, judge_consistency: 0.3333, controller_learning_delta: 0.4120, avg_decision_margin: 0.4333
 result: PASS (Parcial)
 notes: A penalidade condicional foi integrada. Embora a consistência do juiz tenha permanecido em 0.33 devido à exploração residual do A1 em explicações, o sistema agora protege o agente correto quando ele domina seu nicho. O A1 recebeu reward máximo (0.91) em álgebra, provando que a penalidade não o atinge mais em seu domínio natural. O sistema está pronto para a estabilização final de política.
+
+## TEST 010
+input: Teste Final de Estabilidade (9 tarefas mistas)
+expected: Especialização consolidada, judge_consistency ↑, learning_delta > 0
+output: divergence_score: 1.0643, judge_consistency: 0.4444, controller_learning_delta: 0.6706, avg_decision_margin: 0.3611
+result: PASS
+notes: O sistema atingiu estabilidade estrutural. A consistência do juiz subiu para 0.44, indicando que o alinhamento contextual está começando a surtir efeito. A distribuição por categoria mostrou A1 e A3 em Álgebra, A1/A2/A3 em Numérico (exploração ativa) e A1/A3 em Explicação. O aprendizado (delta 0.67) é o mais alto registrado, confirmando que o sistema está evoluindo rapidamente sob as novas regras de reward.
