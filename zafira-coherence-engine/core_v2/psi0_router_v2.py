@@ -8,6 +8,7 @@ class EvolutionaryRouter:
         self.agents = agents
         self.memory_path = memory_path
         self.policy = self._load_policy()
+        self.temperature = 0.7  # Ajuste N17.2: Reduzir ruído sem matar exploração
         self.coherence_bias = {
             "symbolic": 0.33,
             "numeric": 0.33,
@@ -52,9 +53,13 @@ class EvolutionaryRouter:
         else:
             bias[2] = 0.4
             
-        # 4. Seleção Final (Softmax ou Amostragem Ponderada)
-        combined_probs = np.array(probs) + np.array(bias)
-        combined_probs = combined_probs / combined_probs.sum()
+        # 4. Seleção Final (Softmax com Temperatura ou Amostragem Ponderada)
+        # Aplicando temperatura para suavizar/acentuar a distribuição
+        combined_scores = np.array(probs) + np.array(bias)
+        
+        # Softmax com temperatura: exp(score/T) / sum(exp(score/T))
+        exp_scores = np.exp(combined_scores / self.temperature)
+        combined_probs = exp_scores / exp_scores.sum()
         
         selected_type = random.choices(agent_types, weights=combined_probs, k=1)[0]
         
