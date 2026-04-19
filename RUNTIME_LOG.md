@@ -25,3 +25,10 @@ expected: avg_decision_margin registrado, judge_consistency mantida ou ↑
 output: divergence_score: 1.0689, judge_consistency: 0.6667, controller_learning_delta: 0.2553, avg_decision_margin: 0.4333
 result: PASS
 notes: A métrica decision_margin foi integrada com sucesso. O valor de 0.4333 indica uma convicção moderada do juiz (quase metade da escala de score). A consistência do juiz subiu para 0.66, sugerindo que a melhor visibilidade das métricas ajuda a validar a estabilidade do sistema.
+
+## TEST 004
+input: Expansão do conjunto de tarefas (3 -> 6 tarefas)
+expected: judge_consistency > 0.6, avg_decision_margin > 0.3, learning_delta > 0
+output: divergence_score: 1.0654, judge_consistency: 0.8333, controller_learning_delta: 0.4579, avg_decision_margin: 0.4333
+result: PASS
+notes: O sistema demonstrou alta robustez. A consistência do juiz subiu significativamente (0.66 -> 0.83), indicando que o router está selecionando agentes adequados para uma gama maior de problemas. A margem de decisão permaneceu estável em 0.4333, confirmando a convicção do juiz mesmo em novas tarefas. O aprendizado continua ativo e saudável.
