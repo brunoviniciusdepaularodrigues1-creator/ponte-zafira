@@ -47,3 +47,24 @@ Os logs gerados em `logs/system_history.json` devem apresentar uma distribuiçã
 
 ---
 **Certificação:** Este protocolo segue o Axioma VII de Traçabilidade.
+
+## 5. Validação do Loop Multi-Agente (N17.2)
+Antes de evoluir arquitetura, valide o loop causal completo.
+
+### Passo 4: Executar engine competitivo (gera log JSONL)
+```bash
+cd zafira-coherence-engine
+PYTHONPATH=. python core_v2/psi0_loop_v2.py
+```
+
+### Passo 5: Medir reação do sistema
+```bash
+python validacao/validate_multiagent_loop.py --log agent_evolution_v75_log.txt
+```
+
+Registre o teste em `RUNTIME_LOG.md` com:
+- input
+- expected
+- output
+- result
+- notes

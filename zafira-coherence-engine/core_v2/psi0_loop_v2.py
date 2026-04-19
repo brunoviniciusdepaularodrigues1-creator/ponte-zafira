@@ -1,6 +1,7 @@
 import json
 import time
 import os
+import copy
 from agents.a1_symbolic import SymbolicSolver
 from agents.a2_numeric import NumericSolver
 from agents.a3_llm import LLMSolver
@@ -24,6 +25,9 @@ class ZafiraCoherenceEngineV75:
         coherence.update(reward), log experience
         """
         print(f"\n--- Processando Tarefa: {task} ---")
+        
+        # Capture pre-policy state for observability
+        pre_policy = copy.deepcopy(self.router.policy)
         
         # 1. Seleção do Agente Principal (Router Evolutivo)
         selected_agent, probs = self.router.select_agent(task)
@@ -52,8 +56,11 @@ class ZafiraCoherenceEngineV75:
         for agent in self.agents:
             self.router.update_policy(agent.type, rewards[agent.name])
             
+        # Capture post-policy state for observability
+        post_policy = copy.deepcopy(self.router.policy)
+            
         # 6. Log Experience
-        self._log_experience(task, results, evaluation, rewards, selected_agent)
+        self._log_experience(task, results, evaluation, rewards, selected_agent, probs, pre_policy, post_policy)
         
         return {
             "task": task,
@@ -92,14 +99,18 @@ class ZafiraCoherenceEngineV75:
             
         return rewards
 
-    def _log_experience(self, task, results, evaluation, rewards, selected_agent):
+    def _log_experience(self, task, results, evaluation, rewards, selected_agent, probs, pre_policy, post_policy):
         log_entry = {
             "timestamp": time.time(),
             "task": task,
             "selected_agent": selected_agent.name,
+            "selected_agent_type": selected_agent.type,
+            "selection_probs": probs,
             "final_scores": evaluation["final_scores"],
             "rewards": rewards,
-            "agreement": evaluation["metrics"]["agreement"]
+            "agreement": evaluation["metrics"]["agreement"],
+            "pre_policy": pre_policy,
+            "post_policy": post_policy
         }
         with open(self.history_path, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
