@@ -72,11 +72,17 @@ class EvolutionaryRouter:
 
     def _detect_task_type(self, task):
         task = task.lower()
-        if any(op in task for op in ["**", "x", "y", "z", "solve", "simplify"]):
+        # N18 Passo 4: Refinamento do mapeamento de domínio
+        # Prioridade 1: Explicação (Linguagem)
+        if "explique" in task:
+            return "llm"
+        # Prioridade 2: Álgebra (Simbólico) - mais específico que numérico
+        if any(op in task for op in ["**", "x", "y", "z", "solve", "simplify", "="]):
             return "symbolic"
-        if any(op in task for op in ["sqrt", "sin", "cos", "log", "exp"]) or any(c.isdigit() for c in task):
+        # Prioridade 3: Numérico (Aritmética)
+        if any(op in task for op in ["%", "calcule", "dividido", "sqrt", "sin", "cos", "log", "exp"]) or any(c.isdigit() for c in task):
             return "numeric"
-        return "llm"
+        return "llm" # Fallback para LLM
 
     def update_policy(self, agent_type, reward):
         """

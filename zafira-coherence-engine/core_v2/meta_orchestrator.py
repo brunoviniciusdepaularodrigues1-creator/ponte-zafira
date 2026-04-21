@@ -9,15 +9,14 @@ class MetaOrchestrator:
 
     def classify_task(self, task):
         task_l = task.lower()
-
-        if "x" in task_l or "=" in task_l:
-            return "algebra"
-        elif "%" in task_l or "calcule" in task_l:
-            return "numeric"
-        elif "explique" in task_l:
+        # N18 Passo 4: Alinhamento com o EvolutionaryRouter
+        if "explique" in task_l:
             return "explanation"
-        else:
-            return "unknown"
+        if any(op in task_l for op in ["**", "x", "y", "z", "solve", "simplify", "="]):
+            return "algebra"
+        if any(op in task_l for op in ["%", "calcule", "dividido", "sqrt", "sin", "cos", "log", "exp"]) or any(c.isdigit() for c in task_l):
+            return "numeric"
+        return "unknown"
 
     def update(self, task, agent_type, reward):
         category = self.classify_task(task)

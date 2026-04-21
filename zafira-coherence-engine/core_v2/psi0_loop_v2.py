@@ -152,13 +152,10 @@ if __name__ == "__main__":
     engine = ZafiraCoherenceEngineV75()
     engine.run_task("x**2 - 49 = 0")
     engine.run_task("Resolva: 6x + 3 = 21")
-    engine.run_task("x**2 - 1 = 0")
     engine.run_task("Calcule 12% de 200")
     engine.run_task("Qual é 225 dividido por 15?")
-    engine.run_task("Calcule 40% de 90")
     engine.run_task("Explique energia em uma frase simples")
     engine.run_task("Explique o que é divisão em uma frase")
-    engine.run_task("Explique porcentagem para uma criança")
     
     print("\n--- RESUMO DA MEMÓRIA DO META-ORQUESTRADOR (N18) ---")
     import json

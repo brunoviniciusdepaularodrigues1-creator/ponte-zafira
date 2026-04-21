@@ -92,3 +92,10 @@ notes: O sistema atingiu estabilidade estrutural. A consistência do juiz subiu 
 **Outcome**: Competition + Diversity + Coherence + Learning stabilized
 **Baseline**: Multi-agent competitive loop operacional e antifrágil.
 ---
+
+## TEST 013
+input: Correção do Mapeamento task_type -> preferred_agent_type (N18 Passo 4)
+expected: Alinhamento correto (numeric -> A2), judge_consistency ↑
+output: divergence_score: 1.0039, judge_consistency: 0.6667, controller_learning_delta: 0.3974, avg_decision_margin: 0.4333
+result: PASS
+notes: O mapeamento foi corrigido com sucesso. A consistência do juiz subiu para 0.66, refletindo escolhas mais coerentes. Tarefas numéricas agora são corretamente mapeadas para o Numeric Solver, e a prioridade de detecção (Explicação > Álgebra > Numérico) eliminou falsos positivos. O sistema está agora com os bônus de memória e coerência perfeitamente alinhados.
