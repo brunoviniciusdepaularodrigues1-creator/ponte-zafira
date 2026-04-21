@@ -1,0 +1,122 @@
+{
+    "level": "N18_P2",
+    "status": "APROVADO",
+    "criteria_passed": 3,
+    "consistency_rate": 0.3333333333333333,
+    "avg_reward": 0.5333333333333333,
+    "memory_bias_used": 1,
+    "distribution_by_category": {
+        "algebra": {
+            "numeric": 1,
+            "symbolic": 1
+        },
+        "numeric": {
+            "symbolic": 2
+        },
+        "explanation": {
+            "llm": 1,
+            "numeric": 1
+        }
+    },
+    "learning_delta": {
+        "symbolic": 0.0025,
+        "numeric": -0.038,
+        "llm": 0.05
+    },
+    "policy_before": {
+        "symbolic": 0.5,
+        "numeric": 0.5,
+        "llm": 0.5
+    },
+    "policy_after": {
+        "symbolic": 0.5025000000000001,
+        "numeric": 0.46199999999999997,
+        "llm": 0.55
+    },
+    "results": [
+        {
+            "task": "solve x**2 - 4 = 0",
+            "category": "algebra",
+            "selected": "numeric",
+            "probs": [
+                0.4736842105263158,
+                0.2631578947368421,
+                0.2631578947368421
+            ],
+            "reward": 0.3,
+            "consistent": false,
+            "memory_bias_applied": false,
+            "preferred_by_memory": null
+        },
+        {
+            "task": "find x where 3x + 6 = 0",
+            "category": "algebra",
+            "selected": "symbolic",
+            "probs": [
+                0.4787234042553192,
+                0.2553191489361702,
+                0.26595744680851063
+            ],
+            "reward": 1.0,
+            "consistent": true,
+            "memory_bias_applied": false,
+            "preferred_by_memory": null
+        },
+        {
+            "task": "calculate 100 - 37",
+            "category": "numeric",
+            "selected": "symbolic",
+            "probs": [
+                0.3030303030303031,
+                0.4444444444444445,
+                0.25252525252525254
+            ],
+            "reward": 0.3,
+            "consistent": false,
+            "memory_bias_applied": true,
+            "preferred_by_memory": "symbolic"
+        },
+        {
+            "task": "what is 3 * 3",
+            "category": "numeric",
+            "selected": "symbolic",
+            "probs": [
+                0.2755905511811024,
+                0.46194225721784776,
+                0.26246719160104987
+            ],
+            "reward": 0.3,
+            "consistent": false,
+            "memory_bias_applied": false,
+            "preferred_by_memory": null
+        },
+        {
+            "task": "explain why the sky is blue",
+            "category": "explanation",
+            "selected": "llm",
+            "probs": [
+                0.47941567065073043,
+                0.2549800796812749,
+                0.2656042496679947
+            ],
+            "reward": 1.0,
+            "consistent": true,
+            "memory_bias_applied": false,
+            "preferred_by_memory": null
+        },
+        {
+            "task": "describe how photosynthesis works in simple terms",
+            "category": "explanation",
+            "selected": "numeric",
+            "probs": [
+                0.4670116429495472,
+                0.2483829236739974,
+                0.2846054333764554
+            ],
+            "reward": 0.3,
+            "consistent": false,
+            "memory_bias_applied": false,
+            "preferred_by_memory": null
+        }
+    ]
+}

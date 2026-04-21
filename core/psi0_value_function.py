@@ -1,0 +1,55 @@
+import json
+import os
+
+EXECUTOR_EMBEDDINGS = {
+    "A1": [1.0, 0.0, 0.0],
+    "A2": [0.0, 1.0, 0.0],
+    "A3": [0.0, 0.0, 1.0]
+}
+
+class ValueFunction:
+    def __init__(self, path=None):
+        self.path = path or os.path.join(os.path.dirname(__file__), "value_memory.json")
+        self.W = self._load_weights()
+
+    def _load_weights(self):
+        if os.path.exists(self.path):
+            with open(self.path, "r") as f:
+                return json.load(f)
+        return {
+            "weights": [0.1] * 8  # 5 state + 3 executor
+        }
+
+    def save(self):
+        with open(self.path, "w") as f:
+            json.dump(self.W, f, indent=2)
+
+    def _build_input(self, state_vector, executor):
+        sv = state_vector[:5]  # garante tamanho fixo
+        ev = EXECUTOR_EMBEDDINGS[executor]
+        return sv + ev
+
+    def _normalize(self, x):
+        norm = sum(i*i for i in x) ** 0.5
+        return [i / (norm + 1e-8) for i in x]
+
+    def predict(self, state_vector, stage, executor):
+        x = self._normalize(self._build_input(state_vector, executor))
+        W = self.W["weights"]
+        return sum(w * xi for w, xi in zip(W, x))
+
+    def update(self, state_vector, stage, executor, reward, lr=0.05):
+        x = self._normalize(self._build_input(state_vector, executor))
+        W = self.W["weights"]
+
+        prediction = self.predict(state_vector, stage, executor)
+        error = reward - prediction
+
+        new_W = []
+        for w, xi in zip(W, x):
+            # Adicionado clamp entre -2.0 e 2.0
+            new_W.append(max(-2.0, min(2.0, w + lr * error * xi)))
+
+        self.W["weights"] = new_W
+        self.save()
+        return prediction, new_W

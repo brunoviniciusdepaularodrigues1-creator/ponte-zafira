@@ -1,0 +1,7 @@
+{
+    "entropy_normalized": 1.0,
+    "mutation_budget_valid": true,
+    "promotion_logic_valid": true,
+    "rollback_logic_valid": true,
+    "status": "VALIDADO N11"
+}
