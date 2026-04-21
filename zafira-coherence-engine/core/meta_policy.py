@@ -1,3 +1,14 @@
+class InternalState:
+    def __init__(self):
+        self.last_task = None
+        self.last_choice = None
+        self.last_reward = None
+
+    def update(self, task, choice, reward):
+        self.last_task = task
+        self.last_choice = choice
+        self.last_reward = reward
+
 class MetaPolicy:
 
     def __init__(self):
@@ -6,6 +17,7 @@ class MetaPolicy:
             "A2": {"correct": 0, "total": 0},
             "A3": {"correct": 0, "total": 0}
         }
+        self.state = InternalState()
 
     def update(self, action, reward):
         self.stats[action]["total"] += 1
@@ -42,3 +54,9 @@ class MetaPolicy:
             # Atualmente A3 domina por falha do A1 em álgebra linear
             return "A3"
         return None
+
+    def flag_poor_decision(self, task):
+        """Sinaliza uma decisão de baixa performance para ajuste futuro (N18 Passo 3)."""
+        # Por enquanto, apenas loga internamente para autorreferência
+        print(f"⚠️ [AUTORREFERÊNCIA] Pobre decisão detectada para tarefa: {task[:30]}...")
+        # No futuro, isso pode disparar uma re-avaliação do bônus de categoria

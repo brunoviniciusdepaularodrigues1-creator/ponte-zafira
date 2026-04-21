@@ -214,9 +214,19 @@ class Psi0Agent:
                 self.value_fn.update(state_vector, stage, chosen_action, internal_score)
                 self.actor.update(stage, chosen_action, advantage)
                 self.coherence.update(chosen_action, advantage)
+                
+                # 🔥 Nível 18 Passo 3: Atualizar Estado Interno (Autorreferência)
+                self.meta.state.update(task_input, chosen_action, internal_score)
+                
+                # Auto-avaliação baseada na performance imediata
+                if internal_score < 0.3:
+                    self.meta.flag_poor_decision(task_input)
+                
+                # Atualizar MetaPolicy
                 self.meta.update(chosen_action, internal_score)
                 
                 print(f"  Feedback: Advantage={advantage:.4f} | Internal Score={internal_score}")
+                print(f"  Estado Interno: {{'last_choice': '{self.meta.state.last_choice}', 'last_reward': {self.meta.state.last_reward:.2f}}}")
                 
                 if self.cycle % 5 == 0:
                     print("  Meta Policy Scores:", self.meta.get_scores())
