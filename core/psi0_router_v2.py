@@ -2,6 +2,49 @@ import json
 import random
 import numpy as np
 import os
+import json
+
+
+class InternalState:
+    """
+    N18 Passo 5 — Estado interno de desempenho recente.
+    Mantém uma janela deslizante dos últimos 5 rewards para
+    calcular a temperatura adaptativa de exploração.
+    """
+
+    def __init__(self, window=5):
+        self.last_task   = None
+        self.last_choice = None
+        self.last_reward = None
+        self.recent_rewards = []
+        self.window = window
+
+    def update(self, task, choice, reward):
+        self.last_task   = task
+        self.last_choice = choice
+        self.last_reward = reward
+        self.recent_rewards.append(reward)
+        if len(self.recent_rewards) > self.window:
+            self.recent_rewards.pop(0)
+
+    def recent_average_reward(self):
+        if not self.recent_rewards:
+            return 0.5
+        return sum(self.recent_rewards) / len(self.recent_rewards)
+
+    def adaptive_temperature(self):
+        """
+        Regra de temperatura adaptativa:
+          avg < 0.4  → explora mais  (temperatura alta: 0.9)
+          avg > 0.7  → explora menos (temperatura baixa: 0.6)
+          caso base  → temperatura padrão: 0.7
+        """
+        avg = self.recent_average_reward()
+        if avg < 0.4:
+            return 0.9
+        elif avg > 0.7:
+            return 0.6
+        return 0.7
 
 
 class EvolutionaryRouter:
@@ -51,7 +94,7 @@ class EvolutionaryRouter:
             return best
         return None
 
-    def select_agent(self, task):
+    def select_agent(self, task, temperature=None):
         """
         Pipeline de seleção N18 Passo 2:
           state → actor → coherence_bias → memory_bias (0.05) → seleção final
@@ -81,9 +124,17 @@ class EvolutionaryRouter:
             idx = agent_types.index(preferred)
             memory_bias_vec[idx] = MEMORY_BIAS
 
-        # 5. Seleção Final (Amostragem Ponderada)
+        # 5. Temperatura Adaptativa (N18 Passo 5)
+        # Se não fornecida externamente, usa a temperatura interna do estado
+        if temperature is None:
+            temperature = getattr(self, '_adaptive_temperature', 0.7)
+
+        # Aplica temperatura: eleva probs à potência (1/T) para suavizar/aguçar
         combined_probs = np.array(probs) + np.array(bias) + np.array(memory_bias_vec)
-        combined_probs = combined_probs / combined_probs.sum()
+        combined_probs = np.clip(combined_probs, 1e-8, None)
+        # Softmax com temperatura
+        scaled = combined_probs ** (1.0 / temperature)
+        combined_probs = scaled / scaled.sum()
 
         selected_type = random.choices(agent_types, weights=combined_probs, k=1)[0]
 
@@ -93,13 +144,15 @@ class EvolutionaryRouter:
                 return agent, combined_probs.tolist(), {
                     "task_type": task_type,
                     "preferred_by_memory": preferred,
-                    "memory_bias_applied": preferred is not None
+                    "memory_bias_applied": preferred is not None,
+                    "adaptive_temperature": temperature
                 }
 
         return self.agents[0], combined_probs.tolist(), {
             "task_type": task_type,
             "preferred_by_memory": None,
-            "memory_bias_applied": False
+            "memory_bias_applied": False,
+            "adaptive_temperature": temperature
         }
 
     def _detect_task_type(self, task):
