@@ -1,0 +1,106 @@
+{
+    "level": "N18_P6",
+    "status": "APROVADO",
+    "criteria_passed": 3,
+    "health_sequence": [
+        "stable",
+        "stable",
+        "stable",
+        "recovering",
+        "recovering",
+        "stable"
+    ],
+    "expected_health_sequence": [
+        "stable",
+        "recovering",
+        "critical",
+        "critical",
+        "recovering",
+        "stable"
+    ],
+    "health_correct_count": 3,
+    "avg_reward_sequence": [
+        0.5,
+        1.0,
+        0.55,
+        0.4000000000000001,
+        0.45000000000000007,
+        0.56
+    ],
+    "temperature_sequence": [
+        0.7,
+        0.6,
+        0.7,
+        0.7,
+        0.7,
+        0.7
+    ],
+    "results": [
+        {
+            "step": 1,
+            "task": "x**2 - 16 = 0",
+            "reward": 1.0,
+            "recent_avg_reward": 0.5,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "expected_health": "stable",
+            "health_correct": true,
+            "selected": "numeric"
+        },
+        {
+            "step": 2,
+            "task": "Resolva impossivel x = x + 1",
+            "reward": 0.1,
+            "recent_avg_reward": 1.0,
+            "adaptive_temperature": 0.6,
+            "health_state": "stable",
+            "expected_health": "recovering",
+            "health_correct": false,
+            "selected": "symbolic"
+        },
+        {
+            "step": 3,
+            "task": "Calcule raiz de -1",
+            "reward": 0.1,
+            "recent_avg_reward": 0.55,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "expected_health": "critical",
+            "health_correct": false,
+            "selected": "numeric"
+        },
+        {
+            "step": 4,
+            "task": "Qual e 144 dividido por 12?",
+            "reward": 0.6,
+            "recent_avg_reward": 0.4000000000000001,
+            "adaptive_temperature": 0.7,
+            "health_state": "recovering",
+            "expected_health": "critical",
+            "health_correct": false,
+            "selected": "numeric"
+        },
+        {
+            "step": 5,
+            "task": "Calcule 25% de 320",
+            "reward": 1.0,
+            "recent_avg_reward": 0.45000000000000007,
+            "adaptive_temperature": 0.7,
+            "health_state": "recovering",
+            "expected_health": "recovering",
+            "health_correct": true,
+            "selected": "numeric"
+        },
+        {
+            "step": 6,
+            "task": "Explique energia em uma frase",
+            "reward": 1.0,
+            "recent_avg_reward": 0.56,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "expected_health": "stable",
+            "health_correct": true,
+            "selected": "llm"
+        }
+    ]
+}

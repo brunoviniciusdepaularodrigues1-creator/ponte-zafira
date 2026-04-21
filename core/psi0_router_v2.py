@@ -46,6 +46,21 @@ class InternalState:
             return 0.6
         return 0.7
 
+    def health_state(self):
+        """
+        N18 Passo 6 — Estado de saúde operacional explícito.
+        Deriva um diagnóstico legível do desempenho recente:
+          avg < 0.3  → critical   (sistema em crise, exploração máxima)
+          avg < 0.5  → recovering (saíndo do buraco, ainda instavel)
+          avg >= 0.5 → stable     (desempenho aceitável, exploração controlada)
+        """
+        avg = self.recent_average_reward()
+        if avg < 0.3:
+            return "critical"
+        elif avg < 0.5:
+            return "recovering"
+        return "stable"
+
 
 class EvolutionaryRouter:
     def __init__(self, agents, memory_path="agent_policy_v2.json"):
