@@ -1,0 +1,138 @@
+{
+    "level": "N18_P8",
+    "status": "APROVADO",
+    "criteria_passed": 4,
+    "error_memory_final": {
+        "symbolic": {
+            "symbolic": 3
+        },
+        "numeric": {},
+        "llm": {}
+    },
+    "error_penalty_sequence": [
+        0.0,
+        0.01,
+        0.02,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "selected_sequence": [
+        "symbolic",
+        "symbolic",
+        "symbolic",
+        "numeric",
+        "symbolic",
+        "numeric"
+    ],
+    "avg_reward": 0.5499999999999999,
+    "max_penalty": 0.02,
+    "agents_seen": [
+        "numeric",
+        "symbolic"
+    ],
+    "results": [
+        {
+            "step": 1,
+            "task": "x**2 + 1 = 0",
+            "reward": 0.1,
+            "adjusted_reward": 0.1,
+            "error_penalty": 0.0,
+            "health_state": "stable",
+            "selected": "symbolic",
+            "fase": "ERRO",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 1
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        },
+        {
+            "step": 2,
+            "task": "2x + 3 = 0",
+            "reward": 0.1,
+            "adjusted_reward": 0.09000000000000001,
+            "error_penalty": 0.01,
+            "health_state": "critical",
+            "selected": "symbolic",
+            "fase": "ERRO",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 2
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        },
+        {
+            "step": 3,
+            "task": "x**3 - x = 0",
+            "reward": 0.1,
+            "adjusted_reward": 0.08,
+            "error_penalty": 0.02,
+            "health_state": "critical",
+            "selected": "symbolic",
+            "fase": "ERRO",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 3
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        },
+        {
+            "step": 4,
+            "task": "x**2 - 16 = 0",
+            "reward": 1.0,
+            "adjusted_reward": 1.0,
+            "error_penalty": 0.0,
+            "health_state": "critical",
+            "selected": "numeric",
+            "fase": "normal",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 3
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        },
+        {
+            "step": 5,
+            "task": "Calcule 25% de 320",
+            "reward": 1.0,
+            "adjusted_reward": 1.0,
+            "error_penalty": 0.0,
+            "health_state": "recovering",
+            "selected": "symbolic",
+            "fase": "normal",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 3
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        },
+        {
+            "step": 6,
+            "task": "Explique energia",
+            "reward": 1.0,
+            "adjusted_reward": 1.0,
+            "error_penalty": 0.0,
+            "health_state": "recovering",
+            "selected": "numeric",
+            "fase": "normal",
+            "error_memory_snapshot": {
+                "symbolic": {
+                    "symbolic": 3
+                },
+                "numeric": {},
+                "llm": {}
+            }
+        }
+    ]
+}

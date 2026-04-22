@@ -72,6 +72,13 @@ class EvolutionaryRouter:
             "numeric": 0.33,
             "llm": 0.34
         }
+        # N18 Passo 8 — Memória de erro estrutural
+        # Registra quantas vezes cada agente falhou (reward < 0.3) por categoria
+        self.error_memory = {
+            "symbolic": {},
+            "numeric":  {},
+            "llm":      {}
+        }
 
     def _load_policy(self):
         if os.path.exists(self.memory_path):
@@ -224,15 +231,41 @@ class EvolutionaryRouter:
         # 5. Fallback — LLM lida com o desconhecido
         return "llm"
 
-    def update_policy(self, agent_type, reward):
+    def register_error(self, task, agent_type, reward):
+        """
+        N18 Passo 8 — Registra falha estrutural quando reward < 0.3.
+        Incrementa o contador de erros do agente na categoria da tarefa.
+        """
+        if reward < 0.3:
+            category = self._detect_task_type(task)
+            if category not in self.error_memory:
+                self.error_memory[category] = {}
+            if agent_type not in self.error_memory[category]:
+                self.error_memory[category][agent_type] = 0
+            self.error_memory[category][agent_type] += 1
+
+    def get_error_penalty(self, task, agent_type):
+        """
+        N18 Passo 8 — Penalidade leve baseada em erros acumulados.
+        Cresce 0.01 por erro, limitada a 0.05 (não bloqueia retorno).
+        """
+        category = self._detect_task_type(task)
+        count = self.error_memory.get(category, {}).get(agent_type, 0)
+        return min(0.05, count * 0.01)
+
+    def update_policy(self, agent_type, reward, task=None):
         """
         Atualiza a política com base no reward recebido.
+        N18 P8: registra erros estruturais se task for fornecida.
         """
         alpha = 0.1
         old_score = self.policy[agent_type]["score"]
         self.policy[agent_type]["score"] = old_score + alpha * (reward - old_score)
         self.policy[agent_type]["count"] += 1
         self._save_policy()
+        # Registra erro estrutural se a tarefa for fornecida
+        if task is not None:
+            self.register_error(task, agent_type, reward)
 
 
 if __name__ == "__main__":
