@@ -1,0 +1,94 @@
+{
+    "level": "N19_P1",
+    "status": "APROVADO",
+    "criteria_passed": 4,
+    "accuracy": 0.6,
+    "avg_real_score": 0.58,
+    "results": [
+        {
+            "step": 1,
+            "task": "x**2 - 9 = 0",
+            "expected": "symbolic",
+            "candidates": [
+                "symbolic",
+                "numeric"
+            ],
+            "simulated_scores": {
+                "symbolic": 0.9,
+                "numeric": 0.2
+            },
+            "chosen": "symbolic",
+            "correct": true,
+            "real_score": 0.9,
+            "health": "stable"
+        },
+        {
+            "step": 2,
+            "task": "Calcule 15% de 200",
+            "expected": "numeric",
+            "candidates": [
+                "symbolic",
+                "numeric"
+            ],
+            "simulated_scores": {
+                "symbolic": 0.1,
+                "numeric": 0.8
+            },
+            "chosen": "numeric",
+            "correct": true,
+            "real_score": 0.8,
+            "health": "stable"
+        },
+        {
+            "step": 3,
+            "task": "2x + 6 = 0",
+            "expected": "symbolic",
+            "candidates": [
+                "symbolic",
+                "numeric"
+            ],
+            "simulated_scores": {
+                "symbolic": 0.1,
+                "numeric": 0.2
+            },
+            "chosen": "numeric",
+            "correct": false,
+            "real_score": 0.2,
+            "health": "stable"
+        },
+        {
+            "step": 4,
+            "task": "Qual e 144 dividido por 12?",
+            "expected": "numeric",
+            "candidates": [
+                "symbolic",
+                "numeric"
+            ],
+            "simulated_scores": {
+                "symbolic": 0.1,
+                "numeric": 0.1
+            },
+            "chosen": "symbolic",
+            "correct": false,
+            "real_score": 0.1,
+            "health": "stable"
+        },
+        {
+            "step": 5,
+            "task": "x**3 - 8 = 0",
+            "expected": "symbolic",
+            "candidates": [
+                "symbolic",
+                "numeric"
+            ],
+            "simulated_scores": {
+                "symbolic": 0.9,
+                "numeric": 0.2
+            },
+            "chosen": "symbolic",
+            "correct": true,
+            "real_score": 0.9,
+            "health": "stable"
+        }
+    ]
+}

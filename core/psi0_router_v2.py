@@ -231,6 +231,29 @@ class EvolutionaryRouter:
         # 5. Fallback — LLM lida com o desconhecido
         return "llm"
 
+    def get_top_k(self, task, k=2):
+        """
+        N19 Passo 1 — Retorna os k agentes mais promissores para a tarefa.
+        Usa a política aprendida + coerência estrutural para ranquear.
+        Não altera estado. Usado para simulação leve antes da decisão real.
+        """
+        task_type = self._detect_task_type(task)
+        agent_types = [a.type for a in self.agents]
+
+        # Score base = política aprendida
+        scores = {}
+        for a in self.agents:
+            policy_score = self.policy[a.type]["score"]
+            # Adiciona coerência estrutural leve
+            coherence_bonus = self.coherence_bias.get(a.type, 0.33)
+            # Subtrai penalidade de erro acumulado
+            error_penalty = self.get_error_penalty(task, a.type)
+            scores[a.type] = policy_score + coherence_bonus * 0.1 - error_penalty
+
+        # Ordena e retorna os k melhores agentes (objetos reais)
+        ranked = sorted(self.agents, key=lambda a: scores[a.type], reverse=True)
+        return ranked[:k], {a.type: round(scores[a.type], 4) for a in ranked}
+
     def register_error(self, task, agent_type, reward):
         """
         N18 Passo 8 — Registra falha estrutural quando reward < 0.3.
