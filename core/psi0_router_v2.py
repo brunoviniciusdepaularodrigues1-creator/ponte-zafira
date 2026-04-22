@@ -80,6 +80,15 @@ class EvolutionaryRouter:
             "llm":      {}
         }
 
+        # N19 Passo 2 — Memória de calibração da simulação
+        # Registra a diferença entre score simulado e score real por tipo de agente
+        # Janela deslizante de 20 amostras para não acumular ruído antigo
+        self.simulation_memory = {
+            "symbolic": [],
+            "numeric":  [],
+            "llm":      []
+        }
+
     def _load_policy(self):
         if os.path.exists(self.memory_path):
             with open(self.memory_path, 'r') as f:
@@ -275,6 +284,30 @@ class EvolutionaryRouter:
         category = self._detect_task_type(task)
         count = self.error_memory.get(category, {}).get(agent_type, 0)
         return min(0.05, count * 0.01)
+
+    def register_simulation_error(self, agent_type, simulated_score, real_score):
+        """
+        N19 Passo 2 — Registra a diferença entre score simulado e real.
+        Mantém janela deslizante de 20 amostras por tipo de agente.
+        Não altera política nem reward — só mede.
+        """
+        error = abs(simulated_score - real_score)
+        if agent_type in self.simulation_memory:
+            self.simulation_memory[agent_type].append(round(error, 4))
+            if len(self.simulation_memory[agent_type]) > 20:
+                self.simulation_memory[agent_type].pop(0)
+
+    def get_simulation_reliability(self, agent_type):
+        """
+        N19 Passo 2 — Retorna a confiabilidade da simulação para um tipo de agente.
+        reliability = max(0.5, 1.0 - avg_error)
+        Retorna 1.0 (neutro) quando ainda não há histórico.
+        """
+        errors = self.simulation_memory.get(agent_type, [])
+        if not errors:
+            return 1.0  # neutro no início
+        avg_error = sum(errors) / len(errors)
+        return round(max(0.5, 1.0 - avg_error), 4)
 
     def update_policy(self, agent_type, reward, task=None):
         """

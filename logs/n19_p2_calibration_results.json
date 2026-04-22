@@ -1,0 +1,112 @@
+{
+  "n19_p2_summary": {
+    "accuracy": 0.8,
+    "avg_real_score": 0.84,
+    "avg_sim_error": 0.1,
+    "criteria_passed": 4
+  },
+  "simulation_memory_final": {
+    "symbolic": [
+      0.1,
+      0.1
+    ],
+    "numeric": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "llm": []
+  },
+  "reliability_final": {
+    "symbolic": 0.9,
+    "numeric": 0.9,
+    "llm": 1.0
+  },
+  "steps": [
+    {
+      "task": "x**2 - 9 = 0",
+      "expected": "symbolic",
+      "selected": "symbolic",
+      "correct": true,
+      "simulated_scores": {
+        "symbolic": 0.9,
+        "numeric": 0.3
+      },
+      "best_simulated": "symbolic",
+      "simulated_score": 0.9,
+      "real_score": 1.0,
+      "simulation_error": 0.1,
+      "simulation_reliability": 0.9,
+      "health_state": "stable",
+      "adaptive_temperature": 0.7
+    },
+    {
+      "task": "Calcule 15% de 200",
+      "expected": "numeric",
+      "selected": "numeric",
+      "correct": true,
+      "simulated_scores": {
+        "symbolic": 0.1,
+        "numeric": 0.9
+      },
+      "best_simulated": "numeric",
+      "simulated_score": 0.9,
+      "real_score": 1.0,
+      "simulation_error": 0.1,
+      "simulation_reliability": 0.9,
+      "health_state": "stable",
+      "adaptive_temperature": 0.6
+    },
+    {
+      "task": "2x + 6 = 0",
+      "expected": "symbolic",
+      "selected": "numeric",
+      "correct": false,
+      "simulated_scores": {
+        "symbolic": 0.1,
+        "numeric": 0.3
+      },
+      "best_simulated": "numeric",
+      "simulated_score": 0.3,
+      "real_score": 0.2,
+      "simulation_error": 0.1,
+      "simulation_reliability": 0.9,
+      "health_state": "stable",
+      "adaptive_temperature": 0.6
+    },
+    {
+      "task": "144 dividido por 12?",
+      "expected": "numeric",
+      "selected": "numeric",
+      "correct": true,
+      "simulated_scores": {
+        "symbolic": 0.1,
+        "numeric": 0.9
+      },
+      "best_simulated": "numeric",
+      "simulated_score": 0.9,
+      "real_score": 1.0,
+      "simulation_error": 0.1,
+      "simulation_reliability": 0.9,
+      "health_state": "stable",
+      "adaptive_temperature": 0.6
+    },
+    {
+      "task": "x**3 - 8 = 0",
+      "expected": "symbolic",
+      "selected": "symbolic",
+      "correct": true,
+      "simulated_scores": {
+        "symbolic": 0.9,
+        "numeric": 0.3
+      },
+      "best_simulated": "symbolic",
+      "simulated_score": 0.9,
+      "real_score": 1.0,
+      "simulation_error": 0.1,
+      "simulation_reliability": 0.9,
+      "health_state": "stable",
+      "adaptive_temperature": 0.6
+    }
+  ]
+}
