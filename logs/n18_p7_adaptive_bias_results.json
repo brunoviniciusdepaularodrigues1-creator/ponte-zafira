@@ -1,0 +1,98 @@
+{
+    "level": "N18_P7",
+    "status": "APROVADO",
+    "criteria_passed": 4,
+    "health_sequence": [
+        "stable",
+        "stable",
+        "stable",
+        "recovering",
+        "recovering",
+        "stable"
+    ],
+    "adaptive_memory_bias_sequence": [
+        0.05,
+        0.05,
+        0.05,
+        0.06,
+        0.06,
+        0.05
+    ],
+    "selected_agent_sequence": [
+        "numeric",
+        "symbolic",
+        "numeric",
+        "numeric",
+        "numeric",
+        "llm"
+    ],
+    "avg_reward": 0.6333333333333334,
+    "consistency_rate": 0.8333333333333334,
+    "agents_seen": [
+        "llm",
+        "numeric",
+        "symbolic"
+    ],
+    "results": [
+        {
+            "step": 1,
+            "task": "x**2 - 16 = 0",
+            "reward": 1.0,
+            "recent_avg_reward": 0.5,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "adaptive_memory_bias": 0.05,
+            "selected": "numeric"
+        },
+        {
+            "step": 2,
+            "task": "Resolva impossivel x = x + 1",
+            "reward": 0.1,
+            "recent_avg_reward": 1.0,
+            "adaptive_temperature": 0.6,
+            "health_state": "stable",
+            "adaptive_memory_bias": 0.05,
+            "selected": "symbolic"
+        },
+        {
+            "step": 3,
+            "task": "Calcule raiz de -1",
+            "reward": 0.1,
+            "recent_avg_reward": 0.55,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "adaptive_memory_bias": 0.05,
+            "selected": "numeric"
+        },
+        {
+            "step": 4,
+            "task": "Qual e 144 dividido por 12?",
+            "reward": 0.6,
+            "recent_avg_reward": 0.4000000000000001,
+            "adaptive_temperature": 0.7,
+            "health_state": "recovering",
+            "adaptive_memory_bias": 0.06,
+            "selected": "numeric"
+        },
+        {
+            "step": 5,
+            "task": "Calcule 25% de 320",
+            "reward": 1.0,
+            "recent_avg_reward": 0.45000000000000007,
+            "adaptive_temperature": 0.7,
+            "health_state": "recovering",
+            "adaptive_memory_bias": 0.06,
+            "selected": "numeric"
+        },
+        {
+            "step": 6,
+            "task": "Explique energia em uma frase",
+            "reward": 1.0,
+            "recent_avg_reward": 0.56,
+            "adaptive_temperature": 0.7,
+            "health_state": "stable",
+            "adaptive_memory_bias": 0.05,
+            "selected": "llm"
+        }
+    ]
+}

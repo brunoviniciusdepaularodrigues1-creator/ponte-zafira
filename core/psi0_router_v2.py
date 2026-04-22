@@ -109,10 +109,15 @@ class EvolutionaryRouter:
             return best
         return None
 
-    def select_agent(self, task, temperature=None):
+    def select_agent(self, task, temperature=None, health=None):
         """
-        Pipeline de seleção N18 Passo 2:
-          state → actor → coherence_bias → memory_bias (0.05) → seleção final
+        Pipeline de seleção N18 Passo 7:
+          state → actor → coherence_bias → adaptive_memory_bias (health-aware) → seleção final
+
+        N18 P7: memory_bias agora é adaptativo ao health_state:
+          critical   → 0.08 (confia mais na memória, protege especialistas)
+          recovering → 0.06 (cautela moderada)
+          stable     → 0.05 (exploração normal)
         """
         # 1. Detecta tipo de tarefa
         task_type = self._detect_task_type(task)
@@ -130,14 +135,21 @@ class EvolutionaryRouter:
         else:
             bias[2] = 0.4
 
-        # 4. Memory Bias (N18 Passo 2) — bônus leve baseado na memória acumulada
-        # A memória orienta, não manda. Exploração e competição continuam vivas.
-        MEMORY_BIAS = 0.05
+        # 4. Adaptive Memory Bias (N18 Passo 7) — bônus sensível ao health_state
+        # Quando o sistema está mal, confia mais na memória (protege especialistas).
+        # Quando está estável, mantém exploração normal.
+        if health == "critical":
+            adaptive_memory_bias = 0.08
+        elif health == "recovering":
+            adaptive_memory_bias = 0.06
+        else:
+            adaptive_memory_bias = 0.05  # stable (padrão)
+
         preferred = self.get_preference(task_type)
         memory_bias_vec = [0.0, 0.0, 0.0]
         if preferred is not None and preferred in agent_types:
             idx = agent_types.index(preferred)
-            memory_bias_vec[idx] = MEMORY_BIAS
+            memory_bias_vec[idx] = adaptive_memory_bias
 
         # 5. Temperatura Adaptativa (N18 Passo 5)
         # Se não fornecida externamente, usa a temperatura interna do estado
@@ -160,14 +172,18 @@ class EvolutionaryRouter:
                     "task_type": task_type,
                     "preferred_by_memory": preferred,
                     "memory_bias_applied": preferred is not None,
-                    "adaptive_temperature": temperature
+                    "adaptive_temperature": temperature,
+                    "adaptive_memory_bias": adaptive_memory_bias,
+                    "health_state": health
                 }
 
         return self.agents[0], combined_probs.tolist(), {
             "task_type": task_type,
             "preferred_by_memory": None,
             "memory_bias_applied": False,
-            "adaptive_temperature": temperature
+            "adaptive_temperature": temperature,
+            "adaptive_memory_bias": adaptive_memory_bias,
+            "health_state": health
         }
 
     def _detect_task_type(self, task):
