@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 psi0_state_encoder.py — N17.3: Encoder Semântico Enriquecido
 =============================================================
@@ -109,3 +110,61 @@ def encode_state(stage, input_text, history_stats=None):
 
     return [stage_h, text_len, llm_rate, v1_rate, v2_rate,
             math_d, logic_d, noise_r, lex_div, domain]
+=======
+import math
+
+def normalize(x):
+    """Normaliza vetor para média 0 e desvio 1"""
+    n = len(x)
+    if n == 0:
+        return x
+    mean = sum(x) / n
+    variance = sum((xi - mean) ** 2 for xi in x) / n
+    std = math.sqrt(variance) + 1e-8
+    return [(xi - mean) / std for xi in x]
+
+def encode_state(stage, task_input, context):
+    """
+    N17.3: Normalized Structural Encoder
+    Features equilibradas sem dominância
+    """
+    # Stage hash normalizado
+    stage_map = {"C": 0.0, "A": 0.5, "F": 1.0}
+    stage_hash = stage_map.get(stage, 0.25)
+    
+    # Text length com log1p (mata dominância)
+    text_len = math.log1p(len(task_input)) if task_input else 0.0
+    
+    # Taxas dos executores (do contexto)
+    llm_rate = context.get("llm_rate", 0.0)
+    v1_rate = context.get("v1_rate", 0.0)
+    v2_rate = context.get("v2_rate", 0.0)
+    
+    # Features estruturais minimalistas
+    has_digits = 1.0 if any(c.isdigit() for c in task_input) else 0.0
+    has_math = 1.0 if any(op in task_input for op in ["+", "-", "*", "/", "=", "^", "**"]) else 0.0
+    word_count = math.log1p(len(task_input.split())) if task_input else 0.0
+    is_question = 1.0 if any(q in task_input.lower() for q in ["qual", "quanto", "?", "resolve"]) else 0.0
+    
+    # Diversidade de caracteres
+    unique_chars = len(set(task_input)) if task_input else 0
+    total_chars = len(task_input) if task_input else 1
+    char_div = unique_chars / total_chars
+    
+    # Vetor completo
+    raw_vector = [
+        stage_hash,
+        text_len,
+        llm_rate,
+        v1_rate,
+        v2_rate,
+        has_digits,
+        has_math,
+        word_count,
+        is_question,
+        char_div
+    ]
+    
+    # Normalização global
+    return normalize(raw_vector)
+>>>>>>> 4ee18c6 (N17.3: Normalized structural encoder — features equilibradas, log1p, normalização global)
